@@ -9,10 +9,8 @@ public:
 
 };
 
-int main() {
 
-	Sandbox* sandbox = new Sandbox(); // allocate on the heap
-	sandbox->Run();
-
-	delete sandbox;
+// Defining CreateApplication in client
+oc::Application* oc::CreateApplication() {
+	return new Sandbox();
 }

@@ -15,5 +15,8 @@ namespace oc {
 
 	};
 
+	// Define in client
+	Application* CreateApplication();
+
 }
 

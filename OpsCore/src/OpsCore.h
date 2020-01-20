@@ -4,3 +4,6 @@
 
 #include "OpsCore\Application.h"
 
+// ------- Entry point -----------
+#include "OpsCore/Entrypoint.h"
+// -------------------------------
