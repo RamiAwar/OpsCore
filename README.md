@@ -6,7 +6,8 @@ A desktop application that allows the quick setup of Command Operations Centers 
 ## How does it work?
 
 Let's start with some definitions:
--OpsCore machine: A main server machine that allows multiple client machines and surveillance equipment to connect to it via local or global (ex. Internet based) networks.
+
+- OpsCore machine: A main server machine that allows multiple client machines and surveillance equipment to connect to it via local or global (ex. Internet based) networks.
 
 - Node machine: A node machine is a client machine that connects to a main OpsCore server machine. The main OpsCore server machine would be the main screen in a command operations center, and the node machines would be secondary screens that allow information exchange with the main OpsCore server machine. 
 
