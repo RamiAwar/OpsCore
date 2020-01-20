@@ -9,7 +9,13 @@ extern oc::Application* oc::CreateApplication();
 
 int main(int argc, char **argv) {
 
-	printf("OpsCore engine started.\n");
+
+	//TODO: Replace with engine initialization function
+	oc::Log::Init();
+	OC_DEBUG("OpsCore Engine started.");
+
+	OC_INFO("Welcome to OpsCore.");
+
 	auto app = oc::CreateApplication();
 	app->Run();
 	delete app;
@@ -17,3 +23,4 @@ int main(int argc, char **argv) {
 }
 
 #endif 
+

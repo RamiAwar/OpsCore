@@ -8,7 +8,7 @@
 	#else 
 		#define OPSCORE_API __declspec(dllimport)
 	#endif
-#else
+#else 
 	#error OpsCore only support Windows platforms.
 #endif
 

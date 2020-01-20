@@ -1,0 +1,3 @@
+[submodule "OpsCore/vendor/spdlog"]
+	path = OpsCore/vendor/spdlog
+	url = https://github.com/gabime/spdlog
