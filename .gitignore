@@ -33,4 +33,7 @@
 
 bin*
 vendor/
-
+.vs/
+*.vcxproj
+*.sln
+*.user
