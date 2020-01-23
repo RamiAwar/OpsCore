@@ -78,6 +78,9 @@ namespace oc {
 			}
 			return false;
 		}
+
+	private:
+		Event& m_Event;
 	};
 
 	inline std::ostream& operator<<(std::ostream& os, const Event& e) {

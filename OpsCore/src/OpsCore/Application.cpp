@@ -12,8 +12,13 @@ namespace oc {
 
 	void Application::Run() {
 
-		//WindowResizeEvent e(1280, 720);
-		//OC_TRACE(e);
+		WindowResizeEvent e(1280, 720);
+		if (e.IsInCategory(EventCategoryInput)) {
+			OC_TRACE(e);
+		} else {
+			OC_INFO(e);
+		}
+		
 
 		while (true);
 	}
