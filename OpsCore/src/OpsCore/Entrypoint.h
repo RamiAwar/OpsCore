@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
 	//TODO: Replace with engine initialization function
 	oc::Log::Init();
-	OC_DEBUG("OpsCore Engine started.");
+	OC_TRACE("OpsCore Engine started.");
 
 	OC_INFO("Welcome to OpsCore.");
 
