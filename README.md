@@ -12,4 +12,3 @@ Let's start with some definitions:
 - Node machine: A node machine is a client machine that connects to a main OpsCore server machine. The main OpsCore server machine would be the main screen in a command operations center, and the node machines would be secondary screens that allow information exchange with the main OpsCore server machine. 
 
 - OpsUnit machine: A typically small machine serving as a piece of surveillance equipment, that connects to an OpsCore machine and streams all accumulated data (ex. Video, Audio, sensory measurements, ... ). This unit is allowed to connect via internet or local area connections (when connected via the internet, uses SSH tunnels if OpsCore does not have a static public IP, to overcome NAT setups imposed by ISPs). 
-

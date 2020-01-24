@@ -32,4 +32,8 @@
 *.app
 
 bin*
+vendor/
 .vs/
+*.vcxproj
+*.sln
+*.user

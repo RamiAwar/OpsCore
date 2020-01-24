@@ -1,33 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="OpsCore">
+      <UniqueIdentifier>{00CA81D2-6CA9-006E-75C1-8B44E11F67CF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="OpsCore\Events">
+      <UniqueIdentifier>{E435D094-D003-C49A-B997-34C1A504A0FF}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\OpsCore\Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="src\OpsCore.h" />
     <ClInclude Include="src\OpsCore\Application.h">
-      <Filter>Header Files</Filter>
+      <Filter>OpsCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Core.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Entrypoint.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Events\ApplicationEvent.h">
+      <Filter>OpsCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Events\Event.h">
+      <Filter>OpsCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Events\KeyEvent.h">
+      <Filter>OpsCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Events\MouseEvent.h">
+      <Filter>OpsCore\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Log.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ocpch.h" />
+    <ClInclude Include="src\OpsCore\Window.h" />
+    <ClInclude Include="src\OpsCore\Platform\Windows\winWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>OpsCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Log.cpp">
+      <Filter>OpsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ocpch.cpp" />
+    <ClCompile Include="src\OpsCore\Platform\Windows\winWindow.cpp" />
   </ItemGroup>
 </Project>

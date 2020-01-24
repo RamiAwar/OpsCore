@@ -1,0 +1,7 @@
+[submodule "OpsCore/vendor/GLFW"]
+	path = OpsCore/vendor/GLFW
+	url = https://github.com/glfw/glfw
+
+[submodule "OpsCore/vendor/spdlog"]
+	path = OpsCore/vendor/spdlog/
+	url = https://github.com/gabime/spdlog
