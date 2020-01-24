@@ -2,9 +2,6 @@
 
 #include "OpsCore/Core.h"
 
-#include <string>
-#include <functional>
-
 namespace oc {
 
 	// Events are currently blocking

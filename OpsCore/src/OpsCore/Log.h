@@ -1,8 +1,11 @@
 #pragma once
 
+#include <memory>
+
 #include "Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+
 
 namespace oc {
 
@@ -31,5 +34,4 @@ namespace oc {
 #define OC_WARN(...)     ::oc::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define OC_ERROR(...)    ::oc::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define OC_CRITICAL(...) ::oc::Log::GetCoreLogger()->critical(__VA_ARGS__)
-
 // ---------------------------------------------------------------------------
