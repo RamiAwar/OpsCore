@@ -1,10 +1,7 @@
 
 #include "ocpch.h"
+
 #include "Application.h"
-#include "OpsCore/Events/ApplicationEvent.h"
-#include "OpsCore/Log.h"	
-
-
 
 // TODO: REMOVE FROM HERE
 #include <GLFW/glfw3.h>
@@ -23,8 +20,15 @@ namespace oc {
 
 	Application::~Application() {}
 
-	void Application::OnEvent(Event& e) {
 
+
+	void Application::OnEvent(Event& e) {
+		
+		EventDispatcher dispatcher(e);
+		// If event is window close event, dispatch event to Application::OnWindowClose
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+
+		OC_INFO("{0}", e);
 	}
 
 	void Application::Run() {
@@ -35,6 +39,11 @@ namespace oc {
 			m_Window->OnUpdate();
 		}
 	
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e) {
+		m_Running = false;
+		return true;
 	}
 
 }

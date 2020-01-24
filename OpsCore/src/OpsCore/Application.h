@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Core.h"
-#include "OpsCore/Log.h"
+#include "OpsCore/Core.h"
 #include "Events/Event.h"
+#include "OpsCore/Events/ApplicationEvent.h"
+
 #include "Window.h"
 
 namespace oc {
@@ -17,6 +18,9 @@ namespace oc {
 
 		void Run();
 	private:
+
+		bool OnWindowClose(WindowCloseEvent& e);
+
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
 	};

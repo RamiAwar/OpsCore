@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ocpch.h"
 #include "OpsCore/Core.h"
 
 namespace oc {
@@ -43,7 +44,7 @@ namespace oc {
 
 	class OPSCORE_API Event {
 	public:
-		bool Handled = false;
+		bool m_Handled = false;
 
 		virtual EventType GetEventType() const = 0;
 		virtual const char* GetName() const = 0;

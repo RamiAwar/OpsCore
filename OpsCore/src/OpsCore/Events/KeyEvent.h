@@ -45,9 +45,12 @@ namespace oc {
 		
 		std::string ToString() const override {
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repetitions)";
+			ss << "KeyReleasedEvent: " << m_KeyCode;
 			return ss.str();
 		}
+
+		EVENT_CLASS_TYPE(KeyReleased)
+
 	};
 
 }

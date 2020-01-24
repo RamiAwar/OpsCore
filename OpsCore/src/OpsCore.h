@@ -1,8 +1,7 @@
 #pragma once
 
 // For use by applications
-
-#include "OpsCore\Application.h"
+#include "OpsCore/Application.h"
 
 
 // ------- Entry point -----------
