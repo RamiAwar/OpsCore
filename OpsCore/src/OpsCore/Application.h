@@ -13,6 +13,8 @@ namespace oc {
 		Application();
 		virtual ~Application();
 
+		void OnEvent(Event& e);
+
 		void Run();
 	private:
 		std::unique_ptr<Window> m_Window;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ocpch.h"
 
 #ifdef OC_PLATFORM_WINDOWS
 
