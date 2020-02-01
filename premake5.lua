@@ -1,6 +1,7 @@
 workspace "OpsCore"
 	
 	architecture "x64"
+	startproject "GridSearch"
 	
 	configurations 
 	{ 
@@ -9,7 +10,55 @@ workspace "OpsCore"
 		"Dist" 
 	}
 
+
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	
+	-- Include directories relative to root folder
+	IncludeDir = {}
+	-- IncludeDir["GridSearch"] = "
+	-- include "GridSearch/"
+
+	project "GridSearch"
+		
+		kind "ConsoleApp"
+		language "C++"
+
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		
+
+		files
+		{
+			"%{prj.name}/src/**.h", 
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"%{prj.name}/src"
+		}
+
+
+		filter "system:windows"
+			cppdialect "C++17"
+			staticruntime "On"
+			systemversion "latest"
+
+		filter "configurations:Debug"
+			defines "OC_DEBUG"
+			buildoptions "/MDd"
+			symbols "On"
+
+		filter "configurations:Release"
+			defines "OC_RELEASE"
+			buildoptions "/MD"
+			optimize "On"
+		
+		filter "configurations:Dist"
+			defines "OC_DIST"
+			buildoptions "/MD"
+			optimize "On"
 
 	project "OpsCore"
 		
@@ -24,6 +73,8 @@ workspace "OpsCore"
 		pchheader "ocpch.h"
 		pchsource "%{prj.name}/src/ocpch.cpp" -- only necessary for visual studio
 
+		
+
 		files
 		{
 			"%{prj.name}/src/**.h", 
@@ -34,12 +85,16 @@ workspace "OpsCore"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor/spdlog/include",
-			"%{prj.name}/vendor/GLFW/include"
+			"%{prj.name}/vendor/GLFW/include",
+			"%{prj.name}/vendor/Glad/include",
+			"%{prj.name}/vendor/imgui"
 		}
 
 		links{
 			"GLFW",
-			"opengl32.lib"
+			"opengl32.lib",
+			"Glad",
+			"ImGui"
 		}
 
 		filter "system:windows"
@@ -50,7 +105,8 @@ workspace "OpsCore"
 			defines
 			{
 				"OC_PLATFORM_WINDOWS",
-				"OC_BUILD_DLL"
+				"OC_BUILD_DLL",
+				"GLFW_INCLUDE_NONE"
 			}
 
 			postbuildcommands
@@ -60,21 +116,26 @@ workspace "OpsCore"
 
 		filter "configurations:Debug"
 			defines "OC_DEBUG"
+			buildoptions "/MDd"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "OC_RELEASE"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
 		
 		filter "configurations:Dist"
 			defines "OC_DIST"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
 
 	project "Sandbox"
 		
 		location "Sandbox"
 		kind "ConsoleApp"
 		language "C++"
+		cppdialect "C++17"
+		staticruntime "on"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -108,15 +169,54 @@ workspace "OpsCore"
 
 		filter "configurations:Debug"
 			defines "OC_DEBUG"
+			buildoptions "/MDd"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "OC_RELEASE"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
 		
 		filter "configurations:Dist"
 			defines "OC_DIST"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
+
+	project "Glad"
+		kind "StaticLib"
+		language "C"
+
+		targetdir("bin/" .. outputdir .. "/%{prj.name}")
+		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		glad_dir = "OpsCore/vendor/%{prj.name}/"
+
+		files{
+			glad_dir .. "include/glad/glad.h",
+			glad_dir .. "include/KHR/khrplatform.h",
+			glad_dir .. "src/glad.c"
+		}
+
+		includedirs{
+			glad_dir .. "include"
+		}
+
+		filter "system:windows"
+			systemversion "latest"
+			staticruntime "On"
+
+		filter "system:linux"
+
+			pic "On"
+
+			systemversion "latest"
+			staticruntime "On"
+
+			
+		filter {"system:windows", "configurations:Release"}
+			buildoptions "/MT"
+
+
 
 	project "GLFW"
 		kind "StaticLib"
@@ -194,4 +294,35 @@ workspace "OpsCore"
 
 		filter "configurations:Release"
 			runtime "Release"
-			optimize "on"
+			symbols "on"
+
+	project "ImGui"
+		kind "StaticLib"
+		language "C++"
+
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		imgui_dir = "OpsCore/vendor/imgui/"
+
+		files{
+			imgui_dir .. "imconfig.h",
+			imgui_dir .. "imgui.h",
+			imgui_dir .. "imgui.cpp",
+			imgui_dir .. "imgui_draw.cpp",
+			imgui_dir .. "imgui_internal.h",
+			imgui_dir .. "imgui_widgets.cpp",
+			imgui_dir .. "imstb_rectpack.h",
+			imgui_dir .. "imstb_textedit.h",
+			imgui_dir .. "imstb_truetype.h",
+			imgui_dir .. "imgui_demo.cpp"
+		}
+
+		filter "system:windows"
+			systemversion "latest"
+			cppdialect "C++17"
+			staticruntime "On"
+
+		filter {"system:windows", "configurations:Release"}
+			buildoptions "/MT"
+			

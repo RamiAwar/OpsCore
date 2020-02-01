@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GridSearch">
+      <UniqueIdentifier>{8177BDF5-6D2F-FF42-D636-D89EC20D9A33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GridSearch\src\GridSearch\Grid.h">
+      <Filter>GridSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSearch\src\GridSearch\GridSearchAlgorithms.h">
+      <Filter>GridSearch</Filter>
+    </ClInclude>
+    <ClInclude Include="GridSearch\src\GridSearch\GridSearchIO.h">
+      <Filter>GridSearch</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GridSearch\src\GridSearch\Grid.cpp">
+      <Filter>GridSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSearch\src\GridSearch\GridSearchAlgorithms.cpp">
+      <Filter>GridSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSearch\src\GridSearch\GridSearchIO.cpp">
+      <Filter>GridSearch</Filter>
+    </ClCompile>
+    <ClCompile Include="GridSearch\src\GridSearchApp.cpp" />
+  </ItemGroup>
+</Project>

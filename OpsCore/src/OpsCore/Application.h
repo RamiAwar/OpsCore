@@ -1,10 +1,13 @@
 #pragma once
 
 #include "OpsCore/Core.h"
+#include "Window.h"
+
+#include "OpsCore/LayerStack.h"
 #include "Events/Event.h"
 #include "OpsCore/Events/ApplicationEvent.h"
 
-#include "Window.h"
+
 
 namespace oc {
 
@@ -17,12 +20,25 @@ namespace oc {
 		void OnEvent(Event& e);
 
 		void Run();
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
+
+		// TODO: Pop layers functionality
+
+		inline static Application& Get() { return *s_Instance; }
+		inline  Window& GetWindow() { return *m_Window; }
+
 	private:
+
+		static Application* s_Instance;
 
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = true;
+
+		LayerStack m_LayerStack;
 	};
 
 	// Define in client

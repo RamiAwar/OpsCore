@@ -7,6 +7,18 @@
     <Filter Include="OpsCore\Events">
       <UniqueIdentifier>{E435D094-D003-C49A-B997-34C1A504A0FF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="OpsCore\ImGui">
+      <UniqueIdentifier>{2ABF39D6-967F-B50C-5FBA-FE89CB39FAE8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpsCore\Platform">
+      <UniqueIdentifier>{5446D325-403F-F277-6971-D7FC55C9D183}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpsCore\Platform\OpenGL">
+      <UniqueIdentifier>{08099F62-7440-E7F9-7D4A-4B1DE9000EF3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OpsCore\Platform\Windows">
+      <UniqueIdentifier>{8E049C0E-7A29-EB8E-A374-D01E8FF8E9AC}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\OpsCore.h" />
@@ -31,21 +43,51 @@
     <ClInclude Include="src\OpsCore\Events\MouseEvent.h">
       <Filter>OpsCore\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\ImGui\ImGuiLayer.h">
+      <Filter>OpsCore\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Layer.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\LayerStack.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Log.h">
       <Filter>OpsCore</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\imgui_impl_opengl3.h">
+      <Filter>OpsCore\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Platform\Windows\winWindow.h">
+      <Filter>OpsCore\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Window.h">
+      <Filter>OpsCore</Filter>
+    </ClInclude>
     <ClInclude Include="src\ocpch.h" />
-    <ClInclude Include="src\OpsCore\Window.h" />
-    <ClInclude Include="src\OpsCore\Platform\Windows\winWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
       <Filter>OpsCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
+      <Filter>OpsCore\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Layer.cpp">
+      <Filter>OpsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\LayerStack.cpp">
+      <Filter>OpsCore</Filter>
+    </ClCompile>
     <ClCompile Include="src\OpsCore\Log.cpp">
       <Filter>OpsCore</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\imgui_impl_opengl3.cpp">
+      <Filter>OpsCore\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Platform\Windows\winWindow.cpp">
+      <Filter>OpsCore\Platform\Windows</Filter>
+    </ClCompile>
     <ClCompile Include="src\ocpch.cpp" />
-    <ClCompile Include="src\OpsCore\Platform\Windows\winWindow.cpp" />
   </ItemGroup>
 </Project>
