@@ -1,10 +1,15 @@
-﻿#include "Grid.h"
+#include "Grid.h"
 #include <stdexcept>
 
 namespace gs {
-
-
-	Grid::Grid(std::vector<std::vector<State>> data)
+    
+    Grid::Grid(){
+        m_Data = std::vector<std::vector<State> >();
+        m_Width = 0;
+        m_Height = 0;
+    }
+    
+	Grid::Grid(std::vector<std::vector<State> > data)
 	{
 		if (data.size() < 1) throw "Input grid is empty.";
 		m_Data = data;

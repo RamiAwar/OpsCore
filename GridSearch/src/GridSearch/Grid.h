@@ -1,22 +1,23 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <iostream>
 
 namespace gs {
 
-	enum class State { Empty, Obstacle };
+	enum State { Empty=0, Obstacle=1 , Closed=3};
 
 	class Cell {
 	public:
-		int row, col;
-		Cell(int x, int y) :row(x), col(y) {};
+		int x, y;
+		Cell(int a, int b) :x(a), y(b) {};
 	};
 	
 	class Grid {
 
 	public:
-		Grid(std::vector<std::vector<State>>);
+        Grid();
+		Grid(std::vector<std::vector<State> >);
 		~Grid(); 
 
 		State& operator() (unsigned row, unsigned col);        // Subscript operators often come in pairs
@@ -28,9 +29,12 @@ namespace gs {
 		static std::string cellToString(State& s) {
 			std::string out;
 			switch (s) {
-				case State::Obstacle:
+				case (State::Obstacle):
 					out = "#";
 					break;
+                case (State::Closed):
+                    out = "X";
+                    break;
 				default:
 					out = ".";
 			}
@@ -39,7 +43,7 @@ namespace gs {
 		
 	protected:
 
-		std::vector<std::vector<State>> m_Data;
+		std::vector<std::vector<State> > m_Data;
 		int m_Width;
 		int m_Height;
 
@@ -48,9 +52,9 @@ namespace gs {
 
 	inline std::ostream& operator<<(std::ostream& stream, Grid& grid) {
 
-		for (int i = 0; i < grid.getWidth(); i++) {
+		for (int i = 0; i < grid.getHeight(); i++) {
 			stream << "  |   ";
-			for (int j = 0; j < grid.getHeight(); j++) {
+			for (int j = 0; j < grid.getWidth(); j++) {
 				stream << Grid::cellToString(grid(i, j)) << "   ";
 			}
 			stream << "|" << std::endl;
