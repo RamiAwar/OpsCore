@@ -2,44 +2,28 @@
 
 #include "GridSearch/Grid.h"
 #include "GridSearchAlgorithms.h"
-
+#include "GridSearch/GridSearchIO.h"
 
 int main(int argc, char** argv) {
 
 
-	// Read grid from file
-
-
-	// Create Grid from 2d array
-//    std::vector<std::vector<gs::State> > t = {
-//                                    {gs::State::Empty, gs::State::Empty, gs::State::Empty},
-//                                    {gs::State::Empty, gs::State::Obstacle, gs::State::Empty},
-//                                    {gs::State::Empty, gs::State::Obstacle, gs::State::Empty}
-//                                };
-
-    std::vector<std::vector<gs::State> > t;
-    std::vector<gs::State> q;
-    q.push_back(gs::State::Empty);
-    q.push_back(gs::State::Empty);
-    q.push_back(gs::State::Empty);
+    // Read grid from file
+    std::vector<std::vector<gs::State> > t = gs::GridSearchIO::ReadFromFile("gridA.txt");
     
-    t.push_back(q);
-    t.push_back(q);
-    t.push_back(q);
-
-	gs::Grid grid(t);
-    grid(1,1) = gs::State::Obstacle;
-    grid(2,1) = gs::State::Obstacle;
+    
+    gs::Grid grid(t);
     
 	std::cout << grid << std::endl;
-
-
-	// Perform algorithm on grid
-    gs::Grid solution = gs::GridSearchAlgorithms::AStarSearch(grid, gs::Cell(0,0), gs::Cell(2,2));
     
+    // Perform algorithm on grid
+    gs::Grid solution = gs::GridSearchAlgorithms::AStarSearch(grid, gs::Cell(1,1), gs::Cell(40,50),
+                                                              gs::GridSearchAlgorithms::h_Chebyshev,
+                                                              gs::GridSearchAlgorithms::Neighbors4
+                                                              );
+
 	// Output result
     std::cout<<solution<<std::endl;
 
-
+    std::cin.get();
 	return 0;
 }
