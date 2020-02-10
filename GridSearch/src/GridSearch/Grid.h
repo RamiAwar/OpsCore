@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <iostream>
-
+#include "vendor/rang.h"
 
 namespace gs {
     
@@ -53,10 +53,10 @@ namespace gs {
             std::string out;
             switch (s) {
                 case (State::Obstacle):
-                    out = "█";
+                    out = '#';
                     break;
                 case (State::Closed):
-                    out = "░";
+                    out = ' ';
                     break;
                 case (State::Path):
                     out = '.';

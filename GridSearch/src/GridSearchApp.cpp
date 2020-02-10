@@ -1,14 +1,14 @@
 #include <vector>
 
 #include "GridSearch/Grid.h"
-#include "GridSearchAlgorithms.h"
+#include "GridSearch/GridSearchAlgorithms.h"
 #include "GridSearch/GridSearchIO.h"
 
 int main(int argc, char** argv) {
 
 
     // Read grid from file
-    std::vector<std::vector<gs::State> > t = gs::GridSearchIO::ReadFromFile("gridA.txt");
+    std::vector<std::vector<gs::State> > t = gs::GridSearchIO::ReadFromFile("test/gridA.txt");
     
     
     gs::Grid grid(t);
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     // Perform algorithm on grid
     gs::Grid solution = gs::GridSearchAlgorithms::AStarSearch(grid, gs::Cell(1,1), gs::Cell(40,50),
                                                               gs::GridSearchAlgorithms::h_Chebyshev,
-                                                              gs::GridSearchAlgorithms::Neighbors4
+                                                              gs::GridSearchAlgorithms::Neighbors8
                                                               );
 
 	// Output result

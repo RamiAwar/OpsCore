@@ -13,6 +13,7 @@
 #endif
 
 #define BIT(x) (1<<x)
+#define OC_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)
 
 #ifdef OC_DEBUG
 	#define OC_ENABLE_ASSERTS

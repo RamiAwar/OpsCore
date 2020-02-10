@@ -15,6 +15,7 @@
     <ClInclude Include="src\GridSearch\GridSearchIO.h">
       <Filter>GridSearch</Filter>
     </ClInclude>
+    <ClInclude Include="src\vendor\rang.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GridSearch\Grid.cpp">
@@ -27,5 +28,8 @@
       <Filter>GridSearch</Filter>
     </ClCompile>
     <ClCompile Include="src\GridSearchApp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="test\gridA.txt" />
   </ItemGroup>
 </Project>

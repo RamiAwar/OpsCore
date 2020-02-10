@@ -27,7 +27,7 @@ namespace gs{
     }
     
     float GridSearchAlgorithms::h_Chebyshev(int x1, int y1, int x2, int y2){
-        return std::max(abs(x1-x2), abs(y1-y2));
+        return max(abs(x1-x2), abs(y1-y2));
     }
     /*
      Check that a valid cell is empty for exploration
