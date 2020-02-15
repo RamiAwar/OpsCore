@@ -1,9 +1,11 @@
 
 #include "ocpch.h"
 
+#include "OpsCore/Input.h"
 #include "Application.h"
 
 #include <glad/glad.h>
+
 
 namespace oc {
 
@@ -30,7 +32,7 @@ namespace oc {
 		// If event is window close event, dispatch event to Application::OnWindowClose
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		OC_INFO("{0}", e);
+		//OC_INFO("{0}", e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
 			(*(--it))->OnEvent(e);
@@ -48,6 +50,9 @@ namespace oc {
 			for (Layer* layer : m_LayerStack) {
 				layer->OnUpdate();
 			}
+
+			/*auto [x, y] = Input::GetMousePos();
+			OC_TRACE("{0}, {1}", x, y);*/
 
 			m_Window->OnUpdate();
 		}

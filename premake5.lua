@@ -17,48 +17,9 @@ workspace "OpsCore"
 	IncludeDir = {}
 	-- IncludeDir["GridSearch"] = "
 	-- include "GridSearch/"
-
-	project "GridSearch"
-		
-		kind "ConsoleApp"
-		language "C++"
-
-		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
-
-		
-
-		files
-		{
-			"%{prj.name}/src/**.h", 
-			"%{prj.name}/src/**.cpp"
-		}
-
-		includedirs
-		{
-			"%{prj.name}/src"
-		}
+	IncludeDir["glm"] = "OpsCore/vendor/glm"
 
 
-		filter "system:windows"
-			cppdialect "C++17"
-			staticruntime "On"
-			systemversion "latest"
-
-		filter "configurations:Debug"
-			defines "OC_DEBUG"
-			buildoptions "/MDd"
-			symbols "On"
-
-		filter "configurations:Release"
-			defines "OC_RELEASE"
-			buildoptions "/MD"
-			optimize "On"
-		
-		filter "configurations:Dist"
-			defines "OC_DIST"
-			buildoptions "/MD"
-			optimize "On"
 
 	project "OpsCore"
 		
@@ -78,7 +39,9 @@ workspace "OpsCore"
 		files
 		{
 			"%{prj.name}/src/**.h", 
-			"%{prj.name}/src/**.cpp"
+			"%{prj.name}/src/**.cpp",
+			"%{IncludeDir.glm}/glm/**.hpp",
+			"%{IncludeDir.glm}/glm/**.inl"
 		}
 
 		includedirs
@@ -87,7 +50,8 @@ workspace "OpsCore"
 			"%{prj.name}/vendor/spdlog/include",
 			"%{prj.name}/vendor/GLFW/include",
 			"%{prj.name}/vendor/Glad/include",
-			"%{prj.name}/vendor/imgui"
+			"%{prj.name}/vendor/imgui",
+			"%{IncludeDir.glm}"
 		}
 
 		links{
@@ -149,7 +113,8 @@ workspace "OpsCore"
 		includedirs
 		{
 			"OpsCore/vendor/spdlog/include",
-			"OpsCore/src"
+			"OpsCore/src",
+			"%{IncludeDir.glm}"
 		}
 
 		links
