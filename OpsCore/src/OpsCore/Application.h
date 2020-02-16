@@ -7,6 +7,7 @@
 #include "Events/Event.h"
 #include "OpsCore/Events/ApplicationEvent.h"
 
+#include "OpsCore/ImGui/ImGuiLayer.h"
 
 
 namespace oc {
@@ -36,6 +37,7 @@ namespace oc {
 		bool OnWindowClose(WindowCloseEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;

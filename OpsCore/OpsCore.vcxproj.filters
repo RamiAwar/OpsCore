@@ -90,9 +90,6 @@
     <ClInclude Include="src\OpsCore\MouseButtonCodes.h">
       <Filter>src\OpsCore</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Platform\OpenGL\imgui_impl_opengl3.h">
-      <Filter>src\OpsCore\Platform\OpenGL</Filter>
-    </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\Windows\winInput.h">
       <Filter>src\OpsCore\Platform\Windows</Filter>
     </ClInclude>
@@ -1262,9 +1259,6 @@
     <ClCompile Include="src\OpsCore\Log.cpp">
       <Filter>src\OpsCore</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Platform\OpenGL\imgui_impl_opengl3.cpp">
-      <Filter>src\OpsCore\Platform\OpenGL</Filter>
-    </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\Windows\winInput.cpp">
       <Filter>src\OpsCore\Platform\Windows</Filter>
     </ClCompile>
@@ -1274,5 +1268,6 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp" />
   </ItemGroup>
 </Project>
