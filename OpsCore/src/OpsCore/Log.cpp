@@ -15,7 +15,7 @@ namespace oc {
 		s_CoreLogger = spdlog::stdout_color_mt("OpsCore");
 		s_CoreLogger->set_level(spdlog::level::trace);
 
-		s_ClientLogger = spdlog::stdout_color_mt("OpsCore_Client");
+		s_ClientLogger = spdlog::stdout_color_mt("OC_Client");
 		s_ClientLogger->set_level(spdlog::level::trace);
 	}
 

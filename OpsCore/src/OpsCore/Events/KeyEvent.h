@@ -4,7 +4,7 @@
 
 namespace oc {
 
-	class OPSCORE_API KeyEvent : public Event {
+	class  KeyEvent : public Event {
 	public:
 
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -16,7 +16,7 @@ namespace oc {
 		int m_KeyCode;
 	};
 
-	class OPSCORE_API KeyPressedEvent : public KeyEvent {
+	class  KeyPressedEvent : public KeyEvent {
 	public:
 		// Why include key repetitions? Because we don't want several events captured with one key press
 		// For example pressing through menu buttons - holding a key shouldnt loop quickly between options
@@ -39,7 +39,7 @@ namespace oc {
 		int m_RepeatCount;
 	};
 
-	class OPSCORE_API KeyReleasedEvent : public KeyEvent {
+	class  KeyReleasedEvent : public KeyEvent {
 	public: 
 		KeyReleasedEvent(int keycode) : KeyEvent(keycode) {}
 		
@@ -53,7 +53,7 @@ namespace oc {
 
 	};
 
-	class OPSCORE_API KeyTypedEvent : public KeyEvent {
+	class  KeyTypedEvent : public KeyEvent {
 	public:
 		KeyTypedEvent(int keycode) : KeyEvent(keycode) {}
 

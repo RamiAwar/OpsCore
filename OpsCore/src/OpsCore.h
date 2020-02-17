@@ -7,6 +7,8 @@
 #include "OpsCore/ImGui/ImGuiLayer.h"
 
 
+#include "OpsCore/ImGui/ImGuiWidgets.cpp"
+
 // ------------ Input -------------
 #include "OpsCore/Input.h"
 #include "OpsCore/KeyCodes.h"

@@ -4,7 +4,7 @@
 #include "Layer.h"
 
 namespace oc {
-	class OPSCORE_API LayerStack
+	class  LayerStack
 	{
 	public:
 		LayerStack();

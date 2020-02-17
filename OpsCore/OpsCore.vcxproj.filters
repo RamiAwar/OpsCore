@@ -16,9 +16,6 @@
     <Filter Include="src\OpsCore\Platform">
       <UniqueIdentifier>{4B50408D-37DF-C956-E0FD-DD51CC6BDAFC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\OpsCore\Platform\OpenGL">
-      <UniqueIdentifier>{1F576CD1-8B64-9AB7-144B-96A28057666E}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\OpsCore\Platform\Windows">
       <UniqueIdentifier>{85151357-71D0-0203-1A88-7B4D06224D93}</UniqueIdentifier>
     </Filter>
@@ -1242,10 +1239,14 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Utils\CubicBezier.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
       <Filter>src\OpsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp">
+      <Filter>src\OpsCore\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
@@ -1268,6 +1269,6 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp" />
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiWidgets.cpp" />
   </ItemGroup>
 </Project>

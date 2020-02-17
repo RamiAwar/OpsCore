@@ -12,7 +12,7 @@
 
 namespace oc {
 
-	class OPSCORE_API Application
+	class  Application
 	{
 	public:
 		Application();

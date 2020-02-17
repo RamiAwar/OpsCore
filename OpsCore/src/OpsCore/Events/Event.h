@@ -43,7 +43,7 @@ namespace oc {
 
 	#define EVENT_CLASS_CATEGORY(category) virtual int GetCategoryFlags() const override {return category;}
 
-	class OPSCORE_API Event {
+	class  Event {
 	public:
 		bool m_Handled = false;
 
@@ -58,7 +58,7 @@ namespace oc {
 
 	};
 
-	class OPSCORE_API EventDispatcher {
+	class  EventDispatcher {
 
 		// why "using" instead of typedef? typedef doesn't allow templated aliases. simple.
 		template <typename T>

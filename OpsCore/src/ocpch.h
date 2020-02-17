@@ -1,5 +1,6 @@
 #pragma once
 
+#define _CRT_SECURE_NO_WARNINGS // TODO: Remove when ImGui fixes their deprecated functions
 
 // ---- STL includes -------
 #include <iostream>

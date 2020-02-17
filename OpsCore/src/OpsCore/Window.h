@@ -24,7 +24,7 @@ namespace oc {
 
 
 	// Interface representing a desktop system based Window
-	class OPSCORE_API Window {
+	class  Window {
 	public:
 
 		using EventCallbackFn = std::function<void(Event&)>;

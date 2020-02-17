@@ -4,7 +4,7 @@
 
 namespace oc {
 
-	class OPSCORE_API WindowResizeEvent : public Event {
+	class  WindowResizeEvent : public Event {
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height) : m_Width(width), m_Height(height) {}
 
@@ -24,7 +24,7 @@ namespace oc {
 		unsigned int m_Width, m_Height;
 	};
 
-	class OPSCORE_API WindowCloseEvent : public Event {
+	class  WindowCloseEvent : public Event {
 	public:
 
 		WindowCloseEvent() = default;
@@ -34,13 +34,13 @@ namespace oc {
 
 	};
 
-	class OPSCORE_API AppTickEvent : public Event {
+	class  AppTickEvent : public Event {
 		AppTickEvent() {}
 		EVENT_CLASS_TYPE(AppTick)
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class OPSCORE_API AppRenderEvent : public Event {
+	class  AppRenderEvent : public Event {
 	public:
 		AppRenderEvent() {}
 

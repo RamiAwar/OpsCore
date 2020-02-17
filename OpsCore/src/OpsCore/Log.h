@@ -9,7 +9,7 @@
 
 namespace oc {
 
-	class OPSCORE_API Log
+	class Log
 	{
 	
 	public:
