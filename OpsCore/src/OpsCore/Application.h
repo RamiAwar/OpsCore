@@ -41,6 +41,8 @@ namespace oc {
 		bool m_Running = true;
 
 		LayerStack m_LayerStack;
+
+		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
 	};
 
 	// Define in client

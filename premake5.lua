@@ -19,7 +19,8 @@ workspace "OpsCore"
 	-- include "GridSearch/"
 	IncludeDir["glm"] = "OpsCore/vendor/glm"
 	IncludeDir["imgui"] = "OpsCore/vendor/imgui"
-
+	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
+	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
 
 
 	project "OpsCore"
@@ -50,8 +51,8 @@ workspace "OpsCore"
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor/spdlog/include",
-			"%{prj.name}/vendor/GLFW/include",
-			"%{prj.name}/vendor/Glad/include",
+			"%{IncludeDir.glfw}",
+			"%{IncludeDir.glad}",
 			"%{IncludeDir.imgui}",
 			"%{IncludeDir.glm}"
 		}
@@ -117,7 +118,9 @@ workspace "OpsCore"
 			"OpsCore/vendor/spdlog/include",
 			"OpsCore/src",
 			"%{IncludeDir.glm}", 
-			"%{IncludeDir.imgui}"
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.glfw}",
+			"%{IncludeDir.glad}",
 		}
 
 		links

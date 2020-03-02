@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OpsCore/Window.h"
+#include "OpsCore/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>
 
@@ -28,6 +29,7 @@ namespace oc {
 		virtual void Shutdown();
 
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		// Data that might be requested by GLFW by event callbacks
 		struct WindowData {

@@ -19,6 +19,9 @@
     <Filter Include="src\OpsCore\Platform\Windows">
       <UniqueIdentifier>{85151357-71D0-0203-1A88-7B4D06224D93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\OpsCore\Utils">
+      <UniqueIdentifier>{B7C04C4E-23D7-4AE4-6C4E-D605D8A31B6C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\Windows\winWindow.h">
       <Filter>src\OpsCore\Platform\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Utils\CubicBezier.h">
+      <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Window.h">
       <Filter>src\OpsCore</Filter>
@@ -1239,7 +1245,8 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Utils\CubicBezier.h" />
+    <ClInclude Include="src\OpsCore\Renderer\GraphicsContext.h" />
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1249,6 +1256,9 @@
       <Filter>src\OpsCore\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
+      <Filter>src\OpsCore\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiWidgets.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Layer.cpp">
@@ -1269,6 +1279,6 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\ImGui\ImGuiWidgets.cpp" />
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLContext.cpp" />
   </ItemGroup>
 </Project>

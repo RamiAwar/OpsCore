@@ -4,7 +4,9 @@
 #include "OpsCore/Events/ApplicationEvent.h"
 #include "OpsCore/Events/MouseEvent.h"
 #include "OpsCore/Events/KeyEvent.h"
-#include <glad\glad.h>
+
+#include "OpsCore/Platform/OpenGL/OpenGLContext.h"
+
 
 namespace oc {
 
@@ -45,10 +47,11 @@ namespace oc {
 		}
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
+		
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		OC_ASSERT(status, "Failed to initialize GLAD.");
+		
 
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
@@ -144,7 +147,8 @@ namespace oc {
 
 	void winWindow::OnUpdate() {
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
+	
 	}
 
 	void winWindow::SetVSync(bool enabled) {

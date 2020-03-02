@@ -1,17 +1,44 @@
 
 #include <OpsCore.h>
 #include "imgui.h"
+#include <glad/glad.h>
+
+
+unsigned int buffer;
+float vertexPositions[6] = {
+-0.5f, -0.5f,
+ 0.0f,  0.5f,
+ 0.5f, -0.5f
+};
 
 class ExampleLayer : public oc::Layer {
 public:
-	ExampleLayer() : Layer("Example") {}
+	ExampleLayer() : Layer("Example") {
+		
+		OC_CLIENT_INFO("ExampleLayer::Setting up OpenGL states");
+
+		glGenBuffers(1, &buffer); // Generate one buffer, unspecified type yet
+
+		glBindBuffer(GL_ARRAY_BUFFER, buffer); // specify type of buffer: just an array
+
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, &vertexPositions, GL_STATIC_DRAW); // Set buffer size and fill it
+	}
 
 	void OnUpdate() override { 
 		//OC_CLIENT_INFO("ExampleLayer::Update"); 
 
-		if (oc::Input::IsKeyPressed(OC_KEY_TAB)) {
+		/*if (oc::Input::IsKeyPressed(OC_KEY_TAB)) {
+
 			OC_CLIENT_TRACE("TAB key is pressed");
-		}
+		}*/
+
+		
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
+
+
+
+
 
 	}
 
