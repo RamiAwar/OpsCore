@@ -9,6 +9,7 @@
 
 #include "OpsCore/ImGui/ImGuiLayer.h"
 
+#include "OpsCore/Renderer/Shader.h"
 
 namespace oc {
 
@@ -43,6 +44,7 @@ namespace oc {
 		LayerStack m_LayerStack;
 
 		unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+		std::unique_ptr<Shader> m_Shader;
 	};
 
 	// Define in client

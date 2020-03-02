@@ -1247,6 +1247,7 @@
     </ClInclude>
     <ClInclude Include="src\OpsCore\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\OpsCore\Renderer\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1280,5 +1281,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\Shader.cpp" />
   </ItemGroup>
 </Project>
