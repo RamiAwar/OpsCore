@@ -1248,6 +1248,9 @@
     <ClInclude Include="src\OpsCore\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\OpsCore\Renderer\Shader.h" />
+    <ClInclude Include="src\OpsCore\Renderer\Buffer.h" />
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.h" />
+    <ClInclude Include="src\OpsCore\Renderer\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1282,5 +1285,8 @@
     </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\OpsCore\Renderer\Shader.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\Buffer.cpp" />
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\Renderer.cpp" />
   </ItemGroup>
 </Project>
