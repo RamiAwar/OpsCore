@@ -1251,6 +1251,8 @@
     <ClInclude Include="src\OpsCore\Renderer\Buffer.h" />
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\OpsCore\Renderer\Renderer.h" />
+    <ClInclude Include="src\OpsCore\Renderer\VertexArray.h" />
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1288,5 +1290,7 @@
     <ClCompile Include="src\OpsCore\Renderer\Buffer.cpp" />
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\OpsCore\Renderer\Renderer.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\VertexArray.cpp" />
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.cpp" />
   </ItemGroup>
 </Project>

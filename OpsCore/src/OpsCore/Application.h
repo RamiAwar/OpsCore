@@ -11,6 +11,7 @@
 
 #include "OpsCore/Renderer/Shader.h"
 #include "OpsCore/Renderer/Buffer.h"
+#include "OpsCore/Renderer/VertexArray.h"
 
 namespace oc {
 
@@ -44,10 +45,10 @@ namespace oc {
 
 		LayerStack m_LayerStack;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<Shader> m_Shader;
+		std::shared_ptr<VertexBuffer> m_VertexBuffer;
+		std::shared_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<VertexArray> m_VertexArray;
 
 	};
 

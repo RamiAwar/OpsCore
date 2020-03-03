@@ -14,29 +14,6 @@ namespace oc {
 
 	Application* Application::s_Instance = nullptr;
 
-
-
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
-		switch (type)
-		{
-		case oc::ShaderDataType::Float: return GL_FLOAT;
-		case oc::ShaderDataType::Float2:return GL_FLOAT;
-		case oc::ShaderDataType::Float3:return GL_FLOAT;
-		case oc::ShaderDataType::Float4:return GL_FLOAT;
-		case oc::ShaderDataType::Mat3:return GL_FLOAT;
-		case oc::ShaderDataType::Mat4:return GL_FLOAT;
-		case oc::ShaderDataType::Int:return GL_INT;
-		case oc::ShaderDataType::Int2:return GL_INT;
-		case oc::ShaderDataType::Int3:return GL_INT;
-		case oc::ShaderDataType::Int4:return GL_INT;
-		case oc::ShaderDataType::Bool:return GL_BOOL;
-		default:
-			OC_ASSERT(false, "Unknown ShaderDataType!");
-			return GL_FALSE;
-		}
-	}
-
-
 	Application::Application() {
 
 		OC_ASSERT(!s_Instance, "Application already exists.");
@@ -48,9 +25,6 @@ namespace oc {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
-		
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
 
 		float vertices[3 * 7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.0f, 0.8f, 1.0f,
@@ -58,42 +32,27 @@ namespace oc {
 			 0.0f, 0.5f, 0.0f,  0.2f, 0.8f, 0.8f, 1.0f
 		};
 
-		// API
-		// VertexBuffer buffer = VertexBuffer::Create(sizeof(vertices), vertices);
-		// buffer.Bind();
-
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		
-		// Buffer layout API
-		BufferLayout layout = {
-			{ ShaderDataType::Float3, "a_Position" },
-			{ ShaderDataType::Float4, "a_Color"}
-		};
+		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		{
+			// Buffer layout API
+			BufferLayout layout = {
+				{ ShaderDataType::Float3, "a_Position" },
+				{ ShaderDataType::Float4, "a_Color"}
+			};
 
-		m_VertexBuffer->SetLayout(layout);
-
-		uint32_t index = 0;
-		for (const auto& element : m_VertexBuffer->GetLayout()) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
-				index, 
-				element.GetComponentCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.type), 
-				element.normalized ? GL_TRUE:GL_FALSE, 
-				layout.GetStride(), 
-				(const void*)element.offset
-			);
-			index++;
+			m_VertexBuffer->SetLayout(layout);
 		}
 
+		// After layout has been set, create vertex array
+		m_VertexArray.reset(VertexArray::Create());
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 
-		
 		// Element / index buffers
 		unsigned int indices[3] = { 0, 1, 2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-		// no need to specify shader, gpus have default
 
 		std::string vertexSrc = R"(
 
@@ -155,8 +114,8 @@ namespace oc {
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			m_Shader->Bind();
+			m_VertexArray->Bind();
 
-			glBindVertexArray(m_VertexArray);
 			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
 			// Iterate over layers and run update
