@@ -50,6 +50,10 @@ namespace oc {
 		std::shared_ptr<IndexBuffer> m_IndexBuffer;
 		std::shared_ptr<VertexArray> m_VertexArray;
 
+
+		std::shared_ptr<Shader> m_SquareShader;
+		std::shared_ptr<VertexArray> m_SquareVertexArray;
+
 	};
 
 	// Define in client

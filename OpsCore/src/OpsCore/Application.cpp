@@ -54,6 +54,30 @@ namespace oc {
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
 
+		m_SquareVertexArray.reset(VertexArray::Create());
+
+		float square_vertices[3 * 4] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f,
+			-0.5f,  0.5f, 0.0f,
+			 0.5f,  0.5f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> squareVertexBuffer;
+		squareVertexBuffer.reset(VertexBuffer::Create(square_vertices, sizeof(square_vertices)));
+
+		squareVertexBuffer->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" }
+		});
+		m_SquareVertexArray->AddVertexBuffer(squareVertexBuffer);
+
+		uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 1 };
+		std::shared_ptr<IndexBuffer> squareIndexBuffer;
+		squareIndexBuffer.reset(IndexBuffer::Create(square_indices, sizeof(square_indices)));
+		m_SquareVertexArray->SetIndexBuffer(squareIndexBuffer);
+
+
+
 		std::string vertexSrc = R"(
 
 			#version 330 core 
@@ -67,6 +91,20 @@ namespace oc {
 			void main(){
 				v_Position = a_Position*0.5 + 0.5;
 				v_Color = a_Color;
+				gl_Position = vec4(a_Position.x + 0.5, a_Position.y, a_Position.z, 1.0);	
+			}
+		)";
+
+		std::string squareVertexShaderSrc = R"(
+
+			#version 330 core 
+			
+			layout (location = 0) in vec3 a_Position;
+			
+			out vec3 v_Position;
+
+			void main(){
+				v_Position = a_Position*0.5 + 0.5;
 				gl_Position = vec4(a_Position.x + 0.5, a_Position.y, a_Position.z, 1.0);	
 			}
 		)";
@@ -86,7 +124,20 @@ namespace oc {
 
 		)";
 
+		std::string squareFragmentShaderSrc = R"(
+			#version 330 core 
+			
+			layout (location = 0) out vec4 color;
+			
+			in vec3 v_Position;
+			void main(){
+				color = vec4(v_Position.x + 0.1, v_Position.y + 0.2, 0.5, 1.0);	
+			}
+
+		)";
+
 		m_Shader.reset(new Shader(vertexSrc, fragmentSrc));
+		m_SquareShader.reset(new Shader(squareVertexShaderSrc, squareFragmentShaderSrc));
 	}
 
 	Application::~Application() {}
@@ -113,6 +164,11 @@ namespace oc {
 			glClearColor(0.1f, 0.1f, 0.1f, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			m_SquareShader->Bind();
+			m_SquareVertexArray->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			
+			
 			m_Shader->Bind();
 			m_VertexArray->Bind();
 
