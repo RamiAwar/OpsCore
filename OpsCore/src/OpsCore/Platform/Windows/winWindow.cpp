@@ -5,6 +5,8 @@
 #include "OpsCore/Events/MouseEvent.h"
 #include "OpsCore/Events/KeyEvent.h"
 
+#include "OpsCore/Platform/OpenGL/OpenGLContext.h"
+
 
 namespace oc {
 
@@ -45,7 +47,12 @@ namespace oc {
 		}
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
+		
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
+
+		
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -94,6 +101,12 @@ namespace oc {
 
 		});
 
+		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			KeyTypedEvent event(keycode);
+			data.EventCallback(event);
+		});
+
 		glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods)
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
@@ -134,7 +147,8 @@ namespace oc {
 
 	void winWindow::OnUpdate() {
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
+	
 	}
 
 	void winWindow::SetVSync(bool enabled) {

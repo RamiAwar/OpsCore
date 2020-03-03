@@ -1,6 +1,7 @@
 workspace "OpsCore"
 	
 	architecture "x64"
+	startproject "GridSearch"
 	
 	configurations 
 	{ 
@@ -9,13 +10,25 @@ workspace "OpsCore"
 		"Dist" 
 	}
 
+
 	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+	
+	-- Include directories relative to root folder
+	IncludeDir = {}
+	-- IncludeDir["GridSearch"] = "
+	-- include "GridSearch/"
+	IncludeDir["glm"] = "OpsCore/vendor/glm"
+	IncludeDir["imgui"] = "OpsCore/vendor/imgui"
+	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
+	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
+
 
 	project "OpsCore"
 		
 		location "OpsCore"
-		kind "SharedLib"
+		kind "StaticLib"
 		language "C++"
+		staticruntime "on"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -24,22 +37,31 @@ workspace "OpsCore"
 		pchheader "ocpch.h"
 		pchsource "%{prj.name}/src/ocpch.cpp" -- only necessary for visual studio
 
+		
+
 		files
 		{
 			"%{prj.name}/src/**.h", 
-			"%{prj.name}/src/**.cpp"
+			"%{prj.name}/src/**.cpp",
+			"%{IncludeDir.glm}/glm/**.hpp",
+			"%{IncludeDir.glm}/glm/**.inl"
 		}
 
 		includedirs
 		{
 			"%{prj.name}/src",
 			"%{prj.name}/vendor/spdlog/include",
-			"%{prj.name}/vendor/GLFW/include"
+			"%{IncludeDir.glfw}",
+			"%{IncludeDir.glad}",
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.glm}"
 		}
 
 		links{
 			"GLFW",
-			"opengl32.lib"
+			"opengl32.lib",
+			"Glad",
+			"ImGui"
 		}
 
 		filter "system:windows"
@@ -50,31 +72,37 @@ workspace "OpsCore"
 			defines
 			{
 				"OC_PLATFORM_WINDOWS",
-				"OC_BUILD_DLL"
+				"OC_BUILD_DLL",
+				"GLFW_INCLUDE_NONE"
 			}
 
-			postbuildcommands
-			{
-				("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-			}
+			--postbuildcommands
+			--{
+			--	("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+			--}
 
 		filter "configurations:Debug"
 			defines "OC_DEBUG"
+			buildoptions "/MDd"
 			symbols "On"
 
 		filter "configurations:Release"
 			defines "OC_RELEASE"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
 		
 		filter "configurations:Dist"
 			defines "OC_DIST"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "On"
 
 	project "Sandbox"
 		
 		location "Sandbox"
 		kind "ConsoleApp"
 		language "C++"
+		cppdialect "C++17"
+		staticruntime "on"
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -88,7 +116,11 @@ workspace "OpsCore"
 		includedirs
 		{
 			"OpsCore/vendor/spdlog/include",
-			"OpsCore/src"
+			"OpsCore/src",
+			"%{IncludeDir.glm}", 
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.glfw}",
+			"%{IncludeDir.glad}",
 		}
 
 		links
@@ -108,19 +140,62 @@ workspace "OpsCore"
 
 		filter "configurations:Debug"
 			defines "OC_DEBUG"
-			symbols "On"
+			buildoptions "/MDd"
+			symbols "on"
 
 		filter "configurations:Release"
 			defines "OC_RELEASE"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "on"
 		
 		filter "configurations:Dist"
 			defines "OC_DIST"
-			symbols "On"
+			buildoptions "/MD"
+			optimize "on"
+
+	project "Glad"
+		kind "StaticLib"
+		language "C"
+		staticruntime "on"
+
+		targetdir("bin/" .. outputdir .. "/%{prj.name}")
+		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		glad_dir = "OpsCore/vendor/%{prj.name}/"
+
+		files{
+			glad_dir .. "include/glad/glad.h",
+			glad_dir .. "include/KHR/khrplatform.h",
+			glad_dir .. "src/glad.c"
+		}
+
+		includedirs{
+			glad_dir .. "include"
+		}
+
+		filter "system:windows"
+			systemversion "latest"
+
+		filter "system:linux"
+			pic "on"
+			systemversion "latest"
+			
+		filter {"system:windows", "configurations:Release"}
+			buildoptions "/MT"
+
+		filter "configurations:Debug"
+			runtime "Debug"
+			symbols "on"
+
+		filter "configurations:Release"
+			runtime "Release"
+			optimize "on"
+		
 
 	project "GLFW"
 		kind "StaticLib"
 		language "C"
+		staticruntime "on"
 
 		targetdir("bin/" .. outputdir .. "/%{prj.name}")
 		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -141,7 +216,6 @@ workspace "OpsCore"
 
 		filter "system:windows"
 			systemversion "latest"
-			staticruntime "On"
 
 			files
 			{
@@ -167,7 +241,6 @@ workspace "OpsCore"
 			pic "On"
 
 			systemversion "latest"
-			staticruntime "On"
 
 			files
 			{
@@ -195,3 +268,42 @@ workspace "OpsCore"
 		filter "configurations:Release"
 			runtime "Release"
 			optimize "on"
+
+	project "ImGui"
+		kind "StaticLib"
+		language "C++"
+		staticruntime "on"
+
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		imgui_dir = "OpsCore/vendor/imgui/"
+
+		files{
+			imgui_dir .. "imconfig.h",
+			imgui_dir .. "imgui.h",
+			imgui_dir .. "imgui.cpp",
+			imgui_dir .. "imgui_draw.cpp",
+			imgui_dir .. "imgui_internal.h",
+			imgui_dir .. "imgui_widgets.cpp",
+			imgui_dir .. "imstb_rectpack.h",
+			imgui_dir .. "imstb_textedit.h",
+			imgui_dir .. "imstb_truetype.h",
+			imgui_dir .. "imgui_demo.cpp"
+		}
+
+		filter "system:windows"
+			systemversion "latest"
+			cppdialect "C++17"
+
+		filter {"system:windows", "configurations:Release"}
+			buildoptions "/MT"
+
+		filter "configurations:Debug"
+			runtime "Debug"
+			symbols "on"
+
+		filter "configurations:Release"
+			runtime "Release"
+			optimize "on"
+			

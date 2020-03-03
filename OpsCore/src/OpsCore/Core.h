@@ -3,16 +3,18 @@
 
 #ifdef OC_PLATFORM_WINDOWS
 
-	#ifdef OC_BUILD_DLL
-		#define OPSCORE_API __declspec(dllexport)
-	#else 
-		#define OPSCORE_API __declspec(dllimport)
-	#endif
+	//#ifdef OC_BUILD_DLL
+	//	#define  __declspec(dllexport)
+	//#else 
+	//	#define  __declspec(dllimport)
+	//#endif
+
 #else 
 	#error OpsCore only support Windows platforms.
 #endif
 
 #define BIT(x) (1<<x)
+#define OC_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)
 
 #ifdef OC_DEBUG
 	#define OC_ENABLE_ASSERTS
