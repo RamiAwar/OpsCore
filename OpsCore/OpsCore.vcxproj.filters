@@ -1253,6 +1253,9 @@
     <ClInclude Include="src\OpsCore\Renderer\Renderer.h" />
     <ClInclude Include="src\OpsCore\Renderer\VertexArray.h" />
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\OpsCore\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\OpsCore\Renderer\RenderCommand.h" />
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1292,5 +1295,8 @@
     <ClCompile Include="src\OpsCore\Renderer\Renderer.cpp" />
     <ClCompile Include="src\OpsCore\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\RenderCommand.cpp" />
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\RendererAPI.cpp" />
   </ItemGroup>
 </Project>

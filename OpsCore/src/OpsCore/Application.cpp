@@ -4,7 +4,8 @@
 #include "OpsCore/Input.h"
 #include "Application.h"
 
-#include <glad/glad.h>
+#include "OpsCore/Renderer/Renderer.h"
+#include "OpsCore/Renderer/RenderCommand.h"
 
 
 namespace oc {
@@ -132,7 +133,7 @@ namespace oc {
 			in vec3 v_Position;
 			void main(){
 				color = vec4(v_Position.x + 0.1, v_Position.y + 0.2, 0.5, 1.0);	
-			}
+		 	}
 
 		)";
 
@@ -161,18 +162,22 @@ namespace oc {
 	void Application::Run() {
 
 		while (m_Running) {
-			glClearColor(0.1f, 0.1f, 0.1f, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+
+			RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+			RenderCommand::Clear();
+
+			Renderer::BeginScene();
 
 			m_SquareShader->Bind();
-			m_SquareVertexArray->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-			
-			
-			m_Shader->Bind();
-			m_VertexArray->Bind();
+			Renderer::Submit(m_SquareVertexArray);
 
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_Shader->Bind();
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
+
+
+
 
 			// Iterate over layers and run update
 			for (Layer* layer : m_LayerStack) {
