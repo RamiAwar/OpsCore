@@ -9,9 +9,8 @@
 	//	#define  __declspec(dllimport)
 	//#endif
 
-#else 
-	#error OpsCore only support Windows platforms.
 #endif
+
 
 #define BIT(x) (1<<x)
 #define OC_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)

@@ -62,6 +62,7 @@ private:
 				gl_Position = vec4(a_Position.x + 0.5, a_Position.y, a_Position.z, 1.0);	
 			}
 		)" };
+
 	std::string square_vertex_shader_src = { R"(
 
 			#version 330 core 
@@ -75,6 +76,7 @@ private:
 				gl_Position = vec4(a_Position.x + 0.5, a_Position.y, a_Position.z, 1.0);	
 			}
 		)" };
+
 	std::string triangle_fragment_shader_src = { R"(
 			#version 330 core 
 			
@@ -89,6 +91,7 @@ private:
 			}
 
 		)" };
+
 	std::string square_fragment_shader_src = { R"(
 			#version 330 core 
 			
@@ -112,7 +115,11 @@ public:
 		triangle_vb->SetLayout(triangleLayout);
 
 		triangle_va.reset(oc::VertexArray::Create());
+				OC_CLIENT_INFO("Created triangle va");
+
 		triangle_va->AddVertexBuffer(triangle_vb);
+
+
 
 		triangle_ib.reset(oc::IndexBuffer::Create(triangle_indices, sizeof(triangle_indices)));
 		triangle_va->SetIndexBuffer(triangle_ib);
