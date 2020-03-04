@@ -21,5 +21,5 @@
 #include "OpsCore/MouseButtonCodes.h"
 
 // ------- Entry point -----------
-#include "OpsCore\Entrypoint.h"
+#include "OpsCore/Entrypoint.h"
 // -------------------------------
