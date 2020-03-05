@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Utils/debugbreak.h"
 
 #ifdef OC_PLATFORM_WINDOWS
 
@@ -21,7 +21,7 @@
 
 #ifdef OC_ENABLE_ASSERTS
 
-	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: {0}", __VA_ARGS__); debug_break(); } }
 
 #else
 
