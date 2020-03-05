@@ -239,7 +239,7 @@ workspace "OpsCore"
 		targetdir("bin/" .. outputdir .. "/%{prj.name}")
 		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-		glfw_dir = "OpsCore/vendor/%{prj.name}/"
+		glfw_dir = "OpsCore/vendor/GLFW/"
 
 		files{
 			glfw_dir .. "include/GLFW/glfw3.h",
