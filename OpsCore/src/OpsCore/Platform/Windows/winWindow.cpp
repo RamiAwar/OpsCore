@@ -6,7 +6,7 @@
 #include "OpsCore/Events/KeyEvent.h"
 
 #include "OpsCore/Platform/OpenGL/OpenGLContext.h"
-
+#include "OpsCore/Renderer/Renderer.h"
 
 namespace oc {
 
@@ -56,6 +56,11 @@ namespace oc {
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		
+		// TODO: Find a more elegant solution to this
+		Renderer::screenWidth = (int)properties.Width;
+		Renderer::screenHeight = (int)properties.Height;
+		Renderer::aspectRatio = (float)properties.Width / properties.Height;
+
 		m_Context = new OpenGLContext(m_Window);
 		m_Context->Init();
 

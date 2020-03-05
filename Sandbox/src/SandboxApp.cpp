@@ -1,10 +1,12 @@
 #include "SandboxApp.h"
 
 
-ExampleLayer::ExampleLayer() : Layer("Example")
-	,m_Camera(-1.0f, 1.0f, -1.0f, 1.0f) 
+// TODO: Refactor this aspect ratio implementation
+ExampleLayer::ExampleLayer() : Layer("Example"),
+	m_Camera(-oc::Renderer::aspectRatio, oc::Renderer::aspectRatio, -1.0f, 1.0f),
+	m_CameraPosition(0.0f)
 {
-		
+	
 	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
 
 	// Setting up triangle
@@ -47,8 +49,6 @@ void ExampleLayer::OnUpdate() {
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	oc::RenderCommand::Clear();
 
-	m_Camera.SetRotation(m_Counter);
-	m_Counter += 0.01f;
 
 	oc::Renderer::BeginScene(m_Camera);
 
@@ -56,12 +56,26 @@ void ExampleLayer::OnUpdate() {
 	oc::Renderer::Submit(triangle_shader, triangle_va);
 
 	oc::Renderer::EndScene();
-		
+
+
+	if (oc::Input::IsKeyPressed(OC_KEY_LEFT)) { m_CameraPosition.x -= m_CameraMovementSpeed; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_RIGHT)) { m_CameraPosition.x += m_CameraMovementSpeed; }
+	
+	if (oc::Input::IsKeyPressed(OC_KEY_UP)) { m_CameraPosition.y += m_CameraMovementSpeed; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_DOWN)) { m_CameraPosition.y -= m_CameraMovementSpeed; }
+
+	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed; }
+
+	m_Camera.SetRotation(m_CameraRotation);
+	m_Camera.SetPosition(m_CameraPosition);
 }
 
 void ExampleLayer::OnEvent(oc::Event& event) { 
 	//OC_CLIENT_TRACE("{0}", event); 
+	
 }
+
 
 void ExampleLayer::OnImGuiRender() {
 

@@ -14,22 +14,19 @@ public:
 
 private:
 
-	float m_Counter = 0.0f;
-
 	oc::Orthographic2DCamera m_Camera;
 
 	// ------- Triangle inits ---------------------------
-	float triangle_vertices[3 * 7] = {
-			-0.5f, -0.5f, 0.0f, 0.8f, 0.0f, 0.8f, 1.0f,
-			 0.5f, -0.5f, 0.0f, 0.2f, 0.2f, 0.8f, 1.0f,
-			 0.0f, 0.5f, 0.0f,  0.2f, 0.8f, 0.8f, 1.0f
+	float triangle_vertices[3 *3] = {
+			-0.5f, -0.5f, 0.0f,
+			 0.5f, -0.5f, 0.0f, 
+			 0.0f, 0.5f, 0.0f, 
 	};
 
 	uint32_t triangle_indices[3] = { 0, 1, 2 };
 
 	oc::BufferLayout triangleLayout = {
-		{ oc::ShaderDataType::Float3, "a_pos"},
-		{ oc::ShaderDataType::Float4, "a_col"}
+		{ oc::ShaderDataType::Float3, "a_pos"}	
 	};
 
 	std::shared_ptr<oc::VertexBuffer> triangle_vb;
@@ -58,23 +55,24 @@ private:
 	std::shared_ptr<oc::Shader> triangle_shader;
 	std::shared_ptr<oc::Shader> square_shader;
 
+	glm::vec3 m_CameraPosition;
+	float m_CameraMovementSpeed = 0.1f;
 
+	float m_CameraRotationSpeed = 1.0f;
+	float m_CameraRotation = 0.0f;
 
 	std::string triangle_vertex_shader_src = { R"(
 
 			#version 330 core 
 			
 			layout (location = 0) in vec3 a_Position;
-			layout (location = 1) in vec4 a_Color;
 			
 			uniform mat4 u_ViewProjection;
 
 			out vec3 v_Position;
-			out vec4 v_Color;
 
 			void main(){
 				v_Position = a_Position;
-				v_Color = a_Color;
 				gl_Position = u_ViewProjection * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
 			}
 		)" };
@@ -101,11 +99,9 @@ private:
 			layout (location = 0) out vec4 color;
 			
 			in vec3 v_Position;
-			in vec4 v_Color;
 
 			void main(){
-				color = vec4(v_Position.x + 0.1, v_Position.y + 0.2, 0.5, 1.0);	
-				color = v_Color;
+				color = vec4(v_Position.x + 0.5, v_Position.y + 0.1, 0.5, 1.0);	
 			}
 
 		)" };
@@ -121,5 +117,6 @@ private:
 		 	}
 
 		)" };
+
 
 };

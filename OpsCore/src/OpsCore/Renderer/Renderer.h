@@ -9,6 +9,11 @@ namespace oc {
 	class Renderer {
 
 	public:
+		static int screenWidth;
+		static int screenHeight;
+		static float aspectRatio;
+
+	public:
 		static void BeginScene(Orthographic2DCamera& camera);
 		static void EndScene();
 

@@ -4,6 +4,9 @@
 namespace oc {
 
 	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
+	int Renderer::screenWidth = int(0);
+	int Renderer::screenHeight = int(0);
+	float Renderer::aspectRatio = float(1.0f);
 
 	void Renderer::BeginScene(Orthographic2DCamera& camera)
 	{
