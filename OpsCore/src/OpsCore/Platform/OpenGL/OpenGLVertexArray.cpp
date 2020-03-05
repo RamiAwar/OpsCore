@@ -28,7 +28,11 @@ namespace oc {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
+		#ifdef OC_PLATFORM_MAC
 		glGenVertexArrays(1, &m_RendererID);
+		#else 
+		glCreateVertexArrays(1, &m_RendererID);
+		#endif
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()

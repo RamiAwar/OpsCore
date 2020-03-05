@@ -1256,6 +1256,7 @@
     <ClInclude Include="src\OpsCore\Renderer\RendererAPI.h" />
     <ClInclude Include="src\OpsCore\Renderer\RenderCommand.h" />
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.h" />
+    <ClInclude Include="src\OpsCore\Renderer\Cameras\Orthographic2DCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
@@ -1298,5 +1299,6 @@
     <ClCompile Include="src\OpsCore\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.cpp" />
     <ClCompile Include="src\OpsCore\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\OpsCore\Renderer\Cameras\Orthographic2DCamera.cpp" />
   </ItemGroup>
 </Project>

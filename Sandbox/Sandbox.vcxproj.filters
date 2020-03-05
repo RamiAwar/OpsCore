@@ -8,4 +8,7 @@
   <ItemGroup>
     <ClCompile Include="src\SandboxApp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\SandboxApp.h" />
+  </ItemGroup>
 </Project>

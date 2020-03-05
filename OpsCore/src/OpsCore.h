@@ -11,6 +11,7 @@
 #include "OpsCore/Renderer/Shader.h"
 #include "OpsCore/Renderer/RenderCommand.h"
 #include "OpsCore/Renderer/Renderer.h"
+#include "OpsCore/Renderer/Cameras/Orthographic2DCamera.h"
 
 
 #include "OpsCore/ImGui/ImGuiWidgets.cpp"

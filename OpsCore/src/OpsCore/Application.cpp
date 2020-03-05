@@ -7,7 +7,6 @@
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
  
-
 namespace oc {
 
 	#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -15,7 +14,8 @@ namespace oc {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() {
+	Application::Application() 
+	{
 
 		OC_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
@@ -96,7 +96,7 @@ namespace oc {
 
 		m_Minimized = false;
 
-		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight);
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
 
 		return false;
 	}

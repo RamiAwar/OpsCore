@@ -41,20 +41,14 @@ namespace oc {
 		bool OnWindowResize(WindowResizeEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+
 		ImGuiLayer* m_ImGuiLayer;
+
 		bool m_Running = true;
-		bool m_Minimize = false;
+		bool m_Minimized = false;
 
 		LayerStack m_LayerStack;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
-		std::shared_ptr<VertexArray> m_VertexArray;
-
-
-		std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVertexArray;
 
 	};
 
