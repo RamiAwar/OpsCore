@@ -62,6 +62,9 @@ private:
 	glm::vec3 m_CameraPosition;
 	float m_CameraRotation = 0.0f;
 
+	glm::vec3 m_RedColor = glm::vec3(0.8f, 0.2f, 0.2f);
+	glm::vec3 m_BlueColor = glm::vec3(0.2f, 0.2f, 0.8f);
+
 	std::string triangle_vertex_shader_src = { R"(
 
 			#version 330 core 
@@ -115,8 +118,11 @@ private:
 			layout (location = 0) out vec4 color;
 			
 			in vec3 v_Position;
+
+			uniform vec3 u_Color;
+
 			void main(){
-				color = vec4(v_Position.x + 0.1, v_Position.y + 0.2, 0.5, 1.0);	
+				color = vec4(u_Color, 1.0);	
 		 	}
 
 		)" };

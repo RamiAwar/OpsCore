@@ -15,6 +15,7 @@
 #include "OpsCore/Renderer/Buffer.h"
 #include "OpsCore/Renderer/VertexArray.h"
 #include "OpsCore/Renderer/Shader.h"
+#include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 #include "OpsCore/Renderer/RenderCommand.h"
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/Cameras/Orthographic2DCamera.h"
