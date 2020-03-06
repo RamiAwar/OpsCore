@@ -1,5 +1,6 @@
 #include "ocpch.h"
 #include "Renderer.h"
+#include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 
 namespace oc {
 
@@ -22,10 +23,11 @@ namespace oc {
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
 	
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4 transform)
 	{
 		shader->Bind();
-		shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->UploadUniformMat4("u_Model", transform);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

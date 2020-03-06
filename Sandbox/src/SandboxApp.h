@@ -56,7 +56,7 @@ private:
 	std::shared_ptr<oc::Shader> square_shader;
 
 	
-	float m_CameraMovementSpeed = 100.0f;
+	float m_CameraMovementSpeed = 1.0f;
 	float m_CameraRotationSpeed = 180.0f;
 
 	glm::vec3 m_CameraPosition;
@@ -69,12 +69,13 @@ private:
 			layout (location = 0) in vec3 a_Position;
 			
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Model;
 
 			out vec3 v_Position;
 
 			void main(){
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
+				gl_Position = u_ViewProjection * u_Model * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
 			}
 		)" };
 
@@ -85,12 +86,13 @@ private:
 			layout (location = 0) in vec3 a_Position;
 			
 			uniform mat4 u_ViewProjection;
+			uniform mat4 u_Model;
 
 			out vec3 v_Position;
 
 			void main(){
 				v_Position = a_Position;
-				gl_Position = u_ViewProjection * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
+				gl_Position = u_ViewProjection * u_Model * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
 			}
 		)" };
 

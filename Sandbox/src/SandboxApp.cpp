@@ -1,5 +1,7 @@
 #include "SandboxApp.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
@@ -31,8 +33,8 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
 	square_va->SetIndexBuffer(square_ib);
 	
-	triangle_shader.reset(new oc::Shader(triangle_vertex_shader_src, triangle_fragment_shader_src));
-	square_shader.reset(new oc::Shader(square_vertex_shader_src, square_fragment_shader_src));
+	triangle_shader.reset(oc::Shader::Create(triangle_vertex_shader_src, triangle_fragment_shader_src));
+	square_shader.reset(oc::Shader::Create(square_vertex_shader_src, square_fragment_shader_src));
 		
 
 }
@@ -53,8 +55,17 @@ void ExampleLayer::OnUpdate(oc::Timestep ds) {
 
 	oc::Renderer::BeginScene(m_Camera);
 
-	oc::Renderer::Submit(square_shader, square_va);
+	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+
+	for (int i = 0; i < 20; i++) {
+		for (int j = 0; j < 20; j++) {
+			glm::vec3 pos(i * 0.11f, j * 0.11f, 0.0f);
+			glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)*scale;
+			oc::Renderer::Submit(square_shader, square_va, transform);
+		}
+	}
 	oc::Renderer::Submit(triangle_shader, triangle_va);
+
 
 	oc::Renderer::EndScene();
 
@@ -67,6 +78,7 @@ void ExampleLayer::OnUpdate(oc::Timestep ds) {
 
 	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed*ds; }
 	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed*ds; }
+
 
 	m_Camera.SetRotation(m_CameraRotation);
 	m_Camera.SetPosition(m_CameraPosition);
