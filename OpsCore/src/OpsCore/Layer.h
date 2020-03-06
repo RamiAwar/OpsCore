@@ -2,6 +2,7 @@
 
 #include "OpsCore/Core.h"
 #include "OpsCore/Events/Event.h"
+#include "OpsCore/Core/Timestep.h"
 
 namespace oc {
 
@@ -14,7 +15,7 @@ namespace oc {
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep ds) {}
 		virtual void OnEvent(Event& event) {}
 		virtual void OnImGuiRender() {}
 

@@ -13,10 +13,12 @@
 #include "OpsCore/Renderer/Buffer.h"
 #include "OpsCore/Renderer/VertexArray.h"
 
+#include "OpsCore/Core/Timestep.h"
+
 namespace oc {
 
-	class  Application
-	{
+	class  Application{
+
 	public:
 		Application();
 		virtual ~Application();
@@ -48,6 +50,8 @@ namespace oc {
 		bool m_Minimized = false;
 
 		LayerStack m_LayerStack;
+
+		float m_LastDeltaTime = 0.0f;
 
 
 	};

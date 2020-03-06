@@ -37,13 +37,14 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 
 }
 
-void ExampleLayer::OnUpdate() { 
+void ExampleLayer::OnUpdate(oc::Timestep ds) { 
 		
 	//OC_CLIENT_INFO("ExampleLayer::Update"); 
 
 	/*if (oc::Input::IsKeyPressed(OC_KEY_TAB)) {
 
 		OC_CLIENT_TRACE("TAB key is pressed");
+		
 	}*/
 		
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -58,14 +59,14 @@ void ExampleLayer::OnUpdate() {
 	oc::Renderer::EndScene();
 
 
-	if (oc::Input::IsKeyPressed(OC_KEY_LEFT)) { m_CameraPosition.x -= m_CameraMovementSpeed; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_RIGHT)) { m_CameraPosition.x += m_CameraMovementSpeed; }
+	if (oc::Input::IsKeyPressed(OC_KEY_LEFT)) { m_CameraPosition.x -= m_CameraMovementSpeed*ds; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_RIGHT)) { m_CameraPosition.x += m_CameraMovementSpeed*ds; }
 	
-	if (oc::Input::IsKeyPressed(OC_KEY_UP)) { m_CameraPosition.y += m_CameraMovementSpeed; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_DOWN)) { m_CameraPosition.y -= m_CameraMovementSpeed; }
+	if (oc::Input::IsKeyPressed(OC_KEY_UP)) { m_CameraPosition.y += m_CameraMovementSpeed*ds; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_DOWN)) { m_CameraPosition.y -= m_CameraMovementSpeed*ds; }
 
-	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed; }
+	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed*ds; }
+	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed*ds; }
 
 	m_Camera.SetRotation(m_CameraRotation);
 	m_Camera.SetPosition(m_CameraPosition);

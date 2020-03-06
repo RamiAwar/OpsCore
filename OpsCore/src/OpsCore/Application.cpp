@@ -7,6 +7,8 @@
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
  
+#include <GLFW/glfw3.h>
+
 namespace oc {
 
 	#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
@@ -48,13 +50,18 @@ namespace oc {
 	}
 
 	void Application::Run() {
+		
 
 		while (m_Running) {
+
+			float time = (float)glfwGetTime();
+			Timestep deltaTime = time - m_LastDeltaTime;
+			m_LastDeltaTime = time;
 
 			// Iterate over layers and run update
 			if (!m_Minimized) {
 				for (Layer* layer : m_LayerStack) {
-					layer->OnUpdate();
+					layer->OnUpdate(deltaTime);
 				}
 			}
 

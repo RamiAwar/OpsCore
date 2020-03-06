@@ -8,7 +8,7 @@ public:
 
 	ExampleLayer();
 
-	void OnUpdate() override;
+	void OnUpdate(oc::Timestep ds) override;
 	void OnEvent(oc::Event& event) override;
 	virtual void OnImGuiRender() override;
 
@@ -55,10 +55,11 @@ private:
 	std::shared_ptr<oc::Shader> triangle_shader;
 	std::shared_ptr<oc::Shader> square_shader;
 
-	glm::vec3 m_CameraPosition;
-	float m_CameraMovementSpeed = 0.1f;
+	
+	float m_CameraMovementSpeed = 100.0f;
+	float m_CameraRotationSpeed = 180.0f;
 
-	float m_CameraRotationSpeed = 1.0f;
+	glm::vec3 m_CameraPosition;
 	float m_CameraRotation = 0.0f;
 
 	std::string triangle_vertex_shader_src = { R"(
