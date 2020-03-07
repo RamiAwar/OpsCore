@@ -92,9 +92,8 @@ namespace oc {
 
 	void ImGuiLayer::OnImGuiRender() {
 
-		static bool show = false;
-
-		ImGui::ShowDemoWindow(&show);
+		//static bool show = true;
+		//if(show) ImGui::ShowDemoWindow(&show);
 	}
 
 	/*void ImGuiLayer::OnUpdate()

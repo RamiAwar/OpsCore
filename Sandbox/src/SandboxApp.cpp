@@ -33,6 +33,14 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	
 	triangle_shader.reset(oc::Shader::Create(triangle_vertex_shader_src, triangle_fragment_shader_src));
 	square_shader.reset(oc::Shader::Create(square_vertex_shader_src, square_fragment_shader_src));
+	texture_shader.reset(oc::Shader::Create(texture_vertex_shader_src, texture_fragment_shader_src));
+
+
+	texture = oc::Texture2D::Create(m_TexturePath);
+	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
+	
+	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
+	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
 
 }
 
@@ -69,8 +77,10 @@ void ExampleLayer::OnUpdate(oc::Timestep ds) {
 		
 		}
 	}
-	oc::Renderer::Submit(triangle_shader, triangle_va);
+	//oc::Renderer::Submit(triangle_shader, triangle_va);
 
+	texture->Bind();
+	oc::Renderer::Submit(texture_shader, square_va, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
 	oc::Renderer::EndScene();
 
@@ -98,38 +108,71 @@ void ExampleLayer::OnEvent(oc::Event& event) {
 void ExampleLayer::OnImGuiRender() {
 
 	// ------- Color Settings Menu ---------
-	ImGui::Begin("Settings");
-	ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
-	ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
-	ImGui::End();
+	static bool p_open = true; // has to be static because this is called every frame. 
+	/* each time the function is called the static variable will maintain the last 
+	value it had at the end of the previous function call. */
+	
+	static bool display_dialog = false;
+
+	//if (p_open) { // make settings window closable
+		ImGui::Begin("Settings"/*, &p_open*/);
+		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
+		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
+
+		ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
+
+		if (ImGui::Button("Select Texture")) {
+			ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
+			ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", ".");
+		}
+
+		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
+		{
+			// action if OK
+			if (ImGuiFileDialog::Instance()->IsOk == true)
+			{
+				m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+				m_TexturePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+				
+				// update texture
+				OC_CLIENT_INFO(m_TexturePath);
+				texture = oc::Texture2D::Create(m_TexturePathName);
+			}
+
+			// close
+			ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
+		}
+
+		ImGui::End();
+	//}
 
 	// ------- ImGui Dockspace -------------
-	// static ImGuiID dockspaceID = 0;
-	// bool active = true;
-	// if (ImGui::Begin("Master Window", &active))
-	// {
-	// 	ImGui::TextUnformatted("DockSpace below");
-	// }
-	// if (active)
-	// {
-	// 	// Declare Central dockspace
-	// 	dockspaceID = ImGui::GetID("HUB_DockSpace");
-	// 	ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode/*|ImGuiDockNodeFlags_NoResize*/);
+	 //static ImGuiID dockspaceID = 0;
+	 //bool active = true;
+	 //if (ImGui::Begin("Master Window", &active))
+	 //{
+	 //	ImGui::TextUnformatted("DockSpace below");
+	 //}
+	 //if (active)
+	 //{
+	 //	// Declare Central dockspace
+	 //	dockspaceID = ImGui::GetID("HUB_DockSpace");
+	 //	ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode/*|ImGuiDockNodeFlags_NoResize*/);
 
-	// }
-	// ImGui::End();
+	 //}
+	 //ImGui::End();
 
-	// ImGui::SetNextWindowDockID(dockspaceID, ImGuiCond_FirstUseEver);
-	// if (ImGui::Begin("Dockable Window"))
-	// {
-	// 	ImGui::TextUnformatted("Test");
-	// 	const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
-	// 	const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
+	 //ImGui::SetNextWindowDockID(dockspaceID, ImGuiCond_FirstUseEver);
+	 //if (ImGui::Begin("Dockable Window"))
+	 //{
+	 //	ImGui::TextUnformatted("Test");
+	 //	const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
+	 //	const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
 
-	// 	ImGui::Spinner("##spinner", 20.0f, col, bg, 10, 10.0f, 20.0f);
-	// 	//ImGui::BufferingBar("##buffer_bar", 0.7f, ImVec2(400, 6), bg, col);
-	// }
-	// ImGui::End();
+	 //	ImGui::Spinner("##spinner", 20.0f, col, bg, 10, 10.0f, 20.0f);
+	 //	//ImGui::BufferingBar("##buffer_bar", 0.7f, ImVec2(400, 6), bg, col);
+	 //}
+	 //ImGui::End();
 
 }
 

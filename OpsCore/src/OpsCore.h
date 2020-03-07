@@ -19,10 +19,11 @@
 #include "OpsCore/Renderer/RenderCommand.h"
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/Cameras/Orthographic2DCamera.h"
-
+#include "OpsCore/Renderer/Texture.h"
 
 // ------- IMGUI ----------------------
-#include "OpsCore/ImGui/ImGuiWidgets.cpp"
+#include "OpsCore/ImGui/ImGuiWidgets.h"
+#include "OpsCore/ImGui/ImGuiFileDialog.h"
 
 // ------------ Input -------------
 #include "OpsCore/Input.h"

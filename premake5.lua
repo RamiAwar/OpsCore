@@ -139,16 +139,27 @@ workspace "OpsCore"
 			"%{IncludeDir.glad}",
 		}
 
-		links
-		{
-				"Cocoa.framework",
-				"IOKit.framework",
-			"GLFW", "Glad", "ImGui", "OpsCore"
-		}
+		filter "system:windows"
+			links
+			{
+				"GLFW", 
+				"Glad", 
+				"ImGui", 
+				"OpsCore"
+			}
+		
+		
 
 		filter "system:macosx"
 			staticruntime "On"
 			systemversion "latest"
+
+			links
+			{
+				"Cocoa.framework",
+				"IOKit.framework",
+				"GLFW", "Glad", "ImGui", "OpsCore"
+			}
 
 			defines
 			{
