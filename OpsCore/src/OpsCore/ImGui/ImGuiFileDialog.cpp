@@ -616,6 +616,7 @@ void ImGuiFileDialog::CloseDialog(const std::string & vKey)
 {
 	if (dlg_key == vKey)
 	{
+		SetPath(m_CurrentPath);
 		dlg_key.clear();
 		m_ShowDialog = false;
 	}

@@ -9,6 +9,10 @@ namespace oc {
 	int Renderer::screenHeight = int(0);
 	float Renderer::aspectRatio = float(1.0f);
 
+	void Renderer::Init() {
+		RenderCommand::Init();
+	}
+
 	void Renderer::BeginScene(Orthographic2DCamera& camera)
 	{
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();

@@ -119,11 +119,13 @@ void ExampleLayer::OnImGuiRender() {
 		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
 		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
 
-		ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
+		//ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
+		// TODO: This conversion is OpenGL specific. Must abstract it away. (uint32_t to (void*)(intptr_t))
+		ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
 
 		if (ImGui::Button("Select Texture")) {
 			ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", ".");
+			ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
 		}
 
 		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))

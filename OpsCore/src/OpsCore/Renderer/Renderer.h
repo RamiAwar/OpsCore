@@ -14,6 +14,7 @@ namespace oc {
 		static float aspectRatio;
 
 	public:
+		static void Init();
 		static void BeginScene(Orthographic2DCamera& camera);
 		static void EndScene();
 
