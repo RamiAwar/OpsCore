@@ -11,4 +11,12 @@
   <ItemGroup>
     <ClInclude Include="src\SandboxApp.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\checkerboard.png" />
+    <Image Include="assets\textures\gatsby.png" />
+    <Image Include="assets\textures\super.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\ImageTexture.glsl" />
+  </ItemGroup>
 </Project>

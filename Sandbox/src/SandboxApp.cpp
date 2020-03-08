@@ -33,10 +33,10 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	
 	triangle_shader.reset(oc::Shader::Create(triangle_vertex_shader_src, triangle_fragment_shader_src));
 	square_shader.reset(oc::Shader::Create(square_vertex_shader_src, square_fragment_shader_src));
-	texture_shader.reset(oc::Shader::Create(texture_vertex_shader_src, texture_fragment_shader_src));
+	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
 
 
-	texture = oc::Texture2D::Create(m_TexturePath);
+	texture = oc::Texture2D::Create(m_TexturePathName);
 	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
 	
 	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
@@ -119,6 +119,30 @@ void ExampleLayer::OnImGuiRender() {
 		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
 		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
 
+		if (ImGui::Button("Select Texture Shader")) {
+			ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
+			ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
+		}
+
+		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+		{
+			// action if OK
+			if (ImGuiFileDialog::Instance()->IsOk == true)
+			{
+				m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
+
+				// update texture
+				OC_CLIENT_INFO(m_TextureShaderPath);
+				texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
+				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
+				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+
+			}
+
+			// close
+			ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+		}
+
 		//ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
 		// TODO: This conversion is OpenGL specific. Must abstract it away. (uint32_t to (void*)(intptr_t))
 		ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
@@ -134,10 +158,9 @@ void ExampleLayer::OnImGuiRender() {
 			if (ImGuiFileDialog::Instance()->IsOk == true)
 			{
 				m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-				m_TexturePath = ImGuiFileDialog::Instance()->GetCurrentPath();
 				
 				// update texture
-				OC_CLIENT_INFO(m_TexturePath);
+				OC_CLIENT_INFO(m_TexturePathName);
 				texture = oc::Texture2D::Create(m_TexturePathName);
 			}
 
