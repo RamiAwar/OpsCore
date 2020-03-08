@@ -3,7 +3,7 @@
 
 /* Printable keys */
 
-#ifdef OC_PLATFORM_WINDOWS
+// #ifdef OC_PLATFORM_WINDOWS
 
 	#define OC_KEY_SPACE              32
 	#define OC_KEY_APOSTROPHE         39  /* ' */
@@ -128,4 +128,4 @@
 	#define OC_KEY_RIGHT_SUPER        347
 	#define OC_KEY_MENU               348
 
-#endif
+// #endif

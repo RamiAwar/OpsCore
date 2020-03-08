@@ -13,10 +13,12 @@
 #include "OpsCore/Renderer/Buffer.h"
 #include "OpsCore/Renderer/VertexArray.h"
 
+#include "OpsCore/Core/Timestep.h"
+
 namespace oc {
 
-	class  Application
-	{
+	class  Application{
+
 	public:
 		Application();
 		virtual ~Application();
@@ -38,21 +40,19 @@ namespace oc {
 		static Application* s_Instance;
 
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 		std::unique_ptr<Window> m_Window;
+
 		ImGuiLayer* m_ImGuiLayer;
+
 		bool m_Running = true;
+		bool m_Minimized = false;
 
 		LayerStack m_LayerStack;
 
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<VertexBuffer> m_VertexBuffer;
-		std::shared_ptr<IndexBuffer> m_IndexBuffer;
-		std::shared_ptr<VertexArray> m_VertexArray;
+		float m_LastDeltaTime = 0.0f;
 
-
-		std::shared_ptr<Shader> m_SquareShader;
-		std::shared_ptr<VertexArray> m_SquareVertexArray;
 
 	};
 

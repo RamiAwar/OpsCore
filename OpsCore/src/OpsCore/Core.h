@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Utils/debugbreak.h"
 
 #ifdef OC_PLATFORM_WINDOWS
 
@@ -9,9 +9,8 @@
 	//	#define  __declspec(dllimport)
 	//#endif
 
-#else 
-	#error OpsCore only support Windows platforms.
 #endif
+
 
 #define BIT(x) (1<<x)
 #define OC_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)
@@ -22,7 +21,7 @@
 
 #ifdef OC_ENABLE_ASSERTS
 
-	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: {0}", __VA_ARGS__); debug_break(); } }
 
 #else
 

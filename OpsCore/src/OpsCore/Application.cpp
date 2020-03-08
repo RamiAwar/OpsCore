@@ -7,6 +7,7 @@
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
  
+#include <GLFW/glfw3.h>
 
 namespace oc {
 
@@ -15,7 +16,8 @@ namespace oc {
 
 	Application* Application::s_Instance = nullptr;
 
-	Application::Application() {
+	Application::Application() 
+	{
 
 		OC_ASSERT(!s_Instance, "Application already exists.");
 		s_Instance = this;
@@ -23,6 +25,7 @@ namespace oc {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
+		Renderer::Init();
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
@@ -37,6 +40,7 @@ namespace oc {
 		EventDispatcher dispatcher(e);
 		// If event is window close event, dispatch event to Application::OnWindowClose
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
 		//OC_INFO("{0}", e);
 
@@ -47,12 +51,19 @@ namespace oc {
 	}
 
 	void Application::Run() {
+		
 
 		while (m_Running) {
 
+			float time = (float)glfwGetTime();
+			Timestep deltaTime = time - m_LastDeltaTime;
+			m_LastDeltaTime = time;
+
 			// Iterate over layers and run update
-			for (Layer* layer : m_LayerStack) {
-				layer->OnUpdate();
+			if (!m_Minimized) {
+				for (Layer* layer : m_LayerStack) {
+					layer->OnUpdate(deltaTime);
+				}
 			}
 
 			m_ImGuiLayer->Begin();
@@ -82,6 +93,20 @@ namespace oc {
 	bool Application::OnWindowClose(WindowCloseEvent& e) {
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e) {
+		
+		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
+			m_Minimized = true;
+			return false;
+		}
+
+		m_Minimized = false;
+
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		return false;
 	}
 
 }

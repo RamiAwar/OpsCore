@@ -2,7 +2,7 @@
 #include "Core.h"
 
 
-#ifdef OC_PLATFORM_WINDOWS
+// #ifdef OC_PLATFORM_WINDOWS
 
 
 // Defining as external since we define oc::CreateApplication in the client using OpsCore library. In example case, sandboxapp defines it.
@@ -23,5 +23,5 @@ int main(int argc, char **argv) {
 
 }
 
-#endif 
+// #endif 
 

@@ -29,6 +29,8 @@ workspace "OpsCore"
 		kind "StaticLib"
 		language "C++"
 		staticruntime "on"
+		cppdialect "C++17"
+
 
 		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -64,9 +66,15 @@ workspace "OpsCore"
 			"ImGui"
 		}
 
+		filter "system:macosx"
+			systemversion "latest"
+			defines
+			{
+				"OC_PLATFORM_MAC",
+				"GLFW_INCLUDE_NONE"
+			}
+
 		filter "system:windows"
-			cppdialect "C++17"
-			staticruntime "On"
 			systemversion "latest"
 
 			defines
@@ -76,25 +84,33 @@ workspace "OpsCore"
 				"GLFW_INCLUDE_NONE"
 			}
 
-			--postbuildcommands
-			--{
-			--	("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-			--}
-
-		filter "configurations:Debug"
+		filter {"system:windows","configurations:Debug"}
 			defines "OC_DEBUG"
 			buildoptions "/MDd"
 			symbols "On"
 
-		filter "configurations:Release"
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+
+		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
-		
-		filter "configurations:Dist"
+
+		filter {"system:osx", "configurations:Release"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
+		filter {"system:windows", "configurations:Dist"}
 			defines "OC_DIST"
 			buildoptions "/MD"
 			optimize "On"
+
+		filter {"system:macosx", "configurations:Dist"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
 
 	project "Sandbox"
 		
@@ -123,13 +139,35 @@ workspace "OpsCore"
 			"%{IncludeDir.glad}",
 		}
 
-		links
-		{
-			"OpsCore" 
-		}
+		filter "system:windows"
+			links
+			{
+				"GLFW", 
+				"Glad", 
+				"ImGui", 
+				"OpsCore"
+			}
+		
+		
+
+		filter "system:macosx"
+			staticruntime "On"
+			systemversion "latest"
+
+			links
+			{
+				"Cocoa.framework",
+				"IOKit.framework",
+				"GLFW", "Glad", "ImGui", "OpsCore"
+			}
+
+			defines
+			{
+				"OC_PLATFORM_MAC",
+				"_GLFW_COCOA"
+			}
 
 		filter "system:windows"
-			cppdialect "C++17"
 			staticruntime "On"
 			systemversion "latest"
 
@@ -138,20 +176,32 @@ workspace "OpsCore"
 				"OC_PLATFORM_WINDOWS"
 			}
 
-		filter "configurations:Debug"
+		filter {"system:windows","configurations:Debug"}
 			defines "OC_DEBUG"
 			buildoptions "/MDd"
-			symbols "on"
+			symbols "On"
 
-		filter "configurations:Release"
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+
+		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
-			optimize "on"
-		
-		filter "configurations:Dist"
+			optimize "On"
+
+		filter {"system:osx", "configurations:Release"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
+		filter {"system:windows", "configurations:Dist"}
 			defines "OC_DIST"
 			buildoptions "/MD"
-			optimize "on"
+			optimize "On"
+
+		filter {"system:macosx", "configurations:Dist"}
+			defines "OC_RELEASE"
+			optimize "On"
 
 	project "Glad"
 		kind "StaticLib"
@@ -200,7 +250,7 @@ workspace "OpsCore"
 		targetdir("bin/" .. outputdir .. "/%{prj.name}")
 		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-		glfw_dir = "OpsCore/vendor/%{prj.name}/"
+		glfw_dir = "OpsCore/vendor/GLFW/"
 
 		files{
 			glfw_dir .. "include/GLFW/glfw3.h",
@@ -211,7 +261,9 @@ workspace "OpsCore"
 			glfw_dir .. "src/input.c",
 			glfw_dir .. "src/monitor.c",
 			glfw_dir .. "src/vulkan.c",
-			glfw_dir .. "src/window.c"
+			glfw_dir .. "src/window.c",
+			glfw_dir .. "src/egl_context.c",
+			glfw_dir .. "src/osmesa_context.c"
 		}
 
 		filter "system:windows"
@@ -225,9 +277,8 @@ workspace "OpsCore"
 				glfw_dir .. "src/win32_time.c",
 				glfw_dir .. "src/win32_thread.c",
 				glfw_dir .. "src/win32_window.c",
-				glfw_dir .. "src/wgl_context.c",
-				glfw_dir .. "src/egl_context.c",
-				glfw_dir .. "src/osmesa_context.c"
+				glfw_dir .. "src/wgl_context.c"
+
 			}
 
 			defines 
@@ -259,6 +310,54 @@ workspace "OpsCore"
 			defines
 			{
 				"_GLFW_X11"
+			}
+
+			links
+			{
+				"dl",
+				"m",
+				"GL",
+				"GLU",
+				"X11",
+				"Xinerama",
+				"Xi",
+				"Xcursor",
+				"Xxf86vm",
+				"pthread"
+			}
+
+		filter "system:macosx"
+			
+			pic "On"
+			systemversion "latest"
+			staticruntime "On"
+
+			files
+			{
+				glfw_dir .. "src/cocoa_init.m",
+				glfw_dir .. "src/cocoa_joystick.h",
+				glfw_dir .. "src/cocoa_joystick.m",
+				glfw_dir .. "src/cocoa_monitor.m",
+				glfw_dir .. "src/cocoa_platform.h",
+				glfw_dir .. "src/cocoa_time.c",
+				glfw_dir .. "src/cocoa_window.m",
+				glfw_dir .. "src/nsgl_context.m",
+				glfw_dir .. "src/posix_thread.c"
+
+			}
+
+			defines
+			{
+				"_GLFW_COCOA"
+			}
+
+
+			links
+			{
+				"CoreFoundation.framework",
+				"Cocoa.framework",
+				"IOKit.framework",
+				"CoreVideo.framework"
 			}
 
 		filter "configurations:Debug"

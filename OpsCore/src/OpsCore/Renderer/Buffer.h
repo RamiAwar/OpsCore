@@ -30,6 +30,7 @@ namespace oc {
 			case ShaderDataType::Int2:    return 2*sizeof(float);
 			case ShaderDataType::Int3:    return 3*sizeof(float);
 			case ShaderDataType::Int4:    return 4*sizeof(float);
+			default: return 0;
 		}
 	}
 
@@ -64,6 +65,7 @@ namespace oc {
 				case ShaderDataType::Int4:    return 4;
 
 				case ShaderDataType::Bool:    return 1;
+				default: return 0;
 			}
 		}
 	};

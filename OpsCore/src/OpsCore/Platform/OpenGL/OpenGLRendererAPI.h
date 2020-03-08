@@ -10,17 +10,14 @@ namespace oc {
 
 	public:
 
-		void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) {
-			glClearColor(color.r, color.g, color.b, color.a);
-		}
+		virtual void SetClearColor(const glm::vec4& color) override;
+		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
+		virtual void Init() override;
 
-		void OpenGLRendererAPI::Clear() {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		}
+		virtual void Clear() override;
 
-		void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) {
-			glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-		}
+		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray) override;
+
 
 	};
 }

@@ -32,8 +32,9 @@
 *.app
 
 bin*
-vendor/
+vendor/*
+OpsCore/vendor
 .vs/
-*.vcxproj
+*.vcxproj*
 *.sln
 *.user
