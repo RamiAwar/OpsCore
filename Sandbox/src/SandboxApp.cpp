@@ -31,8 +31,8 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
 	square_va->SetIndexBuffer(square_ib);
 	
-	triangle_shader.reset(oc::Shader::Create(triangle_vertex_shader_src, triangle_fragment_shader_src));
-	square_shader.reset(oc::Shader::Create(square_vertex_shader_src, square_fragment_shader_src));
+	triangle_shader.reset(oc::Shader::Create(m_TriangleShaderPath));
+	square_shader.reset(oc::Shader::Create(m_SquareShaderPath));
 	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
 
 

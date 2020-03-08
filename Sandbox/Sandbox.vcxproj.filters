@@ -18,5 +18,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\shaders\ImageTexture.glsl" />
+    <None Include="assets\shaders\TriangleShader.glsl" />
+    <None Include="assets\shaders\SquareShader.glsl" />
   </ItemGroup>
 </Project>

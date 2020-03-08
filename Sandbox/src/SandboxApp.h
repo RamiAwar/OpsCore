@@ -59,9 +59,10 @@ private:
 
 	std::shared_ptr<oc::Texture2D> texture;
 
-	std::string m_TexturePathName = "C:/Users/Rami/Documents/Visual Studio 2019/Projects/OpsCore/Sandbox/assets/textures/checkerboard.png";
-
+	std::string m_TexturePathName = "assets/textures/checkerboard.png";
 	std::string m_TextureShaderPath = "assets/shaders/ImageTexture.glsl";
+	std::string m_TriangleShaderPath = "assets/shaders/TriangleShader.glsl";
+	std::string m_SquareShaderPath = "assets/shaders/SquareShader.glsl";
 
 	float m_CameraMovementSpeed = 1.0f;
 	float m_CameraRotationSpeed = 180.0f;
@@ -71,67 +72,5 @@ private:
 
 	glm::vec3 m_RedColor = glm::vec3(0.8f, 0.2f, 0.2f);
 	glm::vec3 m_BlueColor = glm::vec3(0.2f, 0.2f, 0.8f);
-
-	std::string triangle_vertex_shader_src = { R"(
-
-			#version 330 core 
-			
-			layout (location = 0) in vec3 a_Position;
-			
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;
-
-			out vec3 v_Position;
-
-			void main(){
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
-			}
-		)" };
-
-	std::string square_vertex_shader_src = { R"(
-
-			#version 330 core 
-			
-			layout (location = 0) in vec3 a_Position;
-			
-			uniform mat4 u_ViewProjection;
-			uniform mat4 u_Model;
-
-			out vec3 v_Position;
-
-			void main(){
-				v_Position = a_Position;
-				gl_Position = u_ViewProjection * u_Model * vec4(a_Position.x, a_Position.y, a_Position.z, 1.0);	
-			}
-		)" };
-
-	std::string triangle_fragment_shader_src = { R"(
-			#version 330 core 
-			
-			layout (location = 0) out vec4 color;
-			
-			in vec3 v_Position;
-
-			void main(){
-				color = vec4(v_Position.x + 0.5, v_Position.y + 0.1, 0.5, 1.0);	
-			}
-
-		)" };
-
-	std::string square_fragment_shader_src = { R"(
-			#version 330 core 
-			
-			layout (location = 0) out vec4 color;
-			
-			in vec3 v_Position;
-
-			uniform vec3 u_Color;
-
-			void main(){
-				color = vec4(u_Color, 1.0);	
-		 	}
-
-		)" };
 
 };
