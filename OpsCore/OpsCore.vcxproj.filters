@@ -84,7 +84,16 @@
     <ClInclude Include="src\OpsCore\Events\MouseEvent.h">
       <Filter>src\OpsCore\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\ImGui\ImGuiFileDialog.h">
+      <Filter>src\OpsCore\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\ImGui\ImGuiFileDialogConfig.h">
+      <Filter>src\OpsCore\ImGui</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\ImGui\ImGuiLayer.h">
+      <Filter>src\OpsCore\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\ImGui\ImGuiWidgets.h">
       <Filter>src\OpsCore\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Input.h">
@@ -117,6 +126,9 @@
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLShader.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\OpsCore\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>
@@ -129,7 +141,10 @@
     <ClInclude Include="src\OpsCore\Renderer\Buffer.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Renderer\Cameras\Orthographic2DCamera.h">
+    <ClInclude Include="src\OpsCore\Renderer\Cameras\OrthographicCamera.h">
+      <Filter>src\OpsCore\Renderer\Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Renderer\Cameras\OrthographicCameraController.h">
       <Filter>src\OpsCore\Renderer\Cameras</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Renderer\GraphicsContext.h">
@@ -147,6 +162,9 @@
     <ClInclude Include="src\OpsCore\Renderer\Shader.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Renderer\Texture.h">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Renderer\VertexArray.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
@@ -154,6 +172,9 @@
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Utils\debugbreak.h">
+      <Filter>src\OpsCore\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Utils\stb_image.h">
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Window.h">
@@ -1302,17 +1323,15 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Renderer\Texture.h" />
-    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLTexture.h" />
-    <ClInclude Include="src\OpsCore\Utils\stb_image.h" />
-    <ClInclude Include="src\OpsCore\ImGui\ImGuiFileDialog.h" />
-    <ClInclude Include="src\OpsCore\ImGui\ImGuiFileDialogConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Application.cpp">
       <Filter>src\OpsCore</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp">
+      <Filter>src\OpsCore\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\ImGui\ImGuiFileDialog.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
@@ -1339,6 +1358,9 @@
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLShader.cpp">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\OpsCore\Platform\OpenGL</Filter>
+    </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1351,7 +1373,7 @@
     <ClCompile Include="src\OpsCore\Renderer\Buffer.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Renderer\Cameras\Orthographic2DCamera.cpp">
+    <ClCompile Include="src\OpsCore\Renderer\Cameras\OrthographicCamera.cpp">
       <Filter>src\OpsCore\Renderer\Cameras</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\RenderCommand.cpp">
@@ -1366,18 +1388,18 @@
     <ClCompile Include="src\OpsCore\Renderer\Shader.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Texture.cpp">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\VertexArray.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Utils\stb_image.cpp">
+      <Filter>src\OpsCore\Utils</Filter>
     </ClCompile>
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Renderer\Texture.cpp" />
-    <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLTexture.cpp" />
-    <ClCompile Include="src\OpsCore\Utils\stb_image.cpp" />
-    <ClCompile Include="src\OpsCore\ImGui\ImGuiFileDialog.cpp" />
-    <ClCompile Include="src\OpsCore\ImGui\ImGuiWidgets.h">
-      <Filter>src\OpsCore\ImGui</Filter>
-    </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Cameras\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

@@ -5,8 +5,7 @@
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_Camera(-oc::Renderer::aspectRatio, oc::Renderer::aspectRatio, -1.0f, 1.0f),
-	m_CameraPosition(0.0f)
+	m_CameraController(oc::Renderer::aspectRatio, true)
 {
 	
 	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
@@ -44,21 +43,19 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 
 }
 
-void ExampleLayer::OnUpdate(oc::Timestep ds) { 
+void ExampleLayer::OnUpdate(oc::Timestep ts) { 
 		
-	//OC_CLIENT_INFO("ExampleLayer::Update"); 
+	
+	// UPDATE
+	m_CameraController.OnUpdate(ts);
+		
 
-	/*if (oc::Input::IsKeyPressed(OC_KEY_TAB)) {
-
-		OC_CLIENT_TRACE("TAB key is pressed");
-		
-	}*/
-		
+	// RENDER
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	oc::RenderCommand::Clear();
 
 
-	oc::Renderer::BeginScene(m_Camera);
+	oc::Renderer::BeginScene(m_CameraController.GetCamera());
 
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -85,22 +82,12 @@ void ExampleLayer::OnUpdate(oc::Timestep ds) {
 	oc::Renderer::EndScene();
 
 
-	if (oc::Input::IsKeyPressed(OC_KEY_LEFT)) { m_CameraPosition.x -= m_CameraMovementSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_RIGHT)) { m_CameraPosition.x += m_CameraMovementSpeed*ds; }
 	
-	if (oc::Input::IsKeyPressed(OC_KEY_UP)) { m_CameraPosition.y += m_CameraMovementSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_DOWN)) { m_CameraPosition.y -= m_CameraMovementSpeed*ds; }
-
-	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed*ds; }
-
-
-	m_Camera.SetRotation(m_CameraRotation);
-	m_Camera.SetPosition(m_CameraPosition);
 }
 
 void ExampleLayer::OnEvent(oc::Event& event) { 
-	//OC_CLIENT_TRACE("{0}", event); 
+	//OC_CLIENT_TRACE("{0}", event);
+	m_CameraController.OnEvent(event);
 	
 }
 

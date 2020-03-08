@@ -2,7 +2,7 @@
 
 #include "RenderCommand.h"
 #include "Shader.h"
-#include "Cameras/Orthographic2DCamera.h"
+#include "Cameras/OrthographicCamera.h"
 
 namespace oc {
 
@@ -15,7 +15,7 @@ namespace oc {
 
 	public:
 		static void Init();
-		static void BeginScene(Orthographic2DCamera& camera);
+		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
 
 		static void OnWindowResize(uint32_t width, uint32_t height);
