@@ -521,20 +521,6 @@ void ImGuiFileDialog::OpenDialog(const std::string & vKey, const char* vName, co
 	dlg_optionsPaneWidth = vOptionsPaneWidth;
 
 	dlg_defaultExt = "";
-
-	int itemIdx = 0;
-	const char* p = dlg_filters;
-	while (*p)
-	{
-		if (FilterIndex == itemIdx)
-		{
-			m_SelectedExt = std::string(p);
-			break;
-		}
-		p += strlen(p) + 1;
-		itemIdx++;
-	}
-
 	m_ShowDialog = true;
 }
 
@@ -567,19 +553,6 @@ void ImGuiFileDialog::OpenDialog(const std::string & vKey, const char* vName, co
 	dlg_userString = vUserString;
 	dlg_optionsPaneWidth = vOptionsPaneWidth;
 
-	int itemIdx = 0;
-	const char* p = dlg_filters;
-	while (*p)
-	{
-		if (FilterIndex == itemIdx)
-		{
-			m_SelectedExt = std::string(p);
-			break;
-		}
-		p += strlen(p) + 1;
-		itemIdx++;
-	}
-
 	m_ShowDialog = true;
 }
 
@@ -611,19 +584,6 @@ void ImGuiFileDialog::OpenDialog(const std::string & vKey, const char* vName, co
 	dlg_userString = vUserString;
 	dlg_optionsPaneWidth = 0;
 
-	int itemIdx = 0;
-	const char* p = dlg_filters;
-	while (*p)
-	{
-		if (FilterIndex == itemIdx)
-		{
-			m_SelectedExt = std::string(p);
-			break;
-		}
-		p += strlen(p) + 1;
-		itemIdx++;
-	}
-
 	m_ShowDialog = true;
 }
 
@@ -644,20 +604,6 @@ void ImGuiFileDialog::OpenDialog(const std::string & vKey, const char* vName, co
 
 	dlg_defaultExt = "";
 
-	int itemIdx = 0;
-	const char* p = dlg_filters;
-	while (*p)
-	{
-		if (FilterIndex == itemIdx)
-		{
-			m_SelectedExt = std::string(p);
-			break;
-		}
-		p += strlen(p) + 1;
-		itemIdx++;
-	}
-
-	m_ShowDialog = true;
 }
 
 void ImGuiFileDialog::CloseDialog(const std::string & vKey)
@@ -700,6 +646,7 @@ bool ImGuiFileDialog::FileDialog(const std::string & vKey, ImGuiWindowFlags vFla
 
 		if (m_Name != name)
 		{
+			m_SelectedExt.clear();
 			m_FileList.clear();
 			m_CurrentPath_Decomposition.clear();
 		}
