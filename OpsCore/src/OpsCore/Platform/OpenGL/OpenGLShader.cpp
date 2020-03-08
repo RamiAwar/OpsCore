@@ -31,8 +31,11 @@ void oc::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& sh
 	
 	
 	GLuint program = glCreateProgram();
-	std::vector<GLenum> shaderIDs(shaderSources.size());
 
+	OC_ASSERT(shaderSources.size() <= 2, "Exactly 2 shaders needed to compile shader.");
+
+	std::array<GLenum, 2> shaderIDs;
+	int index = 0;
 	for (auto& kv : shaderSources) {
 
 		GLenum type = kv.first;
@@ -69,7 +72,7 @@ void oc::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& sh
 		}
 
 		glAttachShader(program, shader);
-		shaderIDs.push_back(shader);
+		shaderIDs[index++] = shader;
 
 	}
 
@@ -179,7 +182,7 @@ void oc::OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat
 
 std::string oc::OpenGLShader::ReadFile(const std::string& filepath) {
 	std::string result;
-	std::ifstream in(filepath, std::ios::in, std::ios::binary);
+	std::ifstream in(filepath, std::ios::in | std::ios::binary);
 	if (in) {
 		in.seekg(0, std::ios::end);
 		result.resize(in.tellg());
