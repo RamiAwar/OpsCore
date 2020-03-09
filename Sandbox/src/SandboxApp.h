@@ -67,4 +67,8 @@ private:
 	glm::vec3 m_RedColor = glm::vec3(0.8f, 0.2f, 0.2f);
 	glm::vec3 m_BlueColor = glm::vec3(0.2f, 0.2f, 0.8f);
 
+
+	// Tracked stats
+	static float m_FPS;
+	static int fps_counter;
 };

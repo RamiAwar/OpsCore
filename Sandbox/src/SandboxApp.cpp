@@ -3,11 +3,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
+float ExampleLayer::m_FPS = 0.0f;
+int ExampleLayer::fps_counter = 0;
+
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
 	m_CameraController(oc::Renderer::aspectRatio, true)
 {
-	
+
 	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
 
 	// Setting up triangle
@@ -48,7 +52,9 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 	
 	// UPDATE
 	m_CameraController.OnUpdate(ts);
-		
+	fps_counter++;
+	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
+	if (fps_counter > 10000000) fps_counter = 0;
 
 	// RENDER
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
@@ -88,7 +94,6 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 void ExampleLayer::OnEvent(oc::Event& event) { 
 	//OC_CLIENT_TRACE("{0}", event);
 	m_CameraController.OnEvent(event);
-	
 }
 
 
@@ -155,6 +160,10 @@ void ExampleLayer::OnImGuiRender() {
 			ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
 		}
 
+		ImGui::End();
+
+		ImGui::Begin("Stats");
+		ImGui::Text("FPS: %.2f", m_FPS);
 		ImGui::End();
 	//}
 
