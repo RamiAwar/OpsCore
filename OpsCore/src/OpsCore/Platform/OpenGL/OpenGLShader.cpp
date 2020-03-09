@@ -215,9 +215,11 @@ std::unordered_map<GLenum, std::string> oc::OpenGLShader::Preprocess(const std::
 		OC_ASSERT(type == "vertex" || type == "fragment" || type == "pixel", "Invalid shader type specified.");
 
 		size_t nextLinePos = source.find_first_not_of("\r\n", eol);
+		OC_ASSERT(nextLinePos != std::string::npos, "Syntax error in parsing shader file!");
 		pos = source.find(typeToken, nextLinePos);
-		shaderSource[ShaderTypeFromString(type)] = source.substr(nextLinePos, 
-			pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
+
+		shaderSource[ShaderTypeFromString(type)] = 
+			(pos == std::string::npos) ? source.substr(nextLinePos) : source.substr(nextLinePos, pos - nextLinePos);
 	}
 
 	return shaderSource;
