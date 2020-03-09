@@ -1,8 +1,8 @@
 
 #include "ocpch.h"
 
-#include "OpsCore/Input.h"
-#include "Application.h"
+#include "OpsCore/Core/Input.h"
+#include "OpsCore/Core/Application.h"
 
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
@@ -81,13 +81,10 @@ namespace oc {
 
 	void Application::PushLayer(Layer* layer) {
 		m_LayerStack.PushLayer(layer);
-		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer) {
 		m_LayerStack.PushOverlay(layer);
-		layer->OnAttach();
-
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e) {

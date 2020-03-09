@@ -13,7 +13,7 @@ namespace oc {
 		RenderCommand::Init();
 	}
 
-	void Renderer::BeginScene(Orthographic2DCamera& camera)
+	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
 		m_SceneData->ViewProjectionMatrix = camera.GetViewProjectionMatrix();
 	}

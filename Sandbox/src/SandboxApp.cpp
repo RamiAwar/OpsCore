@@ -3,12 +3,15 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
+float ExampleLayer::m_FPS = 0.0f;
+int ExampleLayer::fps_counter = 0;
+
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_Camera(-oc::Renderer::aspectRatio, oc::Renderer::aspectRatio, -1.0f, 1.0f),
-	m_CameraPosition(0.0f)
+	m_CameraController(oc::Renderer::aspectRatio, true)
 {
-	
+
 	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
 
 	// Setting up triangle
@@ -31,8 +34,8 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
 	square_va->SetIndexBuffer(square_ib);
 	
-	triangle_shader.reset(oc::Shader::Create(triangle_vertex_shader_src, triangle_fragment_shader_src));
-	square_shader.reset(oc::Shader::Create(square_vertex_shader_src, square_fragment_shader_src));
+	triangle_shader.reset(oc::Shader::Create(m_TriangleShaderPath));
+	square_shader.reset(oc::Shader::Create(m_SquareShaderPath));
 	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
 
 
@@ -44,21 +47,24 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 
 }
 
-void ExampleLayer::OnUpdate(oc::Timestep ds) { 
+void ExampleLayer::OnUpdate(oc::Timestep ts) { 
 		
-	//OC_CLIENT_INFO("ExampleLayer::Update"); 
+	
+	// UPDATE
+	m_CameraController.OnUpdate(ts);
+	
+	// TODO: do more efficiently
+	// FPS counting
+	fps_counter++;
+	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
+	if (fps_counter > 10000000) fps_counter = 0;
 
-	/*if (oc::Input::IsKeyPressed(OC_KEY_TAB)) {
-
-		OC_CLIENT_TRACE("TAB key is pressed");
-		
-	}*/
-		
+	// RENDER
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	oc::RenderCommand::Clear();
 
 
-	oc::Renderer::BeginScene(m_Camera);
+	oc::Renderer::BeginScene(m_CameraController.GetCamera());
 
 	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
@@ -85,23 +91,12 @@ void ExampleLayer::OnUpdate(oc::Timestep ds) {
 	oc::Renderer::EndScene();
 
 
-	if (oc::Input::IsKeyPressed(OC_KEY_LEFT)) { m_CameraPosition.x -= m_CameraMovementSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_RIGHT)) { m_CameraPosition.x += m_CameraMovementSpeed*ds; }
 	
-	if (oc::Input::IsKeyPressed(OC_KEY_UP)) { m_CameraPosition.y += m_CameraMovementSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_DOWN)) { m_CameraPosition.y -= m_CameraMovementSpeed*ds; }
-
-	if (oc::Input::IsKeyPressed(OC_KEY_A)) { m_CameraRotation += m_CameraRotationSpeed*ds; }
-	else if (oc::Input::IsKeyPressed(OC_KEY_D)) { m_CameraRotation -= m_CameraRotationSpeed*ds; }
-
-
-	m_Camera.SetRotation(m_CameraRotation);
-	m_Camera.SetPosition(m_CameraPosition);
 }
 
 void ExampleLayer::OnEvent(oc::Event& event) { 
-	//OC_CLIENT_TRACE("{0}", event); 
-	
+	//OC_CLIENT_TRACE("{0}", event);
+	m_CameraController.OnEvent(event);
 }
 
 
@@ -168,6 +163,10 @@ void ExampleLayer::OnImGuiRender() {
 			ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
 		}
 
+		ImGui::End();
+
+		ImGui::Begin("Stats");
+		ImGui::Text("FPS: %.2f", m_FPS);
 		ImGui::End();
 	//}
 

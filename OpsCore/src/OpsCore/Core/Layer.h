@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpsCore/Core.h"
+#include "OpsCore/Core/Core.h"
 #include "OpsCore/Events/Event.h"
 #include "OpsCore/Core/Timestep.h"
 

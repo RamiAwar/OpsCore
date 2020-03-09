@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpsCore/Window.h"
+#include "OpsCore/Core/Window.h"
 #include "OpsCore/Renderer/GraphicsContext.h"
 
 #include <GLFW/glfw3.h>

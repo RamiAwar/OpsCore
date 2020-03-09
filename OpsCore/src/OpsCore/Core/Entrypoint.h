@@ -1,8 +1,6 @@
 #pragma once
-#include "Core.h"
+#include "OpsCore/Core/Core.h"
 
-
-// #ifdef OC_PLATFORM_WINDOWS
 
 
 // Defining as external since we define oc::CreateApplication in the client using OpsCore library. In example case, sandboxapp defines it.
