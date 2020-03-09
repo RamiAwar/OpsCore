@@ -7,6 +7,9 @@ namespace oc {
 	class  Input {
 		
 	public:
+		Input(const Input&) = delete;
+		Input& operator=(const Input&) = delete;
+
 		inline static bool IsKeyPressed(int keycode) {
 			return s_Instance->IsKeyPressedImpl(keycode);
 		}
@@ -16,6 +19,7 @@ namespace oc {
 		inline static float GetMouseY() { return s_Instance->GetMouseYImpl(); }
 		inline static std::pair<float, float> GetMousePos() { return s_Instance->GetMousePosImpl(); }
 	protected:
+		Input() = default;
 		virtual bool IsMouseButtonPressedImpl(int keycode) = 0;
 		virtual bool IsKeyPressedImpl(int keycode) = 0;
 		virtual bool GetMouseXImpl() = 0;

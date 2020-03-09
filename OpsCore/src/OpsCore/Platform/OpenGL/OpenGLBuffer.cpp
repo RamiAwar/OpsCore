@@ -44,14 +44,14 @@ void oc::OpenGLVertexBuffer::Unbind() const
 oc::OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count)
 	: m_Count(count)
 {
-	#ifdef OC_PLATFORM_MAC
+#ifdef OC_PLATFORM_MACOS
 	glGenBuffers(1, &m_RendererID);
-	#else
+#else
 	glCreateBuffers(1, &m_RendererID);
-	#endif
+#endif
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+	glBufferData(GL_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
 }
 
 oc::OpenGLIndexBuffer::~OpenGLIndexBuffer() {
