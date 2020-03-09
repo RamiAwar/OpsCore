@@ -20,7 +20,7 @@
 	#else 
 		#error "Unknown Apple platform!"
 	#endif
-
+	
 /* Check android before linux since it has __linux__ defined */
 #elif defined(__ANDROID__)
 	#define OC_PLATFORM_ANDROID

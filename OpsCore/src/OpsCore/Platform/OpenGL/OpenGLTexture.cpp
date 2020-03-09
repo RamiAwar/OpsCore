@@ -48,25 +48,25 @@ namespace oc {
 
 		OC_ASSERT(internalFormat && dataFormat, "Image format trying to load is not supported!");
 
-		#ifdef WIN32
+		#ifdef OC_PLATFORM_WINDOWS
 
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-		glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+			glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
+			glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
 
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
-		// Retain or dont retain?
-		#else
-		glGenTextures(1, &m_RendererID);
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
-		glTexParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
+			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+	
+		#elif defined(OC_PLATFORM_MACOS)
+			glGenTextures(1, &m_RendererID);
+			glBindTexture(GL_TEXTURE_2D, m_RendererID);
+			glTexParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
 		#endif
+
 		// No retain method
 		stbi_image_free(data); // clears data pointer
 	}
@@ -78,10 +78,10 @@ namespace oc {
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
-		#ifdef WIN32
-		glBindTextureUnit(slot, m_RendererID);
-		#else
-		glBindTexture(GL_TEXTURE_2D, m_RendererID);
+		#ifdef OC_PLATFORM_WINDOWS
+			glBindTextureUnit(slot, m_RendererID);
+		#elif defined(OC_PLATFORM_MACOS)
+			glBindTexture(GL_TEXTURE_2D, m_RendererID);
 		#endif
 	}
 

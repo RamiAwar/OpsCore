@@ -21,6 +21,7 @@ workspace "OpsCore"
 	IncludeDir["imgui"] = "OpsCore/vendor/imgui"
 	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
 	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
+	IncludeDir["spdlog"] = "OpsCore/vendor/spdlog/include"
 
 
 	project "OpsCore"
@@ -52,7 +53,7 @@ workspace "OpsCore"
 		includedirs
 		{
 			"%{prj.name}/src",
-			"%{prj.name}/vendor/spdlog/include",
+			"%{IncludeDir.spdlog}",
 			"%{IncludeDir.glfw}",
 			"%{IncludeDir.glad}",
 			"%{IncludeDir.imgui}",
@@ -70,7 +71,7 @@ workspace "OpsCore"
 			systemversion "latest"
 			defines
 			{
-				"OC_PLATFORM_MAC",
+				"OC_PLATFORM_MACOS",
 				"GLFW_INCLUDE_NONE"
 			}
 
@@ -89,24 +90,24 @@ workspace "OpsCore"
 			buildoptions "/MDd"
 			symbols "On"
 
-		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
-			symbols "On"
-
 		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
-			optimize "On"
-
-		filter {"system:osx", "configurations:Release"}
-			defines "OC_RELEASE"
 			optimize "On"
 			
 		filter {"system:windows", "configurations:Dist"}
 			defines "OC_DIST"
 			buildoptions "/MD"
 			optimize "On"
-
+			
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+			
+		filter {"system:macosx", "configurations:Release"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
 		filter {"system:macosx", "configurations:Dist"}
 			defines "OC_RELEASE"
 			optimize "On"
@@ -131,8 +132,8 @@ workspace "OpsCore"
 
 		includedirs
 		{
-			"OpsCore/vendor/spdlog/include",
 			"OpsCore/src",
+			"{IncludeDir.spdlog}",
 			"%{IncludeDir.glm}", 
 			"%{IncludeDir.imgui}",
 			"%{IncludeDir.glfw}",
@@ -148,8 +149,6 @@ workspace "OpsCore"
 				"OpsCore"
 			}
 		
-		
-
 		filter "system:macosx"
 			staticruntime "On"
 			systemversion "latest"
@@ -181,23 +180,25 @@ workspace "OpsCore"
 			buildoptions "/MDd"
 			symbols "On"
 
-		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
-			symbols "On"
-
+			
 		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
-
-		filter {"system:osx", "configurations:Release"}
-			defines "OC_RELEASE"
-			optimize "On"
-			
+	
 		filter {"system:windows", "configurations:Dist"}
 			defines "OC_DIST"
 			buildoptions "/MD"
 			optimize "On"
+		
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+
+		filter {"system:macosx", "configurations:Release"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
 
 		filter {"system:macosx", "configurations:Dist"}
 			defines "OC_RELEASE"

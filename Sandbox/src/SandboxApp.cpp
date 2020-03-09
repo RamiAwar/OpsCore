@@ -168,6 +168,7 @@ void ExampleLayer::OnImGuiRender() {
 		ImGui::Begin("Stats");
 		ImGui::Text("FPS: %.2f", m_FPS);
 		ImGui::End();
+		
 	//}
 
 	// ------- ImGui Dockspace -------------

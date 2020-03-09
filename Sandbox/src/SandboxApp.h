@@ -59,10 +59,10 @@ private:
 
 	std::shared_ptr<oc::Texture2D> texture;
 
-	std::string m_TexturePathName = "assets/textures/checkerboard.png";
-	std::string m_TextureShaderPath = "assets/shaders/ImageTexture.glsl";
-	std::string m_TriangleShaderPath = "assets/shaders/TriangleShader.glsl";
-	std::string m_SquareShaderPath = "assets/shaders/SquareShader.glsl";
+	std::string m_TexturePathName = "/Users/ramiawar/code/OpsCore/Sandbox/assets/textures/checkerboard.png";
+	std::string m_TextureShaderPath = "/Users/ramiawar/code/OpsCore/Sandbox/assets/shaders/ImageTexture.glsl";
+	std::string m_TriangleShaderPath = "/Users/ramiawar/code/OpsCore/Sandbox/assets/shaders/TriangleShader.glsl";
+	std::string m_SquareShaderPath = "/Users/ramiawar/code/OpsCore/Sandbox/assets/shaders/SquareShader.glsl";
 
 	glm::vec3 m_RedColor = glm::vec3(0.8f, 0.2f, 0.2f);
 	glm::vec3 m_BlueColor = glm::vec3(0.2f, 0.2f, 0.8f);

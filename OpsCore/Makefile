@@ -123,12 +123,12 @@ endif
 
 OBJECTS := \
 	$(OBJDIR)/Application.o \
-	$(OBJDIR)/ImGuiBuild.o \
-	$(OBJDIR)/ImGuiFileDialog.o \
-	$(OBJDIR)/ImGuiLayer.o \
 	$(OBJDIR)/Layer.o \
 	$(OBJDIR)/LayerStack.o \
 	$(OBJDIR)/Log.o \
+	$(OBJDIR)/ImGuiBuild.o \
+	$(OBJDIR)/ImGuiFileDialog.o \
+	$(OBJDIR)/ImGuiLayer.o \
 	$(OBJDIR)/OpenGLBuffer.o \
 	$(OBJDIR)/OpenGLContext.o \
 	$(OBJDIR)/OpenGLRendererAPI.o \
@@ -138,7 +138,8 @@ OBJECTS := \
 	$(OBJDIR)/winInput.o \
 	$(OBJDIR)/winWindow.o \
 	$(OBJDIR)/Buffer.o \
-	$(OBJDIR)/Orthographic2DCamera.o \
+	$(OBJDIR)/OrthographicCamera.o \
+	$(OBJDIR)/OrthographicCameraController.o \
 	$(OBJDIR)/RenderCommand.o \
 	$(OBJDIR)/Renderer.o \
 	$(OBJDIR)/RendererAPI.o \
@@ -205,7 +206,16 @@ else
 $(OBJECTS): | $(OBJDIR)
 endif
 
-$(OBJDIR)/Application.o: src/OpsCore/Application.cpp
+$(OBJDIR)/Application.o: src/OpsCore/Core/Application.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Layer.o: src/OpsCore/Core/Layer.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/LayerStack.o: src/OpsCore/Core/LayerStack.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/Log.o: src/OpsCore/Core/Log.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/ImGuiBuild.o: src/OpsCore/ImGui/ImGuiBuild.cpp
@@ -215,15 +225,6 @@ $(OBJDIR)/ImGuiFileDialog.o: src/OpsCore/ImGui/ImGuiFileDialog.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/ImGuiLayer.o: src/OpsCore/ImGui/ImGuiLayer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Layer.o: src/OpsCore/Layer.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/LayerStack.o: src/OpsCore/LayerStack.cpp
-	@echo $(notdir $<)
-	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Log.o: src/OpsCore/Log.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/OpenGLBuffer.o: src/OpsCore/Platform/OpenGL/OpenGLBuffer.cpp
@@ -253,7 +254,10 @@ $(OBJDIR)/winWindow.o: src/OpsCore/Platform/Windows/winWindow.cpp
 $(OBJDIR)/Buffer.o: src/OpsCore/Renderer/Buffer.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
-$(OBJDIR)/Orthographic2DCamera.o: src/OpsCore/Renderer/Cameras/Orthographic2DCamera.cpp
+$(OBJDIR)/OrthographicCamera.o: src/OpsCore/Renderer/Cameras/OrthographicCamera.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/OrthographicCameraController.o: src/OpsCore/Renderer/Cameras/OrthographicCameraController.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/RenderCommand.o: src/OpsCore/Renderer/RenderCommand.cpp
