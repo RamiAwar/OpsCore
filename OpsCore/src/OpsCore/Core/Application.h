@@ -1,10 +1,10 @@
 #pragma once
 
-#include "OpsCore/Core.h"
-#include "Window.h"
+#include "OpsCore/Core/Core.h"
+#include "OpsCore/Core/Window.h"
 
-#include "OpsCore/LayerStack.h"
-#include "Events/Event.h"
+#include "OpsCore/Core/LayerStack.h"
+#include "OpsCore/Events/Event.h"
 #include "OpsCore/Events/ApplicationEvent.h"
 
 #include "OpsCore/ImGui/ImGuiLayer.h"

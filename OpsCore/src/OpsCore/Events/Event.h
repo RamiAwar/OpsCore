@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ocpch.h"
-#include "OpsCore/Core.h"
+#include "OpsCore/Core/Core.h"
 
 namespace oc {
 

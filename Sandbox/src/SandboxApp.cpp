@@ -52,6 +52,9 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 	
 	// UPDATE
 	m_CameraController.OnUpdate(ts);
+	
+	// TODO: do more efficiently
+	// FPS counting
 	fps_counter++;
 	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
 	if (fps_counter > 10000000) fps_counter = 0;

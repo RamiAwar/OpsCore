@@ -3,8 +3,8 @@
 
 
 #include "ocpch.h"
-#include "OpsCore/Core.h"
-#include "OpsCore/Log.h"
+#include "OpsCore/Core/Core.h"
+#include "OpsCore/Core/Log.h"
 #include "OpsCore/Events/Event.h"
 
 

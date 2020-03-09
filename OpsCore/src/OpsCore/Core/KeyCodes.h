@@ -1,5 +1,5 @@
 #pragma once
-#include "OpsCore/Core.h"
+#include "OpsCore/Core/Core.h"
 
 /* Printable keys */
 

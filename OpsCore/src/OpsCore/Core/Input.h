@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpsCore/Core.h"
+#include "OpsCore/Core/Core.h"
 
 namespace oc {
 

@@ -16,7 +16,7 @@
 #include <cstdint>
 
 
-#include "OpsCore/Log.h"
+#include "OpsCore/Core/Log.h"
 
 #ifdef OC_PLATFORM_WINDOWS
 

@@ -1,7 +1,7 @@
 #include "ocpch.h"
 
 #include "winInput.h"
-#include "OpsCore/Application.h"
+#include "OpsCore/Core/Application.h"
 #include <GLFW/glfw3.h>
 
 namespace oc {

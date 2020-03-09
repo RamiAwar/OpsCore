@@ -1,8 +1,8 @@
 
 #include "ocpch.h"
 
-#include "OpsCore/Input.h"
-#include "Application.h"
+#include "OpsCore/Core/Input.h"
+#include "OpsCore/Core/Application.h"
 
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
