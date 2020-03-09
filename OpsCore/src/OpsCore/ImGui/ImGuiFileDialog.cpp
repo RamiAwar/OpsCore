@@ -33,7 +33,7 @@ SOFTWARE.
 #ifndef PATH_MAX
 #define PATH_MAX 260
 #endif
-#elif defined(LINUX) or defined(APPLE)
+#else
 #include <sys/types.h>
 #include <dirent.h>
 #define PATH_SEP '/'
@@ -173,7 +173,7 @@ inline bool CreateDirectoryIfNotExist(const std::string& name)
 
 			#ifdef WIN32
 			CreateDirectoryA(name.c_str(), nullptr);
-			#elif defined(LINUX) or defined(APPLE)
+			#else
 			char buffer[PATH_MAX] = {};
 			snprintf(buffer, PATH_MAX, "mkdir -p %s", name.c_str());
 			const int dir_err = std::system(buffer);
@@ -314,7 +314,8 @@ void ImGuiFileDialog::ScanDir(const std::string & vPath)
 	int             n = 0;
 	std::string		path = vPath;
 
-	#if defined(LINUX) or defined(APPLE)
+	#if WIN32
+	#else
 	if (path.size() > 0)
 	{
 		if (path[0] != PATH_SEP)
@@ -402,7 +403,7 @@ void ImGuiFileDialog::SetCurrentDir(const std::string & vPath)
 	{
 		#ifdef WIN32
 		size_t numchar = GetFullPathNameA(path.c_str(), PATH_MAX - 1, real_path, nullptr);
-		#elif defined(LINUX) or defined(APPLE)
+		#else 
 		char* numchar = realpath(path.c_str(), real_path);
 		#endif
 		if (numchar != 0)
@@ -452,7 +453,7 @@ void ImGuiFileDialog::ComposeNewPath(std::vector<std::string>::iterator vIter)
 		{
 			#ifdef WIN32
 			m_CurrentPath = *vIter + PATH_SEP + m_CurrentPath;
-			#elif defined(LINUX) or defined(APPLE)
+			#else
 			if (*vIter == s_fs_root)
 			{
 				m_CurrentPath = *vIter + m_CurrentPath;
