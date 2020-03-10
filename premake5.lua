@@ -1,7 +1,7 @@
 workspace "OpsCore"
 	
-	architecture "x64"
-	startproject "GridSearch"
+	--architecture "x64"
+	startproject "SandboxApp"
 	
 	configurations 
 	{ 
@@ -67,20 +67,21 @@ workspace "OpsCore"
 			"ImGui"
 		}
 
-		filter "system:macosx"
-			systemversion "latest"
-			defines
-			{
-				"GLFW_INCLUDE_NONE"
-			}
+		defines
+		{
+			"GLFW_INCLUDE_NONE"
+		}
 
-		filter "system:windows"
-			systemversion "latest"
+		filter "system:linux"
 
-			defines
-			{
-				"OC_BUILD_DLL",
-				"GLFW_INCLUDE_NONE"
+			links
+			{ 
+				"Xrandr",
+				"Xi",
+				"GLEW",
+				"GLU",
+				"GL",
+				"X11"
 			}
 
 		filter {"system:windows","configurations:Debug"}
@@ -109,6 +110,10 @@ workspace "OpsCore"
 		filter {"system:macosx", "configurations:Dist"}
 			defines "OC_RELEASE"
 			optimize "On"
+
+		filter {"system:linux", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 			
 
 	project "Sandbox"
@@ -138,14 +143,13 @@ workspace "OpsCore"
 			"%{IncludeDir.glad}",
 		}
 
-		filter "system:windows"
-			links
-			{
-				"GLFW", 
-				"Glad", 
-				"ImGui", 
-				"OpsCore"
-			}
+		links
+		{
+			"GLFW", 
+			"Glad", 
+			"ImGui", 
+			"OpsCore"
+		}
 		
 		filter "system:macosx"
 			staticruntime "On"
@@ -154,8 +158,7 @@ workspace "OpsCore"
 			links
 			{
 				"Cocoa.framework",
-				"IOKit.framework",
-				"GLFW", "Glad", "ImGui", "OpsCore"
+				"IOKit.framework"
 			}
 
 			defines
@@ -163,14 +166,6 @@ workspace "OpsCore"
 				"_GLFW_COCOA"
 			}
 
-		filter "system:windows"
-			staticruntime "On"
-			systemversion "latest"
-
-			defines
-			{
-
-			}
 
 		filter {"system:windows","configurations:Debug"}
 			defines "OC_DEBUG"
@@ -183,11 +178,6 @@ workspace "OpsCore"
 			buildoptions "/MD"
 			optimize "On"
 	
-		filter {"system:windows", "configurations:Dist"}
-			defines "OC_DIST"
-			buildoptions "/MD"
-			optimize "On"
-		
 		filter {"system:macosx", "configurations:Debug"}
 			defines "OC_DEBUG"
 			symbols "On"
@@ -196,10 +186,10 @@ workspace "OpsCore"
 			defines "OC_RELEASE"
 			optimize "On"
 			
+		filter {"system:linux", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 
-		filter {"system:macosx", "configurations:Dist"}
-			defines "OC_RELEASE"
-			optimize "On"
 
 	project "Glad"
 		kind "StaticLib"
@@ -259,9 +249,7 @@ workspace "OpsCore"
 			glfw_dir .. "src/input.c",
 			glfw_dir .. "src/monitor.c",
 			glfw_dir .. "src/vulkan.c",
-			glfw_dir .. "src/window.c",
-			glfw_dir .. "src/egl_context.c",
-			glfw_dir .. "src/osmesa_context.c"
+			glfw_dir .. "src/window.c"
 		}
 
 		filter "system:windows"
@@ -308,20 +296,6 @@ workspace "OpsCore"
 			defines
 			{
 				"_GLFW_X11"
-			}
-
-			links
-			{
-				"dl",
-				"m",
-				"GL",
-				"GLU",
-				"X11",
-				"Xinerama",
-				"Xi",
-				"Xcursor",
-				"Xxf86vm",
-				"pthread"
 			}
 
 		filter "system:macosx"

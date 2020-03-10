@@ -62,8 +62,9 @@ namespace oc {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+		#elif defined(OC_PLATFORM_LINUX)
 		#else
-			#error "Undefined platform!"
+			#error "Unsupported platform";
 		#endif
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
