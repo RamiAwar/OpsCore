@@ -145,10 +145,18 @@ workspace "OpsCore"
 
 		links
 		{
+			"OpsCore",
 			"GLFW", 
 			"Glad", 
-			"ImGui", 
-			"OpsCore"
+			"ImGui",
+			"Xrandr",
+			"Xi",
+			"GLEW",
+			"GLU",
+			"GL",
+			"X11"
+			"dl",
+			"pthread"
 		}
 		
 		filter "system:macosx"
