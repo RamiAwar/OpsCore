@@ -31,12 +31,15 @@
 *.out
 *.app
 
-*.make
-*.xcodeproj
-
-
-bin*
+# Build/Editor specific
+**/*.make
+**/*.xcodeproj
+**/Makefile
 .vs/
-*.vcxproj*
+bin*
+**/*.vcxproj*
 *.sln
 *.user
+
+# Configs
+**/*.ini
