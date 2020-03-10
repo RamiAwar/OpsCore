@@ -154,7 +154,7 @@ workspace "OpsCore"
 			"GLEW",
 			"GLU",
 			"GL",
-			"X11"
+			"X11",
 			"dl",
 			"pthread"
 		}
