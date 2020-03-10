@@ -2,7 +2,7 @@
 #include "OpenGLContext.h"
 
 #include <glad/glad.h>
-#include <GLFW/glfw3.hy>
+#include <GLFW/glfw3.h>
 
 oc::OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
 	: m_WindowHandle(windowHandle)
