@@ -16,8 +16,8 @@ namespace oc {
 		unsigned int Height;
 
 		WindowProperties(const std::string& title = "OpsCore Engine",
-			unsigned int width = 1280,
-			unsigned int height = 720)
+			unsigned int width = 100,
+			unsigned int height = 100)
 			: Title(title), Width(width), Height(height) {}
 
 	};

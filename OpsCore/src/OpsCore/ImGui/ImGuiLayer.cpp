@@ -3,7 +3,13 @@
 
 #include "imgui.h"
 
+// Choose OpenGL2 or OpenGL3 ( 2 needed for raspberry pi for example )
+#if defined(OC_PLATFORM_MACOS) || defined(OC_PLATFORM_WINDOWS) 
 #include "examples/imgui_impl_opengl3.h"
+#elif defined(OC_PLATFORM_LINUX)
+#include "examples/imgui_impl_opengl2.h"
+#endif
+
 #include "examples/imgui_impl_glfw.h"
 
 #include "OpsCore/Core/Application.h"
@@ -29,6 +35,7 @@ namespace oc {
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
+
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 		//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -54,13 +61,23 @@ namespace oc {
 
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
+
+		#if defined(OC_PLATFORM_WINDOWS) || defined(OC_PLATFORM_MACOS)
 		ImGui_ImplOpenGL3_Init("#version 410");
+		#elif defined(OC_PLATFORM_LINUX)
+		ImGui_ImplOpenGL2_Init();
+		#endif
 
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
+		#if defined(OC_PLATFORM_WINDOWS) || defined(OC_PLATFORM_MACOS)
 		ImGui_ImplOpenGL3_Shutdown();
+		#elif defined(OC_PLATFORM_LINUX)
+		ImGui_ImplOpenGL2_Shutdown();
+		#endif
+
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 	}
@@ -68,7 +85,12 @@ namespace oc {
 
 
 	void ImGuiLayer::Begin() {
+		#if defined(OC_PLATFORM_WINDOWS) || defined(OC_PLATFORM_MACOS)
 		ImGui_ImplOpenGL3_NewFrame();
+		#elif defined(OC_PLATFORM_LINUX)
+		ImGui_ImplOpenGL2_NewFrame();
+		#endif
+
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 	}
@@ -80,7 +102,11 @@ namespace oc {
 
 		// Rendering
 		ImGui::Render();
+		#if defined(OC_PLATFORM_WINDOWS) || defined(OC_PLATFORM_MACOS)
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		#elif defined(OC_PLATFORM_LINUX)
+		ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+		#endif
 
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 			GLFWwindow* backup_current_context = glfwGetCurrentContext();

@@ -23,41 +23,41 @@ private:
 			 0.0f, 0.5f, 0.0f, 
 	};
 
-	uint32_t triangle_indices[3] = { 0, 1, 2 };
+	// uint32_t triangle_indices[3] = { 0, 1, 2 };
 
-	oc::BufferLayout triangleLayout = {
-		{ oc::ShaderDataType::Float3, "a_pos"}	
-	};
+	// oc::BufferLayout triangleLayout = {
+	// 	{ oc::ShaderDataType::Float3, "a_pos"}	
+	// };
 
-	std::shared_ptr<oc::VertexBuffer> triangle_vb;
-	std::shared_ptr<oc::VertexArray> triangle_va;
-	std::shared_ptr<oc::IndexBuffer> triangle_ib;
+	// std::shared_ptr<oc::VertexBuffer> triangle_vb;
+	// std::shared_ptr<oc::VertexArray> triangle_va;
+	// std::shared_ptr<oc::IndexBuffer> triangle_ib;
 
 
-	// ----------- Square inits ---------------------------
-	float square_vertices[5 * 4] = {
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-			 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-			-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-			 0.5f,  0.5f, 0.0f, 1.0f, 1.0f
-	};
+	// // ----------- Square inits ---------------------------
+	// float square_vertices[5 * 4] = {
+	// 		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+	// 		 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	// 		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+	// 		 0.5f,  0.5f, 0.0f, 1.0f, 1.0f
+	// };
 
-	uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 1 };
+	// uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 1 };
 
-	oc::BufferLayout squareLayout = {
-		{oc::ShaderDataType::Float3, "a_Position"}, 
-		{ oc::ShaderDataType::Float2, "a_TextCoord"}
-	};
+	// oc::BufferLayout squareLayout = {
+	// 	{oc::ShaderDataType::Float3, "a_Position"}, 
+	// 	{ oc::ShaderDataType::Float2, "a_TextCoord"}
+	// };
 
-	std::shared_ptr<oc::VertexBuffer> square_vb;
-	std::shared_ptr<oc::VertexArray> square_va;
-	std::shared_ptr<oc::IndexBuffer> square_ib;
+	// std::shared_ptr<oc::VertexBuffer> square_vb;
+	// std::shared_ptr<oc::VertexArray> square_va;
+	// std::shared_ptr<oc::IndexBuffer> square_ib;
 
-	std::shared_ptr<oc::Shader> triangle_shader;
-	std::shared_ptr<oc::Shader> square_shader;
-	std::shared_ptr<oc::Shader> texture_shader;
+	// std::shared_ptr<oc::Shader> triangle_shader;
+	// std::shared_ptr<oc::Shader> square_shader;
+	// std::shared_ptr<oc::Shader> texture_shader;
 
-	std::shared_ptr<oc::Texture2D> texture;
+	// std::shared_ptr<oc::Texture2D> texture;
 
 
 	std::string m_TexturePathName = "assets/textures/checkerboard.png";

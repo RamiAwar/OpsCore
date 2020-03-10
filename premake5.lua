@@ -60,22 +60,26 @@ workspace "OpsCore"
 			"%{IncludeDir.glm}"
 		}
 
-		links{
-			"GLFW",
-			"opengl32.lib",
-			"Glad",
-			"ImGui"
-		}
-
 		defines
 		{
 			"GLFW_INCLUDE_NONE"
 		}
 
+		filter {"system:windows", "system:macosx"}
+			links{
+				"GLFW",
+				"opengl32.lib",
+				"Glad",
+				"ImGui"
+			}
+
 		filter "system:linux"
 
 			links
 			{ 
+				"GLFW",
+				"Glad",
+				"ImGui",
 				"Xrandr",
 				"Xi",
 				"GLEW",
@@ -147,13 +151,13 @@ workspace "OpsCore"
 		{
 			"OpsCore",
 			"GLFW", 
-			"Glad", 
+			"Glad",
+			"GL", 
 			"ImGui",
 			"Xrandr",
 			"Xi",
 			"GLEW",
 			"GLU",
-			"GL",
 			"X11",
 			"dl",
 			"pthread"
@@ -357,6 +361,13 @@ workspace "OpsCore"
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 		imgui_dir = "OpsCore/vendor/imgui/"
+		
+		
+
+		includedirs{
+			imgui_dir,
+			"%{IncludeDir.glfw}"
+		}
 
 		files{
 			imgui_dir .. "imconfig.h",
@@ -368,7 +379,9 @@ workspace "OpsCore"
 			imgui_dir .. "imstb_rectpack.h",
 			imgui_dir .. "imstb_textedit.h",
 			imgui_dir .. "imstb_truetype.h",
-			imgui_dir .. "imgui_demo.cpp"
+			imgui_dir .. "imgui_demo.cpp",
+			imgui_dir .. "examples/imgui_impl_opengl2.cpp",
+			imgui_dir .. "examples/imgui_impl_glfw.cpp"
 		}
 
 		filter "system:windows"
