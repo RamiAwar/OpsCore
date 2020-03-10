@@ -79,7 +79,6 @@ workspace "OpsCore"
 
 			defines
 			{
-				"OC_PLATFORM_WINDOWS",
 				"OC_BUILD_DLL",
 				"GLFW_INCLUDE_NONE"
 			}
@@ -170,7 +169,7 @@ workspace "OpsCore"
 
 			defines
 			{
-				"OC_PLATFORM_WINDOWS"
+
 			}
 
 		filter {"system:windows","configurations:Debug"}
