@@ -1,21 +1,9 @@
 #include "ocpch.h"
-#include "OpenGLTexture.h"
+#include "OpsCore/Platform/OpenGL/OpenGLTexture.h"
 #include "OpsCore/Utils/stb_image.h"
 #include "OpsCore/Platform/OpenGL/OpenGLMacros.h"
 
 #include <glad/glad.h>
-
-
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#include<iostream>
-
-std::string GetCurrentWorkingDir() {
-  char buff[FILENAME_MAX];
-  GetCurrentDir( buff, FILENAME_MAX );
-  std::string current_working_dir(buff);
-  return current_working_dir;
-}
 
 namespace oc {
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
@@ -51,13 +39,13 @@ namespace oc {
 
 		#ifdef OC_PLATFORM_WINDOWS
 
-			glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
-			glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height);
+			GLCall(glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID));
+			GLCall(glTextureStorage2D(m_RendererID, 1, internalFormat, m_Width, m_Height));
 
-			glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			GLCall(glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+			GLCall(glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
 
-			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
+			GLCall(glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data));
 	
 		#elif defined(OC_PLATFORM_MACOS)
 			GLCall(glGenTextures(1, &m_RendererID));
@@ -74,13 +62,13 @@ namespace oc {
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
-		glDeleteTextures(1, &m_RendererID);
+		GLCall(glDeleteTextures(1, &m_RendererID));
 	}
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
 		#ifdef OC_PLATFORM_WINDOWS
-			glBindTextureUnit(slot, m_RendererID);
+			GLCall(glBindTextureUnit(slot, m_RendererID));
 		#elif defined(OC_PLATFORM_MACOS)
 			GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 		#endif

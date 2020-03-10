@@ -123,6 +123,9 @@
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLContext.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLMacros.h">
+      <Filter>src\OpsCore\Platform\OpenGL</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>

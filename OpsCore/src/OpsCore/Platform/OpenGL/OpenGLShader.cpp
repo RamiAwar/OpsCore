@@ -22,13 +22,14 @@ static GLenum ShaderTypeFromString(const std::string& type) {
 oc::OpenGLShader::OpenGLShader(const std::string& filepath)
 {
 	std::string source = ReadFile(filepath);
-	auto shaderSources = Preprocess(source);
-	Compile(shaderSources);
-
+	// Do not attempt to compile shader if file is not read ( empty string )
+	if (!source.empty()) {
+		auto shaderSources = Preprocess(source);
+		Compile(shaderSources);
+	}
 }
 
 void oc::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) {
-	
 	
 	GLuint program = glCreateProgram();
 

@@ -314,7 +314,8 @@ void ImGuiFileDialog::ScanDir(const std::string & vPath)
 	int             n = 0;
 	std::string		path = vPath;
 
-	#if WIN32
+	#ifdef OC_PLATFORM_WINDOWS
+
 	#else
 	if (path.size() > 0)
 	{
