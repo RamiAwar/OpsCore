@@ -1,14 +1,18 @@
 # OpsCore
 
 ## What is it?
-A desktop application that allows the quick setup of Command Operations Centers with a variable number of connected screens. Surveillance equipment can be added to the network in a modular manner by running the OpsUnit cross-platform app on a client machine. Slave machines connected to the master machine in the operations center can be added by running the cross-platform OpsNode on a locally connected machine and configuring it with the OpsCore server ip address and port. This is what the product is expected to look like. Refer to the below sketches for more details. ( TODO: Add sketches)
+A desktop application development framework that allows for the development of C++ applications with a GUI and Renderer (Only OpenGL backend supported so far, but architecture leaves room for Vulkan, Metal, or DirectX extensions).
 
-## How does it work?
+## How to setup for development
+Note that this is only tested on Windows so far. Should work with older versions of Mac(since OpenGL is deprecated in favor of Metal now), and should work normally with Linux (probably with some minor adjustments to project configuration).
 
-Let's start with some definitions:
+First, clone the repository *WITH* the git submodules **(necessary)**:
 
-- OpsCore machine: A main server machine that allows multiple client machines and surveillance equipment to connect to it via local or global (ex. Internet based) networks.
+```git clone --recursive https://github.com/RamiAwar/OpsCore```
 
-- Node machine: A node machine is a client machine that connects to a main OpsCore server machine. The main OpsCore server machine would be the main screen in a command operations center, and the node machines would be secondary screens that allow information exchange with the main OpsCore server machine. 
+I'm using Premake, which generates project files automatically. This means that it sets up the project names, submodules, include paths, linking, etc... To generate visual studio project files, do the following:
 
-- OpsUnit machine: A typically small machine serving as a piece of surveillance equipment, that connects to an OpsCore machine and streams all accumulated data (ex. Video, Audio, sensory measurements, ... ). This unit is allowed to connect via internet or local area connections (when connected via the internet, uses SSH tunnels if OpsCore does not have a static public IP, to overcome NAT setups imposed by ISPs). 
+- Grab a premake binary from here : [Link](https://premake.github.io/download.html)
+- If you're on windows and want to generate visual studio project files, navigate to the folder using command prompt, modify `GenerateProject.batch` to use your premake5.exe, and then run `GenerateProject.batch`.
+
+
