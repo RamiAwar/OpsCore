@@ -71,7 +71,6 @@ workspace "OpsCore"
 			systemversion "latest"
 			defines
 			{
-				"OC_PLATFORM_MACOS",
 				"GLFW_INCLUDE_NONE"
 			}
 
@@ -133,7 +132,7 @@ workspace "OpsCore"
 		includedirs
 		{
 			"OpsCore/src",
-			"{IncludeDir.spdlog}",
+			"%{IncludeDir.spdlog}",
 			"%{IncludeDir.glm}", 
 			"%{IncludeDir.imgui}",
 			"%{IncludeDir.glfw}",
@@ -162,7 +161,6 @@ workspace "OpsCore"
 
 			defines
 			{
-				"OC_PLATFORM_MAC",
 				"_GLFW_COCOA"
 			}
 

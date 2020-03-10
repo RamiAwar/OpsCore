@@ -1,6 +1,7 @@
 #include "ocpch.h"
 #include "OpenGLTexture.h"
 #include "OpsCore/Utils/stb_image.h"
+#include "OpsCore/Platform/OpenGL/OpenGLMacros.h"
 
 #include <glad/glad.h>
 
@@ -59,12 +60,12 @@ namespace oc {
 			glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, data);
 	
 		#elif defined(OC_PLATFORM_MACOS)
-			glGenTextures(1, &m_RendererID);
-			glBindTexture(GL_TEXTURE_2D, m_RendererID);
-			glTexParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
+			GLCall(glGenTextures(1, &m_RendererID));
+			GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
+			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+			GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+			GLCall(glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, m_Width, m_Height, 0, dataFormat, GL_UNSIGNED_BYTE, data));
+			GLCall(glGenerateMipmap(GL_TEXTURE_2D));
 		#endif
 
 		// No retain method
@@ -81,7 +82,7 @@ namespace oc {
 		#ifdef OC_PLATFORM_WINDOWS
 			glBindTextureUnit(slot, m_RendererID);
 		#elif defined(OC_PLATFORM_MACOS)
-			glBindTexture(GL_TEXTURE_2D, m_RendererID);
+			GLCall(glBindTexture(GL_TEXTURE_2D, m_RendererID));
 		#endif
 	}
 

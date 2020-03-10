@@ -46,6 +46,26 @@ namespace oc {
 			s_GLFWInitialized = true;
 		}
 
+		// Set version hints before creating window
+		#ifdef OC_PLATFORM_MACOS
+
+			OC_INFO("Setting GLFW context version hints for MACOS");
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+			
+
+		#elif defined(OC_PLATFORM_WINDOWS)
+			OC_INFO("Setting GLFW context version hints for Windows");
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+		#else
+			#error "Undefined platform!"
+		#endif
+
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
 		
 		// TODO: Find a more elegant solution to this

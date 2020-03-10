@@ -12,11 +12,12 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	m_CameraController(oc::Renderer::aspectRatio, true)
 {
 
-	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
+	OC_CLIENT_INFO("Constructing ExampleLayer");
 
 	// Setting up triangle
 	triangle_vb.reset(oc::VertexBuffer::Create(triangle_vertices, sizeof(triangle_vertices)));
 	triangle_vb->SetLayout(triangleLayout);
+
 
 	triangle_va.reset(oc::VertexArray::Create());
 	triangle_va->AddVertexBuffer(triangle_vb);
@@ -37,7 +38,6 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	triangle_shader.reset(oc::Shader::Create(m_TriangleShaderPath));
 	square_shader.reset(oc::Shader::Create(m_SquareShaderPath));
 	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
-
 
 	texture = oc::Texture2D::Create(m_TexturePathName);
 	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
@@ -127,7 +127,7 @@ void ExampleLayer::OnImGuiRender() {
 				m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
 				// update texture
-				OC_CLIENT_INFO(m_TextureShaderPath);
+				OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
 				texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
 				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
 				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
@@ -155,7 +155,7 @@ void ExampleLayer::OnImGuiRender() {
 				m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
 				
 				// update texture
-				OC_CLIENT_INFO(m_TexturePathName);
+				OC_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
 				texture = oc::Texture2D::Create(m_TexturePathName);
 			}
 
