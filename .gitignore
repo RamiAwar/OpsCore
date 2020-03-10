@@ -36,6 +36,7 @@
 **/*.xcodeproj
 **/Makefile
 .vs/
+.vscode/
 bin*
 **/*.vcxproj*
 *.sln
