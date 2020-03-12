@@ -14,36 +14,16 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 
 	OC_CLIENT_INFO("Constructing ExampleLayer");
 
-	// Setting up triangle
-	triangle_vb.reset(oc::VertexBuffer::Create(triangle_vertices, sizeof(triangle_vertices)));
-	triangle_vb->SetLayout(triangleLayout);
 
-
-	triangle_va.reset(oc::VertexArray::Create());
-	triangle_va->AddVertexBuffer(triangle_vb);
-
-	triangle_ib.reset(oc::IndexBuffer::Create(triangle_indices, sizeof(triangle_indices)));
-	triangle_va->SetIndexBuffer(triangle_ib);
-
-	// Setting up square
-	square_vb.reset(oc::VertexBuffer::Create(square_vertices, sizeof(square_vertices)));
-	square_vb->SetLayout(squareLayout);
-
-	square_va.reset(oc::VertexArray::Create());
-	square_va->AddVertexBuffer(square_vb);
-
-	square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
-	square_va->SetIndexBuffer(square_ib);
 	
-	triangle_shader.reset(oc::Shader::Create(m_TriangleShaderPath));
-	square_shader.reset(oc::Shader::Create(m_SquareShaderPath));
-	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
+	//m_CurrentShader = "FlatColor";
 
-	texture = oc::Texture2D::Create(m_TexturePathName);
+
+	//texture = oc::Texture2D::Create(m_TexturePathName);
 	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
 	
-	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+	//std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
+	//std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
 
 }
 
@@ -59,14 +39,17 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
 	if (fps_counter > 10000000) fps_counter = 0;
 
+
 	// RENDER
 	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
 	oc::RenderCommand::Clear();
 
+	OC_CLIENT_TRACE("Begin Scene");
 
-	oc::Renderer::BeginScene(m_CameraController.GetCamera());
 
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
+
+	/*glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 	for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
@@ -82,13 +65,16 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 			}
 		
 		}
-	}
-	//oc::Renderer::Submit(triangle_shader, triangle_va);
+	}*/
 
-	texture->Bind();
-	oc::Renderer::Submit(texture_shader, square_va, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
+	OC_CLIENT_TRACE("Drawing quad");
 
-	oc::Renderer::EndScene();
+	oc::Renderer2D::DrawQuad({ 0.0f, 0.0f }, // position  
+							 { 1.0f, 1.0f }, // size
+							 { 0.8f, 0.2f, 0.3f, 1.0f } // color
+							); 
+
+	oc::Renderer2D::EndScene();
 
 
 	
@@ -128,7 +114,10 @@ void ExampleLayer::OnImGuiRender() {
 
 				// update texture
 				OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
-				texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
+
+				auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
+				m_CurrentShader = texture_shader->GetName();
+
 				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
 				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
 

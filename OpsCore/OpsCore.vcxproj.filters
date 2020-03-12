@@ -177,6 +177,9 @@
     <ClInclude Include="src\OpsCore\Utils\CubicBezier.h">
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Utils\Path.h">
+      <Filter>src\OpsCore\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Utils\debugbreak.h">
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
@@ -1326,6 +1329,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
@@ -1406,5 +1410,6 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

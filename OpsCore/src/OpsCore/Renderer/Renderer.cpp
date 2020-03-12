@@ -1,6 +1,8 @@
 #include "ocpch.h"
 #include "Renderer.h"
 #include "OpsCore/Platform/OpenGL/OpenGLShader.h"
+#include "Renderer2D.h"
+
 
 namespace oc {
 
@@ -11,6 +13,7 @@ namespace oc {
 
 	void Renderer::Init() {
 		RenderCommand::Init();
+		Renderer2D::Init();
 	}
 
 	void Renderer::BeginScene(OrthographicCamera& camera)

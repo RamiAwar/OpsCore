@@ -19,6 +19,7 @@
 #include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 #include "OpsCore/Renderer/RenderCommand.h"
 #include "OpsCore/Renderer/Renderer.h"
+#include "OpsCore/Renderer/Renderer2D.h"
 #include "OpsCore/Renderer/Cameras/OrthographicCamera.h"
 #include "OpsCore/Renderer/Texture.h"
 

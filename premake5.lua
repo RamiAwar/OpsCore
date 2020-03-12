@@ -1,6 +1,6 @@
 workspace "OpsCore"
 	
-	--architecture "x64"
+	architecture "x64"
 	startproject "SandboxApp"
 	
 	configurations 
@@ -47,7 +47,7 @@ workspace "OpsCore"
 			"%{prj.name}/src/**.h", 
 			"%{prj.name}/src/**.cpp",
 			"%{IncludeDir.glm}/glm/**.hpp",
-			"%{IncludeDir.glm}/glm/**.inl"
+			"%{IncludeDir.glm}/glm/**.inl",
 		}
 
 		includedirs
@@ -57,15 +57,13 @@ workspace "OpsCore"
 			"%{IncludeDir.glfw}",
 			"%{IncludeDir.glad}",
 			"%{IncludeDir.imgui}",
-			"%{IncludeDir.glm}"
-		}
+			"%{IncludeDir.glm}"		}
 
 		links{
 			"GLFW",
 			"opengl32.lib",
 			"Glad",
-			"ImGui"
-		}
+			"ImGui"		}
 
 		defines
 		{
@@ -143,12 +141,17 @@ workspace "OpsCore"
 			"%{IncludeDir.glad}",
 		}
 
-		links
-		{
-			"OpsCore",
+		links {
 			"GLFW", 
 			"Glad", 
 			"ImGui",
+			"OpsCore"
+		}
+
+		filter "system:linux"
+
+		links
+		{
 			"Xrandr",
 			"Xi",
 			"GLEW",
@@ -257,7 +260,9 @@ workspace "OpsCore"
 			glfw_dir .. "src/input.c",
 			glfw_dir .. "src/monitor.c",
 			glfw_dir .. "src/vulkan.c",
-			glfw_dir .. "src/window.c"
+			glfw_dir .. "src/window.c",
+			glfw_dir .. "src/egl_context.c",
+			glfw_dir .. "src/osmesa_context.c"
 		}
 
 		filter "system:windows"
@@ -296,8 +301,6 @@ workspace "OpsCore"
 				glfw_dir .. "src/posix_time.c",
 				glfw_dir .. "src/posix_thread.c",
 				glfw_dir .. "src/glx_context.c",
-				glfw_dir .. "src/egl_context.c",
-				glfw_dir .. "src/osmesa_context.c",
 				glfw_dir .. "src/linux_joystick.c"
 			}
 
@@ -371,13 +374,6 @@ workspace "OpsCore"
 			imgui_dir .. "imgui_demo.cpp"
 		}
 
-		filter "system:windows"
-			systemversion "latest"
-			cppdialect "C++17"
-
-		filter {"system:windows", "configurations:Release"}
-			buildoptions "/MT"
-
 		filter "configurations:Debug"
 			runtime "Debug"
 			symbols "on"
@@ -385,4 +381,4 @@ workspace "OpsCore"
 		filter "configurations:Release"
 			runtime "Release"
 			optimize "on"
-			
+

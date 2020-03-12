@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <array>
+#include <fstream>
 #include <unordered_map>
 #include <unordered_set>
 #include <sstream>

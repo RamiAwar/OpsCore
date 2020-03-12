@@ -38,7 +38,9 @@
 .vs/
 .vscode/
 bin*
-**/*.vcxproj*
+*.vcxproj
+*.vcxproj.*
+*.vdproj 
 *.sln
 *.user
 

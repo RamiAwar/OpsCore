@@ -7,7 +7,7 @@
 
 namespace oc {
 
-	VertexArray* VertexArray::Create() {
+	std::shared_ptr<VertexArray> VertexArray::Create() {
 
 		switch (RendererAPI::GetAPI())
 		{
@@ -15,7 +15,7 @@ namespace oc {
 			OC_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexArray();
+			return std::make_shared<OpenGLVertexArray>();
 		default:
 			OC_ASSERT(false, "Unknown RendererAPI!");
 			return nullptr;
