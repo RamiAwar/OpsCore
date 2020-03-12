@@ -63,7 +63,6 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 		}
 	}*/
 
-	oc::Renderer2D::DrawQuad({ 0.5f, 0.5f }, { 10.0f, 10.0f }, checkerboard_texture);
 
 	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
 							 { 1.0f, 1.0f }, // size
@@ -75,7 +74,10 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
 	);
 
-	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f }, { 0.5f, 0.5f }, mushroom_texture);
+	oc::Renderer2D::DrawQuadTile({ 0.5f, 0.5f , -0.1f}, { 10.0f, 10.0f }, checkerboard_texture);
+
+	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
+
 
 	oc::Renderer2D::EndScene();
 

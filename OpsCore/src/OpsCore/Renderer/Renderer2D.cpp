@@ -12,6 +12,7 @@ namespace oc {
 		std::shared_ptr<VertexArray> QuadVertexArray;
 		std::shared_ptr<Shader> FlatColorShader;
 		Ref<Shader> TextureShader;
+		Ref<Shader> TextureTileShader;
 	};
 
 	static Renderer2DStorage* s_Data; // make pointer so we can free in shutdown
@@ -59,6 +60,10 @@ namespace oc {
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetInt("u_Texture", 0);
 
+		s_Data->TextureTileShader = oc::Shader::Create("assets/shaders/TilingTexture.glsl");
+		s_Data->TextureTileShader->Bind();
+		s_Data->TextureTileShader->SetInt("u_Texture", 0);
+
 	}
 
 	void Renderer2D::Shutdown()
@@ -73,6 +78,9 @@ namespace oc {
 	
 		s_Data->TextureShader->Bind();
 		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data->TextureTileShader->Bind();
+		s_Data->TextureTileShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -107,13 +115,39 @@ namespace oc {
 		s_Data->TextureShader->Bind(); // Get texture in 
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
-		s_Data->TextureShader->SetMat4("u_Transform", transform);
+		s_Data->TextureShader->SetMat4("u_Transform", transform); 
 
-		texture->Bind(); // Get image in 
+		texture->Bind(); // Get image in : Pass this to uniform in texture shader
 
 		s_Data->QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 	}
+
+
+
+
+	void Renderer2D::DrawQuadTile(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		DrawQuadTile({ position.x, position.y, 0.0f }, size, texture);
+	}
+
+	void Renderer2D::DrawQuadTile(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		s_Data->TextureTileShader->Bind(); // Get texture in 
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
+		s_Data->TextureTileShader->SetMat4("u_Transform", transform);
+
+		texture->Bind(); // Get image in : Pass this to uniform in texture shader
+
+		s_Data->TextureTileShader->SetFloat2("u_TileScale", { size.x, size.y });
+
+
+		s_Data->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+	}
+
+
 
 
 }

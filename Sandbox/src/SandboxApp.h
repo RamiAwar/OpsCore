@@ -20,7 +20,7 @@ private:
 
 	oc::OrthographicCameraController m_CameraController;
 
-	std::shared_ptr<oc::Texture2D> checkerboard_texture;
+	oc::Ref<oc::Texture2D> checkerboard_texture;
 	oc::Ref<oc::Texture2D> mushroom_texture;
 
 	std::string m_CurrentShader;
