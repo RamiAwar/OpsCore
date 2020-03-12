@@ -1,6 +1,6 @@
 #pragma once
 #include "OpsCore/Utils/debugbreak.h"
-
+#include <memory>
 
 #ifdef _WIN32
 	#ifdef _WIN64
@@ -35,7 +35,13 @@
 #define BIT(x) (1<<x)
 #define OC_BIND_EVENT_FN(fn) std::bind(&fn,this,std::placeholders::_1)
 
+namespace oc {
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
 
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
 
 #ifdef OC_DEBUG
 	#define OC_ENABLE_ASSERTS

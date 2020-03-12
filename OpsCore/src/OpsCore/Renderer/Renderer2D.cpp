@@ -2,14 +2,16 @@
 #include "Renderer2D.h"
 #include "VertexArray.h"
 #include "Shader.h"
-#include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 #include "RenderCommand.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace oc {
 
 	struct Renderer2DStorage {
 		std::shared_ptr<VertexArray> QuadVertexArray;
 		std::shared_ptr<Shader> FlatColorShader;
+		Ref<Shader> TextureShader;
 	};
 
 	static Renderer2DStorage* s_Data; // make pointer so we can free in shutdown
@@ -37,8 +39,9 @@ namespace oc {
 
 		BufferLayout squareLayout = {
 			{ShaderDataType::Float3, "a_Position"},
-			{ ShaderDataType::Float2, "a_TextCoord"}
+			{ShaderDataType::Float2, "a_TexCoord"}
 		};
+
 		square_vb.reset(oc::VertexBuffer::Create(square_vertices, sizeof(square_vertices)));
 		square_vb->SetLayout(squareLayout);
 		s_Data->QuadVertexArray->AddVertexBuffer(square_vb);
@@ -52,6 +55,10 @@ namespace oc {
 
 		s_Data->FlatColorShader = oc::Shader::Create("assets/shaders/FlatColor.glsl");
 
+		s_Data->TextureShader = oc::Shader::Create("assets/shaders/Texture.glsl");
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->SetInt("u_Texture", 0);
+
 	}
 
 	void Renderer2D::Shutdown()
@@ -61,10 +68,11 @@ namespace oc {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->Bind();
-		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->UploadUniformMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->UploadUniformMat4("u_Transform", glm::mat4(1.0f));
-
+		s_Data->FlatColorShader->Bind();
+		s_Data->FlatColorShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+	
+		s_Data->TextureShader->Bind();
+		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -73,18 +81,38 @@ namespace oc {
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->Bind();
-		OC_TRACE("Bind shader");
-		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->UploadUniformFloat4("u_Color", color);
-		OC_TRACE("Upload uniform color");
-		s_Data->QuadVertexArray->Bind();
-		OC_TRACE("Bind VA");
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
-		OC_TRACE("Draw Indexed");
+		DrawQuad({ position.x, position.y, 0.0f }, size, color);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
+		s_Data->FlatColorShader->Bind();
+		s_Data->FlatColorShader->SetFloat4("u_Color", color);
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
+		s_Data->FlatColorShader->SetMat4("u_Transform", transform);
+
+
+		s_Data->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+	}
+
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	{
+		s_Data->TextureShader->Bind(); // Get texture in 
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
+		s_Data->TextureShader->SetMat4("u_Transform", transform);
+
+		texture->Bind(); // Get image in 
+
+		s_Data->QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
 	}
 
 

@@ -11,25 +11,23 @@ int ExampleLayer::fps_counter = 0;
 ExampleLayer::ExampleLayer() : Layer("Example"),
 	m_CameraController(oc::Renderer::aspectRatio, true)
 {
-
 	OC_CLIENT_INFO("Constructing ExampleLayer");
+}
 
+void ExampleLayer::OnAttach() 
+{
+	checkerboard_texture = oc::Texture2D::Create(m_CheckerboardPath);
+	mushroom_texture = oc::Texture2D::Create(m_MushroomPath);
+}
 
-	
-	//m_CurrentShader = "FlatColor";
-
-
-	//texture = oc::Texture2D::Create(m_TexturePathName);
-	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
-	
-	//std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-	//std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+void ExampleLayer::OnDetach() 
+{
 
 }
 
-void ExampleLayer::OnUpdate(oc::Timestep ts) { 
+void ExampleLayer::OnUpdate(oc::Timestep ts) 
+{ 
 		
-	
 	// UPDATE
 	m_CameraController.OnUpdate(ts);
 	
@@ -41,10 +39,8 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 
 
 	// RENDER
-	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	oc::RenderCommand::Clear();
-
-	OC_CLIENT_TRACE("Begin Scene");
 
 
 	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
@@ -67,12 +63,19 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 		}
 	}*/
 
-	OC_CLIENT_TRACE("Drawing quad");
+	oc::Renderer2D::DrawQuad({ 0.5f, 0.5f }, { 10.0f, 10.0f }, checkerboard_texture);
 
-	oc::Renderer2D::DrawQuad({ 0.0f, 0.0f }, // position  
+	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
 							 { 1.0f, 1.0f }, // size
 							 { 0.8f, 0.2f, 0.3f, 1.0f } // color
 							); 
+
+	oc::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
+		{ 0.8f, 1.4f }, // size
+		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
+	);
+
+	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f }, { 0.5f, 0.5f }, mushroom_texture);
 
 	oc::Renderer2D::EndScene();
 
@@ -90,74 +93,74 @@ void ExampleLayer::OnImGuiRender() {
 
 	// ------- Color Settings Menu ---------
 	static bool p_open = true; // has to be static because this is called every frame. 
-	/* each time the function is called the static variable will maintain the last 
+	/* each time the function is called the static variable will maintain the last
 	value it had at the end of the previous function call. */
-	
+
 	static bool display_dialog = false;
 
 	//if (p_open) { // make settings window closable
-		ImGui::Begin("Settings"/*, &p_open*/);
-		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
-		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
+		//ImGui::Begin("Settings"/*, &p_open*/);
+		/*ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
+		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));*/
 
-		if (ImGui::Button("Select Texture Shader")) {
-			ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
-		}
+		//if (ImGui::Button("Select Texture Shader")) {
+		//	ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
+		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
+		//}
 
-		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
-		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
-				m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
+		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+		//{
+		//	// action if OK
+		//	if (ImGuiFileDialog::Instance()->IsOk == true)
+		//	{
+		//		m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
-				// update texture
-				OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
+		//		// update texture
+		//		OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
 
-				auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
-				m_CurrentShader = texture_shader->GetName();
+		//		auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
+		//		m_CurrentShader = texture_shader->GetName();
 
-				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
+		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
 
-			}
+		//	}
 
 			// close
-			ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
-		}
+		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+		//}
 
 		//ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
 		// TODO: This conversion is OpenGL specific. Must abstract it away. (uint32_t to (void*)(intptr_t))
 		//ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
 
-		if (ImGui::Button("Select Texture")) {
-			ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
-		}
+		//if (ImGui::Button("Select Texture")) {
+		//	ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
+		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
+		//}
 
-		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
-		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
-				m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-				
-				// update texture
-				OC_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
-				texture = oc::Texture2D::Create(m_TexturePathName);
-			}
+		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
+		//{
+		//	// action if OK
+		//	if (ImGuiFileDialog::Instance()->IsOk == true)
+		//	{
+		//		m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+		//		
+		//		// update texture
+		//		OC_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
+		//		texture = oc::Texture2D::Create(m_TexturePathName);
+		//	}
 
 			// close
-			ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
-		}
+		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
+		//}
 
-		ImGui::End();
+		//ImGui::End();
 
-		ImGui::Begin("Stats");
-		ImGui::Text("FPS: %.2f", m_FPS);
-		ImGui::End();
-		
+	ImGui::Begin("Stats");
+	ImGui::Text("FPS: %.2f", m_FPS);
+	ImGui::End();
+
 	//}
 
 	// ------- ImGui Dockspace -------------

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <glm/glm.hpp>
 
 namespace oc {
 
@@ -18,6 +19,10 @@ namespace oc {
 		static std::shared_ptr<Shader> Create(const std::string& filepath);
 		static std::shared_ptr<Shader> Create(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc);
 
+		virtual void SetInt(const std::string name, const int& value) = 0;
+		virtual void SetFloat3(const std::string name, const glm::vec3& value) = 0;
+		virtual void SetFloat4(const std::string name, const glm::vec4& value) = 0;
+		virtual void SetMat4(const std::string name, const glm::mat4& value) = 0;
 
 	};
 

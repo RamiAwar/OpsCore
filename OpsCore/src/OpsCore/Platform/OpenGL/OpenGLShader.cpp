@@ -52,6 +52,26 @@ oc::OpenGLShader::~OpenGLShader()
 	GLCall(glDeleteProgram(m_RendererID));
 }
 
+void oc::OpenGLShader::SetInt(const std::string name, const int& value)
+{
+	UploadUniformInt(name, value);
+}
+
+void oc::OpenGLShader::SetFloat3(const std::string name, const glm::vec3& value)
+{
+	UploadUniformFloat3(name, value);
+}
+
+void oc::OpenGLShader::SetFloat4(const std::string name, const glm::vec4& value)
+{
+	UploadUniformFloat4(name, value);
+}
+
+void oc::OpenGLShader::SetMat4(const std::string name, const glm::mat4& value)
+{
+	UploadUniformMat4(name, value);
+}
+
 void oc::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) 
 {
 	
