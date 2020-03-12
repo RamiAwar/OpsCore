@@ -52,9 +52,6 @@ namespace oc {
 
 		s_Data->FlatColorShader = oc::Shader::Create("assets/shaders/FlatColor.glsl");
 
-
-
-
 	}
 
 	void Renderer2D::Shutdown()
@@ -77,10 +74,13 @@ namespace oc {
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->Bind();
+		OC_TRACE("Bind shader");
 		std::dynamic_pointer_cast<oc::OpenGLShader>(s_Data->FlatColorShader)->UploadUniformFloat4("u_Color", color);
-		
+		OC_TRACE("Upload uniform color");
 		s_Data->QuadVertexArray->Bind();
+		OC_TRACE("Bind VA");
 		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		OC_TRACE("Draw Indexed");
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)

@@ -33,6 +33,8 @@ oc::OpenGLShader::OpenGLShader(const std::string& filepath)
 	Path path(filepath);
 	m_Name = path.basename_strip_extension().str();
 
+	OC_INFO("Read shader into '{0}'", m_Name);
+
 }
 
 oc::OpenGLShader::OpenGLShader(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc)
