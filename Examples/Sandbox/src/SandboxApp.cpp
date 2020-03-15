@@ -1,9 +1,5 @@
 #include "SandboxApp.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-
 float ExampleLayer::m_FPS = 0.0f;
 int ExampleLayer::fps_counter = 0;
 

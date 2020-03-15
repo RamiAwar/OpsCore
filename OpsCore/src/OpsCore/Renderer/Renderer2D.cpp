@@ -30,9 +30,9 @@ namespace oc {
 		// ----------- Square inits ---------------------------
 		float square_vertices[5 * 4] = {
 				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
-				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
-				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f
+				 0.5f, -0.5f, 0.0f, 0.25f, 0.0f,
+				-0.5f,  0.5f, 0.0f, 0.0f, 0.05f,
+				 0.5f,  0.5f, 0.0f, 0.25f, 0.05f
 		};
 
 
@@ -76,8 +76,13 @@ namespace oc {
 		//s_Data->m_ShaderLibrary.Get("TilingTexture")->SetInt("u_Texture", textureShaderCounter++);
 
 		s_Data->m_ShaderLibrary.Load("assets/shaders/ColorTexture.glsl");
+		s_Data->m_ShaderLibrary.Load("assets/shaders/SpriteTexture.glsl");
+
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind();
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetInt("u_Texture", 0);
+
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->Bind();
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetInt("u_Texture", 0);
 
 	}
 
@@ -100,6 +105,8 @@ namespace oc {
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind();
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->Bind();
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer2D::EndScene()
@@ -109,7 +116,20 @@ namespace oc {
 	
 
 
-
+	// Grid: height : -1 : 1 ,  width: -aspect ratio : aspect ratio
+	// We want a grid with origin in bottom left corner, i.e. translate all positions by (aspect_ratio, 1)
+	// Whats left is to shift the origin ( -size.x/2, -size.y/2 )
+	//              +1   
+	//				|
+	//				|
+	//				|
+	//				|
+	// -AR ---------|---------- AR
+	//				|
+	//				|
+	//				|
+	//				|
+	//				-1
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
@@ -133,13 +153,51 @@ namespace oc {
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind(); // Get texture in 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat4("u_Color", color);
 		
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
+		glm::mat4 rotation = glm::mat4(1.0f);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), 
+			{ -Renderer::aspectRatio + position.x*2*Renderer::aspectRatio + size.x / 2 , position.y*2 - 1.0f + size.y / 2, 0.0f }) 
+			* rotation 
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
 		
+
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_Transform", transform);
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
 
 		s_Data->m_QuadVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
+
+	}
+
+	void Renderer2D::DrawSprite(const int& index, const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
+	{
+		DrawSprite(index, { position.x, position.y, 0.0f }, size, texture, tileScale, color);
+	}
+
+	void Renderer2D::DrawSprite(const int& index, const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
+	{
+		texture->Bind(); // Get image in : Pass this to uniform in texture shader
+
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->Bind(); // Get texture in 
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat4("u_Color", color);
+
+		glm::mat4 rotation = glm::mat4(1.0f);
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f),{ 
+			-Renderer::aspectRatio + position.x * 2 * Renderer::aspectRatio + size.x / 2, position.y * 2 - 1.0f + size.y / 2, 0.0f })
+			* rotation
+			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }
+		);
+
+
+		glm::vec2 uv_shift = { (index % 4) * 0.25f , (19 - (index / 4))* 0.05f };
+		OC_INFO("uv shift {}:{}", uv_shift.x, uv_shift.y);
+
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetMat4("u_Transform", transform);
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
+		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat2("u_UVShift", uv_shift);
+		
+		s_Data->m_QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
+
 	}
 
 

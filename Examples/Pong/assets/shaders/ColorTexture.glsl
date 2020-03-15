@@ -22,8 +22,10 @@ layout (location = 0) out vec4 color;
 			
 in vec2 v_TextCoord;
 
+uniform vec4 u_Color;
+uniform vec2 u_TileScale;
 uniform sampler2D u_Texture;
 
 void main(){
-	color = texture(u_Texture, v_TextCoord);	
+	color = texture(u_Texture, v_TextCoord * u_TileScale) * u_Color;	
 }

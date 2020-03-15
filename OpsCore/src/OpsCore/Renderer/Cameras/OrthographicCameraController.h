@@ -12,7 +12,7 @@ namespace oc {
 
 	public:
 
-		OrthographicCameraController(float aspectRatio, bool rotationEnabled=false); // aspect ratio * 2 units of space no matter screen res
+		OrthographicCameraController(float aspectRatio, bool movementEnabled = false, bool scrollEnabled=false, bool rotationEnabled = false); // aspect ratio * 2 units of space no matter screen res
 
 		void OnUpdate(Timestep ts);
 		void OnEvent(Event& e);
@@ -31,6 +31,8 @@ namespace oc {
 		OrthographicCamera m_Camera;
 
 		bool m_RotationEnabled;
+		bool m_MovementEnabled;
+		bool m_ScrollEnabled;
 
 		glm::vec3 m_CameraPosition = { 0.0f, 0.0f, 0.0f };
 		float m_CameraRotation = 0.0f;

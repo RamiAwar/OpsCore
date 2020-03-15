@@ -28,7 +28,8 @@ workspace "OpsCore"
 	-- EXAMPLE PROJECTS INCLUDES
 	include "Examples/Pong/pong.premake5.lua"
 	include "Examples/Sandbox/sandbox.premake5.lua"  
-
+	include "Examples/Platformer/platformer.premake5.lua"
+	
 	-- DEPENDENCIES INCLUDES
 	include "OpsCore/vendor/glad.premake5.lua"
 	include "OpsCore/vendor/glfw.premake5.lua"
