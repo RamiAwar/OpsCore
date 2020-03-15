@@ -21,7 +21,6 @@ private:
 	oc::Ref<oc::Texture2D> checkerboard_texture;
 	oc::Ref<oc::Texture2D> mushroom_texture;
 
-	std::string m_CurrentShader;
 	std::string m_CheckerboardPath = "assets/textures/checkerboard.png";
 	std::string m_MushroomPath = "assets/textures/super.png";
 
