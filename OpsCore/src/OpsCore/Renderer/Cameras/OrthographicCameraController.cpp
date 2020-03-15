@@ -1,7 +1,7 @@
 #include "ocpch.h"
 #include "OrthographicCameraController.h"
-#include "OpsCore/Input.h"
-#include "OpsCore/KeyCodes.h"
+#include "OpsCore/Core/Input.h"
+#include "OpsCore/Core/KeyCodes.h"
 
 oc::OrthographicCameraController::OrthographicCameraController(float aspectRatio, bool rotationEnabled)
 	: m_AspectRatio(aspectRatio), 

@@ -10,13 +10,15 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <array>
+#include <fstream>
 #include <unordered_map>
 #include <unordered_set>
 #include <sstream>
 #include <cstdint>
 
 
-#include "OpsCore/Log.h"
+#include "OpsCore/Core/Log.h"
 
 #ifdef OC_PLATFORM_WINDOWS
 

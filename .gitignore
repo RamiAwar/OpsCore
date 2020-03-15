@@ -31,10 +31,18 @@
 *.out
 *.app
 
-bin*
-vendor/*
-OpsCore/vendor
+# Build/Editor specific
+**/*.make
+**/*.xcodeproj
+**/Makefile
 .vs/
-*.vcxproj*
+.vscode/
+bin*
+*.vcxproj
+*.vcxproj.*
+*.vdproj 
 *.sln
 *.user
+
+# Configs
+**/*.ini

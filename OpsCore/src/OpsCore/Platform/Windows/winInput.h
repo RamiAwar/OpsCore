@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OpsCore/Input.h"
+#include "OpsCore/Core/Input.h"
 
 namespace oc {
 

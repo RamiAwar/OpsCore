@@ -1,7 +1,7 @@
 #include "ocpch.h"
 
-#include "OpenGLVertexArray.h"
-
+#include "OpsCore/Platform/OpenGL/OpenGLVertexArray.h"
+#include "OpsCore/Platform/OpenGL/OpenGLMacros.h"
 #include <glad/glad.h>
 
 namespace oc {
@@ -28,28 +28,28 @@ namespace oc {
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		#ifdef OC_PLATFORM_MAC
-		glGenVertexArrays(1, &m_RendererID);
+		#ifdef OC_PLATFORM_MACOS
+			GLCall(glGenVertexArrays(1, &m_RendererID));
 		#else 
-		glCreateVertexArrays(1, &m_RendererID);
+			GLCall(glCreateVertexArrays(1, &m_RendererID));
 		#endif
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
 	{
-		glDeleteVertexArrays(1, &m_RendererID);
+		GLCall(glDeleteVertexArrays(1, &m_RendererID));
 	}
 
 	void OpenGLVertexArray::Bind() const {
-		glBindVertexArray(m_RendererID);
+		GLCall(glBindVertexArray(m_RendererID));
 	}
 
 	void OpenGLVertexArray::Unbind() const {
-		glBindVertexArray(0);
+		GLCall(glBindVertexArray(0));
 	}
 
 	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) {
-		glBindVertexArray(m_RendererID);
+		GLCall(glBindVertexArray(m_RendererID));
 		vertexBuffer->Bind();
 
 		OC_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex buffer has no layout!");
@@ -58,15 +58,15 @@ namespace oc {
 		const auto& layout = vertexBuffer->GetLayout();
 
 		for (const auto& element : layout) {
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
+			GLCall(glEnableVertexAttribArray(index));
+			GLCall(glVertexAttribPointer(
 				index,
 				element.GetComponentCount(),
 				ShaderDataTypeToOpenGLBaseType(element.type),
 				element.normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
 				(const void*)element.offset
-			);
+			));
 			index++;
 		}
 
@@ -74,7 +74,7 @@ namespace oc {
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) {
-		glBindVertexArray(m_RendererID);
+		GLCall(glBindVertexArray(m_RendererID));
 		indexBuffer->Bind();
 
 		m_IndexBuffer = indexBuffer;

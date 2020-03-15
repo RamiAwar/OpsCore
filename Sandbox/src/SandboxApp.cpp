@@ -3,61 +3,49 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
+float ExampleLayer::m_FPS = 0.0f;
+int ExampleLayer::fps_counter = 0;
+
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
 	m_CameraController(oc::Renderer::aspectRatio, true)
 {
-	
-	OC_CLIENT_INFO("ExampleLayer: Drawing OpenGL Shapes");
+	OC_CLIENT_INFO("Constructing ExampleLayer");
+}
 
-	// Setting up triangle
-	triangle_vb.reset(oc::VertexBuffer::Create(triangle_vertices, sizeof(triangle_vertices)));
-	triangle_vb->SetLayout(triangleLayout);
+void ExampleLayer::OnAttach()  
+{
+	checkerboard_texture = oc::Texture2D::Create(m_CheckerboardPath);
+	mushroom_texture = oc::Texture2D::Create(m_MushroomPath);
+}
 
-	triangle_va.reset(oc::VertexArray::Create());
-	triangle_va->AddVertexBuffer(triangle_vb);
-
-	triangle_ib.reset(oc::IndexBuffer::Create(triangle_indices, sizeof(triangle_indices)));
-	triangle_va->SetIndexBuffer(triangle_ib);
-
-	// Setting up square
-	square_vb.reset(oc::VertexBuffer::Create(square_vertices, sizeof(square_vertices)));
-	square_vb->SetLayout(squareLayout);
-
-	square_va.reset(oc::VertexArray::Create());
-	square_va->AddVertexBuffer(square_vb);
-
-	square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
-	square_va->SetIndexBuffer(square_ib);
-	
-	triangle_shader.reset(oc::Shader::Create(m_TriangleShaderPath));
-	square_shader.reset(oc::Shader::Create(m_SquareShaderPath));
-	texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
-
-
-	texture = oc::Texture2D::Create(m_TexturePathName);
-	//texture->SetMagnification(oc::Texture2D::TextureMag::NEAREST);
-	
-	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-	std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+void ExampleLayer::OnDetach() 
+{
 
 }
 
-void ExampleLayer::OnUpdate(oc::Timestep ts) { 
+void ExampleLayer::OnUpdate(oc::Timestep ts) 
+{ 
 		
-	
 	// UPDATE
 	m_CameraController.OnUpdate(ts);
-		
+	
+	// TODO: do more efficiently
+	// FPS counting
+	fps_counter++;
+	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
+	if (fps_counter > 10000000) fps_counter = 0;
+
 
 	// RENDER
-	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1 });
+	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 	oc::RenderCommand::Clear();
 
 
-	oc::Renderer::BeginScene(m_CameraController.GetCamera());
+	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
+	/*glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
 
 	for (int i = 0; i < 20; i++) {
 		for (int j = 0; j < 20; j++) {
@@ -73,14 +61,23 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 			}
 		
 		}
-	}
-	//oc::Renderer::Submit(triangle_shader, triangle_va);
+	}*/
 
-	texture->Bind();
-	oc::Renderer::Submit(texture_shader, square_va, glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)));
 
-	oc::Renderer::EndScene();
+	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
+							 { 1.0f, 1.0f }, // size
+							 checkerboard_blend_color // color
+							); 
 
+	oc::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
+		{ 0.8f, 1.4f }, // size
+		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
+	);
+
+	oc::Renderer2D::DrawQuad({ 0.5f, 0.5f , -0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
+	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
+
+	oc::Renderer2D::EndScene();
 
 	
 }
@@ -88,7 +85,6 @@ void ExampleLayer::OnUpdate(oc::Timestep ts) {
 void ExampleLayer::OnEvent(oc::Event& event) { 
 	//OC_CLIENT_TRACE("{0}", event);
 	m_CameraController.OnEvent(event);
-	
 }
 
 
@@ -96,66 +92,74 @@ void ExampleLayer::OnImGuiRender() {
 
 	// ------- Color Settings Menu ---------
 	static bool p_open = true; // has to be static because this is called every frame. 
-	/* each time the function is called the static variable will maintain the last 
+	/* each time the function is called the static variable will maintain the last
 	value it had at the end of the previous function call. */
-	
+
 	static bool display_dialog = false;
 
 	//if (p_open) { // make settings window closable
 		ImGui::Begin("Settings"/*, &p_open*/);
-		ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
-		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
+		ImGui::ColorEdit3("Checkboard blend", glm::value_ptr(checkerboard_blend_color));
+		//ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
 
-		if (ImGui::Button("Select Texture Shader")) {
-			ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
-		}
+		//if (ImGui::Button("Select Texture Shader")) {
+		//	ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
+		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
+		//}
 
-		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
-		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
-				m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
+		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+		//{
+		//	// action if OK
+		//	if (ImGuiFileDialog::Instance()->IsOk == true)
+		//	{
+		//		m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
-				// update texture
-				OC_CLIENT_INFO(m_TextureShaderPath);
-				texture_shader.reset(oc::Shader::Create(m_TextureShaderPath));
-				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-				std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+		//		// update texture
+		//		OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
 
-			}
+		//		auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
+		//		m_CurrentShader = texture_shader->GetName();
+
+		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
+		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+
+		//	}
 
 			// close
-			ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
-		}
+		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+		//}
 
 		//ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
 		// TODO: This conversion is OpenGL specific. Must abstract it away. (uint32_t to (void*)(intptr_t))
-		ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
+		//ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
 
-		if (ImGui::Button("Select Texture")) {
-			ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
-		}
+		//if (ImGui::Button("Select Texture")) {
+		//	ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
+		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
+		//}
 
-		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
-		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
-				m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-				
-				// update texture
-				OC_CLIENT_INFO(m_TexturePathName);
-				texture = oc::Texture2D::Create(m_TexturePathName);
-			}
+		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
+		//{
+		//	// action if OK
+		//	if (ImGuiFileDialog::Instance()->IsOk == true)
+		//	{
+		//		m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
+		//		
+		//		// update texture
+		//		OC_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
+		//		texture = oc::Texture2D::Create(m_TexturePathName);
+		//	}
 
 			// close
-			ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
-		}
+		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
+		//}
 
 		ImGui::End();
+
+	ImGui::Begin("Stats");
+	ImGui::Text("FPS: %.2f", m_FPS);
+	ImGui::End();
+
 	//}
 
 	// ------- ImGui Dockspace -------------
@@ -205,3 +209,4 @@ public:
 oc::Application* oc::CreateApplication() {
 	return new Sandbox();
 }
+

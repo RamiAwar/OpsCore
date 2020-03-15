@@ -60,17 +60,38 @@
     <ClInclude Include="src\OpsCore.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Application.h">
-      <Filter>src\OpsCore</Filter>
+    <ClInclude Include="src\OpsCore\Core\Application.h">
+      <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Core.h">
-      <Filter>src\OpsCore</Filter>
+    <ClInclude Include="src\OpsCore\Core\Core.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Entrypoint.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Input.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\KeyCodes.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Layer.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\LayerStack.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Log.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\MouseButtonCodes.h">
+      <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Timestep.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Entrypoint.h">
-      <Filter>src\OpsCore</Filter>
+    <ClInclude Include="src\OpsCore\Core\Window.h">
+      <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Events\ApplicationEvent.h">
       <Filter>src\OpsCore\Events</Filter>
@@ -96,28 +117,13 @@
     <ClInclude Include="src\OpsCore\ImGui\ImGuiWidgets.h">
       <Filter>src\OpsCore\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Input.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\KeyCodes.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\Layer.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\LayerStack.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\Log.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\MouseButtonCodes.h">
-      <Filter>src\OpsCore</Filter>
-    </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\OpsCore\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLMacros.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLRendererAPI.h">
@@ -156,6 +162,9 @@
     <ClInclude Include="src\OpsCore\Renderer\Renderer.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Renderer\Renderer2D.h">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Renderer\RendererAPI.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
@@ -171,14 +180,14 @@
     <ClInclude Include="src\OpsCore\Utils\CubicBezier.h">
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Utils\Path.h">
+      <Filter>src\OpsCore\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Utils\debugbreak.h">
       <Filter>src\OpsCore\Utils</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Utils\stb_image.h">
       <Filter>src\OpsCore\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\Window.h">
-      <Filter>src\OpsCore</Filter>
     </ClInclude>
     <ClInclude Include="src\ocpch.h">
       <Filter>src</Filter>
@@ -1325,8 +1334,17 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\OpsCore\Application.cpp">
-      <Filter>src\OpsCore</Filter>
+    <ClCompile Include="src\OpsCore\Core\Application.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\Layer.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\LayerStack.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\Log.cpp">
+      <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
@@ -1336,15 +1354,6 @@
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OpsCore\Layer.cpp">
-      <Filter>src\OpsCore</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OpsCore\LayerStack.cpp">
-      <Filter>src\OpsCore</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OpsCore\Log.cpp">
-      <Filter>src\OpsCore</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
@@ -1376,10 +1385,16 @@
     <ClCompile Include="src\OpsCore\Renderer\Cameras\OrthographicCamera.cpp">
       <Filter>src\OpsCore\Renderer\Cameras</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Cameras\OrthographicCameraController.cpp">
+      <Filter>src\OpsCore\Renderer\Cameras</Filter>
+    </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\RenderCommand.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\Renderer.cpp">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Renderer2D.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\RendererAPI.cpp">
@@ -1400,6 +1415,5 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Renderer\Cameras\OrthographicCameraController.cpp" />
   </ItemGroup>
 </Project>

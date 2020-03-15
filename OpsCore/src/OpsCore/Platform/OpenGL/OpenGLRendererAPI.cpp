@@ -4,6 +4,7 @@
 void oc::OpenGLRendererAPI::Init() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void oc::OpenGLRendererAPI::SetClearColor(const glm::vec4& color)
@@ -24,4 +25,5 @@ void oc::OpenGLRendererAPI::Clear()
 void oc::OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vertexArray)
 {
 	glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+	glBindTexture(GL_TEXTURE_2D, 0); // TODO: provide this in unbind function
 }

@@ -1,7 +1,7 @@
 workspace "OpsCore"
 	
 	architecture "x64"
-	startproject "GridSearch"
+	startproject "SandboxApp"
 	
 	configurations 
 	{ 
@@ -21,6 +21,7 @@ workspace "OpsCore"
 	IncludeDir["imgui"] = "OpsCore/vendor/imgui"
 	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
 	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
+	IncludeDir["spdlog"] = "OpsCore/vendor/spdlog/include"
 
 
 	project "OpsCore"
@@ -46,42 +47,39 @@ workspace "OpsCore"
 			"%{prj.name}/src/**.h", 
 			"%{prj.name}/src/**.cpp",
 			"%{IncludeDir.glm}/glm/**.hpp",
-			"%{IncludeDir.glm}/glm/**.inl"
+			"%{IncludeDir.glm}/glm/**.inl",
 		}
 
 		includedirs
 		{
 			"%{prj.name}/src",
-			"%{prj.name}/vendor/spdlog/include",
+			"%{IncludeDir.spdlog}",
 			"%{IncludeDir.glfw}",
 			"%{IncludeDir.glad}",
 			"%{IncludeDir.imgui}",
-			"%{IncludeDir.glm}"
-		}
+			"%{IncludeDir.glm}"		}
 
 		links{
 			"GLFW",
 			"opengl32.lib",
 			"Glad",
-			"ImGui"
+			"ImGui"		}
+
+		defines
+		{
+			"GLFW_INCLUDE_NONE"
 		}
 
-		filter "system:macosx"
-			systemversion "latest"
-			defines
-			{
-				"OC_PLATFORM_MAC",
-				"GLFW_INCLUDE_NONE"
-			}
+		filter "system:linux"
 
-		filter "system:windows"
-			systemversion "latest"
-
-			defines
-			{
-				"OC_PLATFORM_WINDOWS",
-				"OC_BUILD_DLL",
-				"GLFW_INCLUDE_NONE"
+			links
+			{ 
+				"Xrandr",
+				"Xi",
+				"GLEW",
+				"GLU",
+				"GL",
+				"X11"
 			}
 
 		filter {"system:windows","configurations:Debug"}
@@ -89,27 +87,31 @@ workspace "OpsCore"
 			buildoptions "/MDd"
 			symbols "On"
 
-		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
-			symbols "On"
-
 		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
-			optimize "On"
-
-		filter {"system:osx", "configurations:Release"}
-			defines "OC_RELEASE"
 			optimize "On"
 			
 		filter {"system:windows", "configurations:Dist"}
 			defines "OC_DIST"
 			buildoptions "/MD"
 			optimize "On"
-
+			
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+			
+		filter {"system:macosx", "configurations:Release"}
+			defines "OC_RELEASE"
+			optimize "On"
+			
 		filter {"system:macosx", "configurations:Dist"}
 			defines "OC_RELEASE"
 			optimize "On"
+
+		filter {"system:linux", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 			
 
 	project "Sandbox"
@@ -131,25 +133,35 @@ workspace "OpsCore"
 
 		includedirs
 		{
-			"OpsCore/vendor/spdlog/include",
 			"OpsCore/src",
+			"%{IncludeDir.spdlog}",
 			"%{IncludeDir.glm}", 
 			"%{IncludeDir.imgui}",
 			"%{IncludeDir.glfw}",
 			"%{IncludeDir.glad}",
 		}
 
-		filter "system:windows"
-			links
-			{
-				"GLFW", 
-				"Glad", 
-				"ImGui", 
-				"OpsCore"
-			}
-		
-		
+		links {
+			"GLFW", 
+			"Glad", 
+			"ImGui",
+			"OpsCore"
+		}
 
+		filter "system:linux"
+
+		links
+		{
+			"Xrandr",
+			"Xi",
+			"GLEW",
+			"GLU",
+			"GL",
+			"X11",
+			"dl",
+			"pthread"
+		}
+		
 		filter "system:macosx"
 			staticruntime "On"
 			systemversion "latest"
@@ -157,51 +169,124 @@ workspace "OpsCore"
 			links
 			{
 				"Cocoa.framework",
-				"IOKit.framework",
-				"GLFW", "Glad", "ImGui", "OpsCore"
+				"IOKit.framework"
 			}
 
 			defines
 			{
-				"OC_PLATFORM_MAC",
 				"_GLFW_COCOA"
 			}
 
-		filter "system:windows"
-			staticruntime "On"
-			systemversion "latest"
-
-			defines
-			{
-				"OC_PLATFORM_WINDOWS"
-			}
 
 		filter {"system:windows","configurations:Debug"}
 			defines "OC_DEBUG"
 			buildoptions "/MDd"
 			symbols "On"
 
-		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
-			symbols "On"
-
+			
 		filter {"system:windows", "configurations:Release"}
 			defines "OC_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
+	
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 
-		filter {"system:osx", "configurations:Release"}
+		filter {"system:macosx", "configurations:Release"}
 			defines "OC_RELEASE"
 			optimize "On"
 			
-		filter {"system:windows", "configurations:Dist"}
-			defines "OC_DIST"
+		filter {"system:linux", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
+
+	project "Pong"
+		
+		location "Pong"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++17"
+		staticruntime "on"
+
+		targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		files
+		{
+			"%{prj.name}/src/**.h", 
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"OpsCore/src",
+			"%{IncludeDir.spdlog}",
+			"%{IncludeDir.glm}", 
+			"%{IncludeDir.imgui}",
+			"%{IncludeDir.glfw}",
+			"%{IncludeDir.glad}",
+		}
+
+		links {
+			"GLFW", 
+			"Glad", 
+			"ImGui",
+			"OpsCore"
+		}
+
+		filter "system:linux"
+
+		links
+		{
+			"Xrandr",
+			"Xi",
+			"GLEW",
+			"GLU",
+			"GL",
+			"X11",
+			"dl",
+			"pthread"
+		}
+		
+		filter "system:macosx"
+			staticruntime "On"
+			systemversion "latest"
+
+			links
+			{
+				"Cocoa.framework",
+				"IOKit.framework"
+			}
+
+			defines
+			{
+				"_GLFW_COCOA"
+			}
+
+
+		filter {"system:windows","configurations:Debug"}
+			defines "OC_DEBUG"
+			buildoptions "/MDd"
+			symbols "On"
+
+			
+		filter {"system:windows", "configurations:Release"}
+			defines "OC_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
+	
+		filter {"system:macosx", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 
-		filter {"system:macosx", "configurations:Dist"}
+		filter {"system:macosx", "configurations:Release"}
 			defines "OC_RELEASE"
 			optimize "On"
+			
+		filter {"system:linux", "configurations:Debug"}
+			defines "OC_DEBUG"
+			symbols "On"
 
 	project "Glad"
 		kind "StaticLib"
@@ -302,28 +387,12 @@ workspace "OpsCore"
 				glfw_dir .. "src/posix_time.c",
 				glfw_dir .. "src/posix_thread.c",
 				glfw_dir .. "src/glx_context.c",
-				glfw_dir .. "src/egl_context.c",
-				glfw_dir .. "src/osmesa_context.c",
 				glfw_dir .. "src/linux_joystick.c"
 			}
 
 			defines
 			{
 				"_GLFW_X11"
-			}
-
-			links
-			{
-				"dl",
-				"m",
-				"GL",
-				"GLU",
-				"X11",
-				"Xinerama",
-				"Xi",
-				"Xcursor",
-				"Xxf86vm",
-				"pthread"
 			}
 
 		filter "system:macosx"
@@ -391,13 +460,6 @@ workspace "OpsCore"
 			imgui_dir .. "imgui_demo.cpp"
 		}
 
-		filter "system:windows"
-			systemversion "latest"
-			cppdialect "C++17"
-
-		filter {"system:windows", "configurations:Release"}
-			buildoptions "/MT"
-
 		filter "configurations:Debug"
 			runtime "Debug"
 			symbols "on"
@@ -405,4 +467,4 @@ workspace "OpsCore"
 		filter "configurations:Release"
 			runtime "Release"
 			optimize "on"
-			
+
