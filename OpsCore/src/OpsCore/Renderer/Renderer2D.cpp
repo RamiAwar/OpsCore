@@ -9,10 +9,12 @@
 namespace oc {
 
 	struct Renderer2DStorage {
-		std::shared_ptr<VertexArray> QuadVertexArray;
-		std::shared_ptr<Shader> FlatColorShader;
-		Ref<Shader> TextureShader;
-		Ref<Shader> TextureTileShader;
+		std::shared_ptr<VertexArray> m_QuadVertexArray;
+
+		ShaderLibrary m_ShaderLibrary;
+
+		Ref<Texture2D> m_WhiteTexture;
+
 	};
 
 	static Renderer2DStorage* s_Data; // make pointer so we can free in shutdown
@@ -23,6 +25,8 @@ namespace oc {
 
 		s_Data = new Renderer2DStorage();
 
+
+
 		// ----------- Square inits ---------------------------
 		float square_vertices[5 * 4] = {
 				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
@@ -32,11 +36,11 @@ namespace oc {
 		};
 
 
-		s_Data->QuadVertexArray = oc::VertexArray::Create();
+		s_Data->m_QuadVertexArray = oc::VertexArray::Create();
 
 
 		// Setting up square VBs
-		std::shared_ptr<VertexBuffer> square_vb;
+		Ref<VertexBuffer> square_vb;
 
 		BufferLayout squareLayout = {
 			{ShaderDataType::Float3, "a_Position"},
@@ -45,24 +49,35 @@ namespace oc {
 
 		square_vb.reset(oc::VertexBuffer::Create(square_vertices, sizeof(square_vertices)));
 		square_vb->SetLayout(squareLayout);
-		s_Data->QuadVertexArray->AddVertexBuffer(square_vb);
+		s_Data->m_QuadVertexArray->AddVertexBuffer(square_vb);
 
 		// Setting up square IBs
 		uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 1 };
-		std::shared_ptr<IndexBuffer> square_ib;
+		Ref<IndexBuffer> square_ib;
 
 		square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
-		s_Data->QuadVertexArray->SetIndexBuffer(square_ib);
+		s_Data->m_QuadVertexArray->SetIndexBuffer(square_ib);
 
-		s_Data->FlatColorShader = oc::Shader::Create("assets/shaders/FlatColor.glsl");
+		// White pixel texture - default texture
+		s_Data->m_WhiteTexture = Texture2D::Create(1, 1);
+		uint32_t white_texture_data = 0xffffffff;
+		s_Data->m_WhiteTexture->SetData(&white_texture_data, sizeof(white_texture_data));
 
-		s_Data->TextureShader = oc::Shader::Create("assets/shaders/Texture.glsl");
-		s_Data->TextureShader->Bind();
-		s_Data->TextureShader->SetInt("u_Texture", 0);
 
-		s_Data->TextureTileShader = oc::Shader::Create("assets/shaders/TilingTexture.glsl");
-		s_Data->TextureTileShader->Bind();
-		s_Data->TextureTileShader->SetInt("u_Texture", 0);
+		// Packed all three into one shader
+		//s_Data->m_ShaderLibrary.Load("assets/shaders/FlatColor.glsl");
+ 
+		//s_Data->m_ShaderLibrary.Load("assets/shaders/Texture.glsl");
+		//s_Data->m_ShaderLibrary.Get("Texture")->Bind();
+		//s_Data->m_ShaderLibrary.Get("Texture")->SetInt("u_Texture", textureShaderCounter++);
+
+		//s_Data->m_ShaderLibrary.Load("assets/shaders/TilingTexture.glsl");
+		//s_Data->m_ShaderLibrary.Get("TilingTexture")->Bind();
+		//s_Data->m_ShaderLibrary.Get("TilingTexture")->SetInt("u_Texture", textureShaderCounter++);
+
+		s_Data->m_ShaderLibrary.Load("assets/shaders/ColorTexture.glsl");
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind();
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetInt("u_Texture", 0);
 
 	}
 
@@ -73,78 +88,58 @@ namespace oc {
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		s_Data->FlatColorShader->Bind();
-		s_Data->FlatColorShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-	
-		s_Data->TextureShader->Bind();
-		s_Data->TextureShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		//s_Data->m_ShaderLibrary.Get("FlatColor")->Bind();
+		//s_Data->m_ShaderLibrary.Get("FlatColor")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
-		s_Data->TextureTileShader->Bind();
-		s_Data->TextureTileShader->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+		//s_Data->m_ShaderLibrary.Get("Texture")->Bind();
+		//s_Data->m_ShaderLibrary.Get("Texture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		//s_Data->m_ShaderLibrary.Get("TilingTexture")->Bind();
+		//s_Data->m_ShaderLibrary.Get("TilingTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind();
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
+
 	}
 
 	void Renderer2D::EndScene()
 	{
 	}
 
+	
+
+
+
+
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, color);
+		DrawQuad({ position.x, position.y, 0.0f }, size, s_Data->m_WhiteTexture, glm::vec2(1.0f), color);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
 	{
-		s_Data->FlatColorShader->Bind();
-		s_Data->FlatColorShader->SetFloat4("u_Color", color);
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
-		s_Data->FlatColorShader->SetMat4("u_Transform", transform);
-
-
-		s_Data->QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		DrawQuad(position, size, s_Data->m_WhiteTexture, glm::vec2(1.0f), color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
 	{
-		DrawQuad({ position.x, position.y, 0.0f }, size, texture);
+		DrawQuad({ position.x, position.y, 0.0f }, size, texture, tileScale, color);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
 	{
-		s_Data->TextureShader->Bind(); // Get texture in 
-
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
-		s_Data->TextureShader->SetMat4("u_Transform", transform); 
-
 		texture->Bind(); // Get image in : Pass this to uniform in texture shader
 
-		s_Data->QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
-	}
-
-
-
-
-	void Renderer2D::DrawQuadTile(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
-	{
-		DrawQuadTile({ position.x, position.y, 0.0f }, size, texture);
-	}
-
-	void Renderer2D::DrawQuadTile(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
-	{
-		s_Data->TextureTileShader->Bind(); // Get texture in 
-
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind(); // Get texture in 
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat4("u_Color", color);
+		
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) * glm::scale(glm::mat4(1.0f), /* add rotation here */{ size.x, size.y, 1.0f });
-		s_Data->TextureTileShader->SetMat4("u_Transform", transform);
+		
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_Transform", transform);
+		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
 
-		texture->Bind(); // Get image in : Pass this to uniform in texture shader
-
-		s_Data->TextureTileShader->SetFloat2("u_TileScale", { size.x, size.y });
-
-
-		s_Data->QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->QuadVertexArray);
+		s_Data->m_QuadVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
 	}
 
 

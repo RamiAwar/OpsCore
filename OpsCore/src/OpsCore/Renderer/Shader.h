@@ -50,6 +50,9 @@ namespace oc {
 
 		bool Find(const std::string& name) const;
 
+		// TODO: REMOVE DEBUG FUNCTION 
+		void _List() const;
+
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
 	};

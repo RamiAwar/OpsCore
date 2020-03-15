@@ -29,6 +29,8 @@ namespace oc {
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
+		
+
 	}
 
 	Application::~Application() {}
@@ -58,6 +60,19 @@ namespace oc {
 			float time = (float)glfwGetTime();
 			Timestep deltaTime = time - m_LastDeltaTime;
 			m_LastDeltaTime = time;
+
+
+			//int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
+			//OC_INFO("Joystick 1 status : {}", present);
+			//if (present) {
+			//	int axes_count;
+			//	const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
+			//	OC_INFO("Number of axes available : {}", axes_count);
+			//	OC_INFO("Left axis X: {}", axes[0]);
+			//	OC_INFO("Left axis Y: {}", axes[1]);
+			//	OC_INFO("Unknown axis X: {}", axes[2]);
+			//	//OC_INFO("Unknownaxis Y: {}", axes[3]);
+			//}
 
 			// Iterate over layers and run update
 			if (!m_Minimized) {

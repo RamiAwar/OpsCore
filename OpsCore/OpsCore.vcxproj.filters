@@ -162,6 +162,9 @@
     <ClInclude Include="src\OpsCore\Renderer\Renderer.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Renderer\Renderer2D.h">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Renderer\RendererAPI.h">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClInclude>
@@ -1329,7 +1332,6 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Renderer\Renderer2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
@@ -1392,6 +1394,9 @@
     <ClCompile Include="src\OpsCore\Renderer\Renderer.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Renderer\Renderer2D.cpp">
+      <Filter>src\OpsCore\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\OpsCore\Renderer\RendererAPI.cpp">
       <Filter>src\OpsCore\Renderer</Filter>
     </ClCompile>
@@ -1410,6 +1415,5 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Renderer\Renderer2D.cpp" />
   </ItemGroup>
 </Project>

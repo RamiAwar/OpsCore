@@ -39,8 +39,20 @@ namespace oc {
 	template<typename T>
 	using Scope = std::unique_ptr<T>;
 
+	template<typename T, typename ... Args>
+	constexpr Scope<T> CreateScope(Args&& ... args)
+	{
+		return std::make_unique<T>(std::forward<Args>(args)...);
+	}
+
 	template<typename T>
 	using Ref = std::shared_ptr<T>;
+	
+	template<typename T, typename ... Args>
+	constexpr Ref<T> CreateRef(Args&& ... args)
+	{
+		return std::make_shared<T>(std::forward<Args>(args)...);
+	}
 }
 
 #ifdef OC_DEBUG
@@ -51,7 +63,7 @@ namespace oc {
 
 #ifdef OC_ENABLE_ASSERTS
 
-	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: {0}", __VA_ARGS__); debug_break(); } }
+	#define OC_ASSERT(x, ...) { if(!(x)){ OC_ERROR("Assertion Failed: Error below:");OC_ERROR(__VA_ARGS__); debug_break(); } }
 
 #else
 

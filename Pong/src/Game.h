@@ -2,11 +2,11 @@
 #include "imgui.h"
 
 
-class ExampleLayer : public oc::Layer {
+class Game : public oc::Layer {
 
 public:
 
-	ExampleLayer();
+	Game();
 
 	void OnAttach() override;
 	void OnDetach() override;
@@ -16,6 +16,8 @@ public:
 
 private:
 
+	oc::ShaderLibrary m_ShaderLibrary;
+
 	oc::OrthographicCameraController m_CameraController;
 
 	oc::Ref<oc::Texture2D> checkerboard_texture;
@@ -24,8 +26,6 @@ private:
 	std::string m_CurrentShader;
 	std::string m_CheckerboardPath = "assets/textures/checkerboard.png";
 	std::string m_MushroomPath = "assets/textures/super.png";
-
-	glm::vec4 checkerboard_blend_color = glm::vec4(1.0f);
 
 	// Tracked stats
 	static float m_FPS;

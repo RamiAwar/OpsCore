@@ -14,7 +14,7 @@ ExampleLayer::ExampleLayer() : Layer("Example"),
 	OC_CLIENT_INFO("Constructing ExampleLayer");
 }
 
-void ExampleLayer::OnAttach() 
+void ExampleLayer::OnAttach()  
 {
 	checkerboard_texture = oc::Texture2D::Create(m_CheckerboardPath);
 	mushroom_texture = oc::Texture2D::Create(m_MushroomPath);
@@ -66,7 +66,7 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 
 	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
 							 { 1.0f, 1.0f }, // size
-							 { 0.8f, 0.2f, 0.3f, 1.0f } // color
+							 checkerboard_blend_color // color
 							); 
 
 	oc::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
@@ -74,13 +74,10 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
 	);
 
-	oc::Renderer2D::DrawQuadTile({ 0.5f, 0.5f , -0.1f}, { 10.0f, 10.0f }, checkerboard_texture);
-
+	oc::Renderer2D::DrawQuad({ 0.5f, 0.5f , -0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
 	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
 
-
 	oc::Renderer2D::EndScene();
-
 
 	
 }
@@ -101,9 +98,9 @@ void ExampleLayer::OnImGuiRender() {
 	static bool display_dialog = false;
 
 	//if (p_open) { // make settings window closable
-		//ImGui::Begin("Settings"/*, &p_open*/);
-		/*ImGui::ColorEdit3("Color 1", glm::value_ptr(m_RedColor));
-		ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));*/
+		ImGui::Begin("Settings"/*, &p_open*/);
+		ImGui::ColorEdit3("Checkboard blend", glm::value_ptr(checkerboard_blend_color));
+		//ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
 
 		//if (ImGui::Button("Select Texture Shader")) {
 		//	ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
@@ -157,7 +154,7 @@ void ExampleLayer::OnImGuiRender() {
 		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
 		//}
 
-		//ImGui::End();
+		ImGui::End();
 
 	ImGui::Begin("Stats");
 	ImGui::Text("FPS: %.2f", m_FPS);
@@ -212,3 +209,4 @@ public:
 oc::Application* oc::CreateApplication() {
 	return new Sandbox();
 }
+

@@ -6,21 +6,22 @@
 #include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 
 namespace oc {
-	std::shared_ptr<Shader> Shader::Create(const std::string& filepath)
+
+	Ref<Shader> Shader::Create(const std::string& filepath)
 	{
 		switch (RendererAPI::GetAPI()) {
 		case RendererAPI::API::None:
 			OC_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(filepath);
+			return CreateRef<OpenGLShader>(filepath);
 		default:
 			OC_ASSERT(false, "Unknown RendererAPI!");
 			return nullptr;
 		}
 		return nullptr;
 	}
-	std::shared_ptr<Shader> Shader::Create(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc) {
+	Ref<Shader> Shader::Create(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc) {
 
 		switch (RendererAPI::GetAPI())
 		{
@@ -28,7 +29,7 @@ namespace oc {
 			OC_ASSERT(false, "RendererAPI::None is currently not supported!");
 			return nullptr;
 		case RendererAPI::API::OpenGL:
-			return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+			return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		default:
 			OC_ASSERT(false, "Unknown RendererAPI!");
 			return nullptr;
@@ -48,7 +49,7 @@ namespace oc {
 	}
 
 
-	std::shared_ptr<Shader> ShaderLibrary::Load(const std::string& filepath)
+	Ref<Shader> ShaderLibrary::Load(const std::string& filepath)
 	{
 		auto shader = Shader::Create(filepath);
 		if (Find(shader->GetName())) { return shader; }
@@ -58,7 +59,7 @@ namespace oc {
 		}
 	}
 
-	std::shared_ptr<Shader> ShaderLibrary::Load(const std::string name, const std::string& filepath)
+	Ref<Shader> ShaderLibrary::Load(const std::string name, const std::string& filepath)
 	{
 		auto shader = Shader::Create(filepath);
 		if (Find(shader->GetName())) { return shader; }
@@ -68,13 +69,25 @@ namespace oc {
 		}
 	}
 
-	std::shared_ptr<Shader> ShaderLibrary::Get(const std::string& name)
+	Ref<Shader> ShaderLibrary::Get(const std::string& name)
 	{
-		OC_ASSERT(Find(name), "Shader does not exist in this library.");
+		OC_ASSERT(Find(name), "Shader Library Error: Shader {} does not exist in this library.", name);
 		return m_Shaders[name];
 	}
+
 	bool ShaderLibrary::Find(const std::string& name) const
 	{
 		return m_Shaders.find(name) != m_Shaders.end();
 	}
+
+
+	// TODO: REMOVE DEBUG FUNCTION
+	void ShaderLibrary::_List() const {
+		for (auto i : m_Shaders) {
+			OC_INFO("+++");
+			OC_INFO("shader {}", i.first);
+			OC_INFO("===");
+		}
+	}
+
 }
