@@ -1,8 +1,8 @@
 #include "Game.h"
 
 
-Game::Game() : 
-	Layer("Game"), 
+Game::Game(oc::Scene* scene, const std::string& name) : 
+	Layer(scene, "Game"), 
 	m_CameraController(oc::Renderer::aspectRatio, true, true) 
 {
 	OC_CLIENT_INFO("Initializing game layer ... ");
@@ -19,12 +19,20 @@ void Game::OnUpdate(oc::Timestep ts) {
 
 	m_CameraController.OnUpdate(ts);
 
+}
+
+void Game::OnLateUpdate(oc::Timestep ds)
+{
+}
+
+void Game::OnRender() {
+
 	oc::RenderCommand::SetClearColor({ 0.7f, 0.7f, 0.7f, 1.0f });
 	oc::RenderCommand::Clear();
 
 	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	
+
 
 	oc::Renderer2D::DrawSprite(
 		sprite_index,
@@ -56,10 +64,23 @@ void Game::OnImGuiRender() {
 	ImGui::End();
 }
 
+class DemoScene : public oc::Scene {
+
+public:
+	DemoScene() {
+		PushLayer(new Game(this));
+	}
+
+	~DemoScene() {};
+
+};
+
+
+
 class Main : public oc::Application {
 public:
 	Main() {
-		PushLayer(new Game());
+		m_ActiveScene = new DemoScene();
 	}
 
 	~Main() {};

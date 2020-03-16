@@ -1,11 +1,12 @@
 #pragma once
 
 #include "OpsCore/Core/Core.h"
-#include "Layer.h"
+#include "OpsCore/Core/Layer.h"
 
 namespace oc {
-	class  LayerStack
-	{
+
+	class LayerStack {
+		
 	public:
 		LayerStack();
 		~LayerStack();

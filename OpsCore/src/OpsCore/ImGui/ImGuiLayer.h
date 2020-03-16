@@ -11,7 +11,7 @@ namespace oc {
 	{
 	
 	public:
-		ImGuiLayer();
+		ImGuiLayer(Scene* parentScene);
 		~ImGuiLayer();
 
 

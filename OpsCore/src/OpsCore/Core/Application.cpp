@@ -1,4 +1,3 @@
-
 #include "ocpch.h"
 
 #include "OpsCore/Core/Input.h"
@@ -6,7 +5,7 @@
 
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
- 
+
 #include <GLFW/glfw3.h>
 
 namespace oc {
@@ -25,12 +24,6 @@ namespace oc {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
-		Renderer::Init();
-		m_ImGuiLayer = new ImGuiLayer();
-		PushOverlay(m_ImGuiLayer);
-
-		
-
 	}
 
 	Application::~Application() {}
@@ -44,16 +37,12 @@ namespace oc {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-		//OC_INFO("{0}", e);
+		m_ActiveScene->OnEvent(e);
 
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();) {
-			(*(--it))->OnEvent(e);
-			if (e.m_Handled) break;	// so if overlay handles event, layers will not receive it (ex. clicking button on UI, we don't want click to be propagated into game layer)
-		}
 	}
 
 	void Application::Run() {
-		
+
 
 		while (m_Running) {
 
@@ -61,45 +50,11 @@ namespace oc {
 			Timestep deltaTime = time - m_LastDeltaTime;
 			m_LastDeltaTime = time;
 
-
-			//int present = glfwJoystickPresent(GLFW_JOYSTICK_1);
-			//OC_INFO("Joystick 1 status : {}", present);
-			//if (present) {
-			//	int axes_count;
-			//	const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axes_count);
-			//	OC_INFO("Number of axes available : {}", axes_count);
-			//	OC_INFO("Left axis X: {}", axes[0]);
-			//	OC_INFO("Left axis Y: {}", axes[1]);
-			//	OC_INFO("Unknown axis X: {}", axes[2]);
-			//	//OC_INFO("Unknownaxis Y: {}", axes[3]);
-			//}
-
-			// Iterate over layers and run update
-			if (!m_Minimized) {
-				for (Layer* layer : m_LayerStack) {
-					layer->OnUpdate(deltaTime);
-				}
-			}
-
-			m_ImGuiLayer->Begin();
-
-			for (Layer* layer : m_LayerStack) {
-				layer->OnImGuiRender();
-			}
-
-			m_ImGuiLayer->End();
+			m_ActiveScene->Update(deltaTime, m_Minimized);
 
 			m_Window->OnUpdate();
 		}
-	
-	}
 
-	void Application::PushLayer(Layer* layer) {
-		m_LayerStack.PushLayer(layer);
-	}
-
-	void Application::PushOverlay(Layer* layer) {
-		m_LayerStack.PushOverlay(layer);
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e) {

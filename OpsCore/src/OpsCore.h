@@ -5,11 +5,12 @@
 
 #include "OpsCore/Core/Layer.h" // Just here for clarity
 #include "OpsCore/ImGui/ImGuiLayer.h"
-
+#include "OpsCore/Core/Scene.h"
 
 // ------- CORE ----------------------
 #include "OpsCore/Core/Timestep.h"
 #include "OpsCore/Renderer/Cameras/OrthographicCameraController.h"
+
 
 
 // ------- RENDERING ------------------

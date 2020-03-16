@@ -14,8 +14,8 @@
 
 namespace oc {
 
-	ImGuiLayer::ImGuiLayer() 
-		:Layer("ImGuiLayer")
+	ImGuiLayer::ImGuiLayer(Scene* parentScene) 
+		:Layer(parentScene, "ImGuiLayer")
 	{
 	}
 

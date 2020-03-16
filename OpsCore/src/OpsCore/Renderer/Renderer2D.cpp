@@ -187,9 +187,9 @@ namespace oc {
 			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }
 		);
 
-
+		
+		// Shift UV coordinates by amount dependent on parent sprite
 		glm::vec2 uv_shift = { (index % 4) * 0.25f , (19 - (index / 4))* 0.05f };
-		OC_INFO("uv shift {}:{}", uv_shift.x, uv_shift.y);
 
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetMat4("u_Transform", transform);
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
