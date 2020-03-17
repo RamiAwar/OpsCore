@@ -11,9 +11,10 @@ namespace oc {
 	{
 	
 	public:
-		ImGuiLayer(Scene* parentScene);
+		ImGuiLayer();
 		~ImGuiLayer();
 
+		static void Init();
 
 		virtual void OnAttach() override;
 		virtual void OnDetach() override;
@@ -22,6 +23,8 @@ namespace oc {
 
 		void Begin();
 		void End();
+
+		static void Shutdown();
 
 	private:
 		float m_Time = 0.0f;

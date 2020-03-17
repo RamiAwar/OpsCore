@@ -36,13 +36,13 @@ namespace oc {
 		} 
 	}
 
-	void ShaderLibrary::Add(const std::string name, const std::shared_ptr<Shader>& shader)
+	void ShaderLibrary::Add(const std::string name, const Ref<Shader>& shader)
 	{
 		OC_ASSERT(!Find(name), "Shader already exists in library.");
 		m_Shaders[name] = shader;
 	}
 
-	void ShaderLibrary::Add(const std::shared_ptr<Shader>& shader)
+	void ShaderLibrary::Add(const Ref<Shader>& shader)
 	{
 		auto& name = shader->GetName();
 		Add(name, shader);

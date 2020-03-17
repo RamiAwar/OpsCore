@@ -1,19 +1,20 @@
 #include "Game.h"
 
 
-Game::Game(oc::Scene* scene, const std::string& name) : 
-	Layer(scene, "Game"), 
+Game::Game(const std::string& name) : Layer("Game"), 
 	m_CameraController(oc::Renderer::aspectRatio, true, true) 
 {
 	OC_CLIENT_INFO("Initializing game layer ... ");
 }
 
-
 void Game::OnAttach() {
 	spy_texture = oc::Texture2D::Create(spy_texture_path);
+	OC_CLIENT_INFO("Inside game onattach");
 }
 
-void Game::OnDetach() {}
+void Game::OnDetach() {
+	OC_CLIENT_INFO("Inside game ondetach");
+}
 
 void Game::OnUpdate(oc::Timestep ts) {
 
@@ -61,31 +62,10 @@ void Game::OnImGuiRender() {
 
 	ImGui::DragInt("Index", &sprite_index, 1, 0, 79);
 
+	if (ImGui::Button("Switch")) {
+		oc::SceneStateMachine::instance()->SetActive("menu");
+	}
+
 	ImGui::End();
 }
 
-class DemoScene : public oc::Scene {
-
-public:
-	DemoScene() {
-		PushLayer(new Game(this));
-	}
-
-	~DemoScene() {};
-
-};
-
-
-
-class Main : public oc::Application {
-public:
-	Main() {
-		m_ActiveScene = new DemoScene();
-	}
-
-	~Main() {};
-};
-
-oc::Application* oc::CreateApplication() {
-	return new Main();
-}

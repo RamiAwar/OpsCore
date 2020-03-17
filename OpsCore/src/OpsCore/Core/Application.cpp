@@ -6,6 +6,8 @@
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/RenderCommand.h"
 
+#include "OpsCore/Core/SceneStateMachine.h"
+
 #include <GLFW/glfw3.h>
 
 namespace oc {
@@ -24,9 +26,14 @@ namespace oc {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
+		Renderer::Init();
+		ImGuiLayer::Init();
+
 	}
 
-	Application::~Application() {}
+	Application::~Application() {
+		ImGuiLayer::Shutdown();
+	}
 
 
 
@@ -37,7 +44,7 @@ namespace oc {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-		m_ActiveScene->OnEvent(e);
+		SceneStateMachine::instance()->OnEvent(e);
 
 	}
 
@@ -50,7 +57,7 @@ namespace oc {
 			Timestep deltaTime = time - m_LastDeltaTime;
 			m_LastDeltaTime = time;
 
-			m_ActiveScene->Update(deltaTime, m_Minimized);
+			SceneStateMachine::instance()->Update(deltaTime, m_Minimized);
 
 			m_Window->OnUpdate();
 		}

@@ -27,8 +27,8 @@ namespace oc {
 		inline  Window& GetWindow() { return *m_Window; }
 
 	protected:
-		Scene* m_ActiveScene;
 		std::unique_ptr<Window> m_Window;
+
 
 	private:
 

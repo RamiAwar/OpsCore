@@ -1,14 +1,12 @@
 #pragma once
-
 #include <OpsCore.h>
 #include "imgui.h"
 
-
-class Game : public oc::Layer {
+class Menu : public oc::Layer {
 
 public:
 
-	Game(const std::string& name = "Layer");
+	Menu(const std::string& name = "Layer");
 
 	void OnAttach() override;
 	void OnDetach() override;
@@ -21,9 +19,5 @@ public:
 private:
 
 	oc::OrthographicCameraController m_CameraController;
-	oc::Ref<oc::Texture2D> spy_texture;
-	std::string spy_texture_path = "assets/sprites/spy/spy.atlas.png";
-	glm::vec2 placeholder = glm::vec2(0.0f);
-	int sprite_index = 0;
 
 };

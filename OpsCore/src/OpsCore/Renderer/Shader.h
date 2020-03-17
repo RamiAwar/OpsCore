@@ -42,11 +42,11 @@ namespace oc {
 	public:
 
 		void Add(const std::shared_ptr<Shader>& shader);
-		void Add(const std::string name, const std::shared_ptr<Shader>& shader);
+		void Add(const std::string name, const Ref<Shader>& shader);
 
-		std::shared_ptr<Shader> Load(const std::string& filepath); // assets/Texture.glsl - strips name from path
-		std::shared_ptr<Shader> Load(const std::string name, const std::string& filepath); // name provided manually
-		std::shared_ptr<Shader> Get(const std::string& name); // retrieves shader from map by name
+		Ref<Shader> Load(const std::string& filepath); // assets/Texture.glsl - strips name from path
+		Ref<Shader> Load(const std::string name, const std::string& filepath); // name provided manually
+		Ref<Shader> Get(const std::string& name); // retrieves shader from map by name
 
 		bool Find(const std::string& name) const;
 

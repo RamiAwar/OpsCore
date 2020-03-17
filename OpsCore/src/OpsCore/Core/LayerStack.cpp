@@ -11,9 +11,18 @@ namespace oc {
 
 	LayerStack::LayerStack() {}
 
-	LayerStack::~LayerStack() {
-		for (Layer* layer : m_Layers)
-			delete layer;
+	LayerStack::~LayerStack() {}
+
+	void LayerStack::Clear() {
+
+		for (auto it = m_Layers.begin(); it != m_Layers.end(); it++) {
+			OC_INFO("Deleting layer {}", (*it)->GetName());
+			(*it)->OnDetach();
+			delete *it;
+		}
+
+		m_LayerInsertIndex = 0;
+		m_Layers.clear();
 	}
 
 	void LayerStack::PushLayer(Layer* layer) {
@@ -21,6 +30,7 @@ namespace oc {
 		m_LayerInsertIndex++;
 		layer->OnAttach();
 	}
+
 
 	void LayerStack::PushOverlay(Layer* overlay) {
 		m_Layers.emplace_back(overlay);
@@ -45,4 +55,5 @@ namespace oc {
 			m_Layers.erase(it);
 		}
 	}
+
 }

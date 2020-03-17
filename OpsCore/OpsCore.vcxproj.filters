@@ -90,6 +90,9 @@
     <ClInclude Include="src\OpsCore\Core\Scene.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\SceneStateMachine.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Timestep.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
@@ -1350,6 +1353,9 @@
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Core\Scene.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\SceneStateMachine.cpp">
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp">

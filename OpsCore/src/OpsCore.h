@@ -5,12 +5,12 @@
 
 #include "OpsCore/Core/Layer.h" // Just here for clarity
 #include "OpsCore/ImGui/ImGuiLayer.h"
-#include "OpsCore/Core/Scene.h"
 
 // ------- CORE ----------------------
 #include "OpsCore/Core/Timestep.h"
 #include "OpsCore/Renderer/Cameras/OrthographicCameraController.h"
-
+#include "OpsCore/Core/Scene.h"
+#include "OpsCore/Core/SceneStateMachine.h"
 
 
 // ------- RENDERING ------------------
@@ -26,17 +26,12 @@
 
 
 // ------- IMGUI ----------------------
-#include "OpsCore/ImGui/ImGuiWidgets.h"
 #include "OpsCore/ImGui/ImGuiFileDialog.h"
 
 // ------------ Input -------------
 #include "OpsCore/Core/Input.h"
 #include "OpsCore/Core/KeyCodes.h"
 #include "OpsCore/Core/MouseButtonCodes.h"
-
-// ------- Entry point -----------
-#include "OpsCore/Core/Entrypoint.h"
-
 
 // -------- Libraries
 #include "glm/gtc/type_ptr.hpp"

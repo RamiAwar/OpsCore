@@ -9,13 +9,11 @@
 
 namespace oc {
 	
-	class Scene;
-
 	class  Layer
 	{
 	public:
 
-		Layer(Scene* scene, const std::string& name = "Layer");
+		Layer(const std::string& name="Layer");
 		virtual ~Layer();
 
 		virtual void OnAttach() {}
@@ -38,7 +36,6 @@ namespace oc {
 
 	protected:
 		std::string m_DebugName;
-		Scene* m_ParentScene;
 
 	};
 

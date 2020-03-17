@@ -15,21 +15,29 @@ namespace oc {
 
 	public:
 
-		Scene();
-		virtual ~Scene();
+		Scene() : m_Shutdown(false) { m_LayerStack = new LayerStack(); }
 
-		void OnEvent(Event& e);
+		virtual void OnInit();
+		virtual void OnAttach();
+		virtual void OnDetach();
+
+		virtual void OnEvent(Event& e);
 
 		// TODO: Change boolean minimized to a struct representing various window properties
-		void Update(oc::Timestep ts, bool minimized);
+		virtual void Update(oc::Timestep ts, bool minimized);
 
-		void PushLayer(Layer* layer);
-		void PushOverlay(Layer* layer);
+		virtual void PushLayer(Layer* layer);
+		virtual void PushOverlay(Layer* layer);
+		
+		void ToggleShutdown();
+		inline bool GetShutdown() { return m_Shutdown; }
 
-	private:
+	protected:
 
-		ImGuiLayer* m_ImGuiLayer;
-		LayerStack m_LayerStack;
+		// TODO: Change ImGuiLayer to removable layer, not forced initialization 
+		static ImGuiLayer* m_ImGuiLayer; 
+		LayerStack* m_LayerStack; // necessary to initialize to instance
+		bool m_Shutdown;
 
 	};
 

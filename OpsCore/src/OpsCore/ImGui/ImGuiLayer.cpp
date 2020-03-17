@@ -14,18 +14,18 @@
 
 namespace oc {
 
-	ImGuiLayer::ImGuiLayer(Scene* parentScene) 
-		:Layer(parentScene, "ImGuiLayer")
+	ImGuiLayer::ImGuiLayer() 
+		:Layer("ImGuiLayer")
 	{
 	}
 
 	ImGuiLayer::~ImGuiLayer()
 	{
+
 	}
 
-	void ImGuiLayer::OnAttach()
+	void ImGuiLayer::Init()
 	{
-		
 		// Setup Dear ImGui context
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -55,14 +55,15 @@ namespace oc {
 		// Setup Platform/Renderer bindings
 		ImGui_ImplGlfw_InitForOpenGL(window, true);
 		ImGui_ImplOpenGL3_Init("#version 410");
+	}
 
+	void ImGuiLayer::OnAttach()
+	{
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
+		
 	}
 
 
@@ -88,6 +89,13 @@ namespace oc {
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
+	}
+
+	void ImGuiLayer::Shutdown()
+	{
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+		ImGui::DestroyContext();
 	}
 
 	void ImGuiLayer::OnImGuiRender() {
