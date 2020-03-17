@@ -40,8 +40,7 @@ namespace oc {
 	void SceneStateMachine::SetActive(std::string name) {
 
 		OC_ASSERT(Find(name), "Scene named :'{}' was not found.", name);
-		OC_INFO("Setting scene {} to active scene", name);
-
+		 
 		if (m_CurrentScene != NULL) {
 			m_CurrentScene->ToggleShutdown();
 

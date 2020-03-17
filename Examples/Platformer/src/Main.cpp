@@ -6,9 +6,7 @@
 
 class DemoScene : public oc::Scene {
 public:
-	DemoScene(){
-	
-	}
+	DemoScene(){}
 
 	void OnAttach() {
 		PushLayer(new Game());
@@ -33,13 +31,12 @@ public:
 
 class Main : public oc::Application {
 public:
+
 	Main() {
-
-		oc::SceneStateMachine::instance()->Add("demo", oc::CreateRef<DemoScene>());
+		
 		oc::SceneStateMachine::instance()->Add("menu", oc::CreateRef<SplashScreenScene>());
-
-		/*m_SceneSM->Add("menu", oc::CreateRef<SplashScreenScene>());
-		m_SceneSM->SetActive("menu");*/
+		
+		oc::SceneStateMachine::instance()->Add("demo", oc::CreateRef<DemoScene>());
 
 	}
 

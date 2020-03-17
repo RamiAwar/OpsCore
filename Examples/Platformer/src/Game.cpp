@@ -4,16 +4,13 @@
 Game::Game(const std::string& name) : Layer("Game"), 
 	m_CameraController(oc::Renderer::aspectRatio, true, true) 
 {
-	OC_CLIENT_INFO("Initializing game layer ... ");
 }
 
 void Game::OnAttach() {
 	spy_texture = oc::Texture2D::Create(spy_texture_path);
-	OC_CLIENT_INFO("Inside game onattach");
 }
 
 void Game::OnDetach() {
-	OC_CLIENT_INFO("Inside game ondetach");
 }
 
 void Game::OnUpdate(oc::Timestep ts) {
@@ -38,8 +35,10 @@ void Game::OnRender() {
 	oc::Renderer2D::DrawSprite(
 		sprite_index,
 		placeholder, // position
-		{ 0.4f, 0.4f }, // size
+		0.2f, // size
 		spy_texture,
+		20, 
+		4,
 		{ 1.0f, 1.0f }, // tile scale
 		{ 1.0f, 1.0f, 1.0f, 1.0f } // color tint
 	);

@@ -10,6 +10,7 @@ namespace oc {
 
 	struct Renderer2DStorage {
 		std::shared_ptr<VertexArray> m_QuadVertexArray;
+		std::shared_ptr<VertexArray> m_SpriteVertexArray;
 
 		ShaderLibrary m_ShaderLibrary;
 
@@ -30,6 +31,13 @@ namespace oc {
 		// ----------- Square inits ---------------------------
 		float square_vertices[5 * 4] = {
 				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+				 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+				-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+				 0.5f,  0.5f, 0.0f, 1.0f, 1.0f
+		};
+
+		float sprite_vertices[5 * 4] = {
+				-0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
 				 0.5f, -0.5f, 0.0f, 0.25f, 0.0f,
 				-0.5f,  0.5f, 0.0f, 0.0f, 0.05f,
 				 0.5f,  0.5f, 0.0f, 0.25f, 0.05f
@@ -37,10 +45,11 @@ namespace oc {
 
 
 		s_Data->m_QuadVertexArray = oc::VertexArray::Create();
-
+		s_Data->m_SpriteVertexArray = oc::VertexArray::Create();
 
 		// Setting up square VBs
 		Ref<VertexBuffer> square_vb;
+		Ref<VertexBuffer> sprite_vb;
 
 		BufferLayout squareLayout = {
 			{ShaderDataType::Float3, "a_Position"},
@@ -51,12 +60,17 @@ namespace oc {
 		square_vb->SetLayout(squareLayout);
 		s_Data->m_QuadVertexArray->AddVertexBuffer(square_vb);
 
+		sprite_vb.reset(oc::VertexBuffer::Create(sprite_vertices, sizeof(sprite_vertices)));
+		sprite_vb->SetLayout(squareLayout);
+		s_Data->m_SpriteVertexArray->AddVertexBuffer(sprite_vb);
+
 		// Setting up square IBs
 		uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 1 };
 		Ref<IndexBuffer> square_ib;
 
 		square_ib.reset(oc::IndexBuffer::Create(square_indices, sizeof(square_indices)));
 		s_Data->m_QuadVertexArray->SetIndexBuffer(square_ib);
+		s_Data->m_SpriteVertexArray->SetIndexBuffer(square_ib);
 
 		// White pixel texture - default texture
 		s_Data->m_WhiteTexture = Texture2D::Create(1, 1);
@@ -131,6 +145,13 @@ namespace oc {
 	//				|
 	//				-1
 
+	/*
+	* Transforms coordinates from (0 -> 1) by (0 -> 1) to their correct positions
+	*/
+	glm::vec3 normalized_to_scaled(const glm::vec3& position, const glm::vec2& size) {
+		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (size.x * Renderer::aspectRatio), 2 * (position.y - 0.5f) + (size.y), 0.0f };
+	}
+
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
 	{
 		DrawQuad({ position.x, position.y, 0.0f }, size, s_Data->m_WhiteTexture, glm::vec2(1.0f), color);
@@ -154,10 +175,12 @@ namespace oc {
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat4("u_Color", color);
 		
 		glm::mat4 rotation = glm::mat4(1.0f);
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f), 
-			{ -Renderer::aspectRatio + position.x*2*Renderer::aspectRatio + size.x / 2 , position.y*2 - 1.0f + size.y / 2, 0.0f }) 
+
+
+
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), normalized_to_scaled(position, size))
 			* rotation 
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f });
+			* glm::scale(glm::mat4(1.0f), { size.x*Renderer::aspectRatio*2, size.y*2, 1.0f });
 		
 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_Transform", transform);
@@ -168,12 +191,12 @@ namespace oc {
 
 	}
 
-	void Renderer2D::DrawSprite(const int& index, const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
+	void Renderer2D::DrawSprite(const int& index, const glm::vec2& position, const float size, const Ref<Texture2D>& texture, int rows, int cols, const glm::vec2& tileScale, const glm::vec4& color)
 	{
-		DrawSprite(index, { position.x, position.y, 0.0f }, size, texture, tileScale, color);
+		DrawSprite(index, { position.x, position.y, 0.0f }, size, texture, rows, cols, tileScale, color);
 	}
 
-	void Renderer2D::DrawSprite(const int& index, const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
+	void Renderer2D::DrawSprite(const int& index, const glm::vec3& position, const float size, const Ref<Texture2D>& texture, int rows, int cols, const glm::vec2& tileScale, const glm::vec4& color)
 	{
 		texture->Bind(); // Get image in : Pass this to uniform in texture shader
 
@@ -181,22 +204,20 @@ namespace oc {
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat4("u_Color", color);
 
 		glm::mat4 rotation = glm::mat4(1.0f);
-		glm::mat4 transform = glm::translate(glm::mat4(1.0f),{ 
-			-Renderer::aspectRatio + position.x * 2 * Renderer::aspectRatio + size.x / 2, position.y * 2 - 1.0f + size.y / 2, 0.0f })
+		glm::mat4 transform = glm::translate(glm::mat4(1.0f), normalized_to_scaled(position, { size, size }))
 			* rotation
-			* glm::scale(glm::mat4(1.0f), { size.x, size.y, 1.0f }
+			* glm::scale(glm::mat4(1.0f), { size * 2, size * 2, 1.0f }
 		);
-
 		
 		// Shift UV coordinates by amount dependent on parent sprite
-		glm::vec2 uv_shift = { (index % 4) * 0.25f , (19 - (index / 4))* 0.05f };
+		glm::vec2 uv_shift = { (float)(index % cols)/cols, (rows - 1 - (float)(index/cols))/rows};
 
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetMat4("u_Transform", transform);
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetFloat2("u_UVShift", uv_shift);
 		
-		s_Data->m_QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
+		s_Data->m_SpriteVertexArray->Bind();
+		RenderCommand::DrawIndexed(s_Data->m_SpriteVertexArray);
 
 	}
 

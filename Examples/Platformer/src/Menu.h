@@ -19,5 +19,7 @@ public:
 private:
 
 	oc::OrthographicCameraController m_CameraController;
+	oc::Ref<oc::Texture2D> pumpkinbox_texture;
+	std::string pumpkinbox_texture_path = "assets/textures/pumpkin.png";
 
 };
