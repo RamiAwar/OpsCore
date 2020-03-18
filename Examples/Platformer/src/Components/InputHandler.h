@@ -5,10 +5,31 @@
 
 class MoveRightCommand : public Command {
 public:
-	virtual void execute(oc::Ref<oc::Component> component) {
-		std::dynamic_pointer_cast<PlayerController>(component)->MoveRight();
+	virtual void execute(oc::Timestep ts, oc::Ref<PlayerController> controller) override {
+		controller->MoveRight(ts);
 	}
 };
+
+class MoveLeftCommand : public Command {
+public:
+	virtual void execute(oc::Timestep ts, oc::Ref<PlayerController> controller) override {
+		controller->MoveLeft(ts);
+	}
+};
+
+class SheatheCommand : public Command {
+public:
+	virtual void execute(oc::Timestep ts, oc::Ref<PlayerController> controller) override {
+		controller->Sheathe(ts);
+	}
+};
+class ShootCommand : public Command {
+public:
+	virtual void execute(oc::Timestep ts, oc::Ref<PlayerController> controller) override {
+		controller->Shoot(ts);
+	}
+};
+
 
 class InputHandler : public oc::Component
 {
@@ -31,10 +52,10 @@ public:
 
 private:
 
-	Command* moveLeftButton;
+	Command* moveLeftButton = new MoveLeftCommand();
 	Command* moveRightButton = new MoveRightCommand();
-	Command* sheatheButton;
-	Command* shootButton;
+	Command* sheatheButton = new SheatheCommand();
+	Command* shootButton = new ShootCommand();
 
 };
 

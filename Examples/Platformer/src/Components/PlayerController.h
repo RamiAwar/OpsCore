@@ -15,13 +15,13 @@ public:
 	virtual void OnLateUpdate(oc::Timestep ts) override;
 	virtual void Render() override;
 
-	void MoveRight() {
-		// TODO: Queue this action for later execution during Update()
-		m_ParentGameObject->GetTransform()->position.x += m_PlayerHorizontalSpeed;
-	}
-
+	// TODO: Queue this action for later execution during Update()
+	void MoveRight(oc::Timestep ts);
+	void MoveLeft(oc::Timestep ts);
+	void Sheathe(oc::Timestep ts);
+	void Shoot(oc::Timestep ts);
 
 public:
-	float m_PlayerHorizontalSpeed = 0.045f;
+	float m_PlayerHorizontalSpeed = 0.05f;
 
 };

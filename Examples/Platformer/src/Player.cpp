@@ -21,9 +21,8 @@ void Player::OnUpdate(oc::Timestep ts)
 	Command* command = std::dynamic_pointer_cast<InputHandler>(GetComponent("InputHandler"))->HandleInput();
 	if (command) {
 		OC_INFO("Command received");
-		command->execute(GetComponent("PlayerController"));
+		command->execute(ts, std::dynamic_pointer_cast<PlayerController>(GetComponent("PlayerController")));
 	}
-
 }
 
 void Player::OnLateUpdate(oc::Timestep ts)
