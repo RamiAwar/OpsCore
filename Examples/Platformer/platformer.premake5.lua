@@ -17,6 +17,7 @@ project "Platformer"
 
 	includedirs
 	{
+		"src/",
 		"../../OpsCore/src",
 		"../../%{IncludeDir.spdlog}",
 		"../../%{IncludeDir.glm}", 

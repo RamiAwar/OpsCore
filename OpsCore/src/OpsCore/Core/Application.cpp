@@ -57,7 +57,7 @@ namespace oc {
 			Timestep deltaTime = time - m_LastDeltaTime;
 			m_LastDeltaTime = time;
 
-			SceneStateMachine::instance()->Update(deltaTime, m_Minimized);
+			SceneStateMachine::instance()->OnUpdate(deltaTime, m_Minimized);
 
 			m_Window->OnUpdate();
 		}

@@ -2,25 +2,34 @@
 
 
 Game::Game(const std::string& name) : Layer("Game"), 
-	m_CameraController(oc::Renderer::aspectRatio, true, true) 
+	m_CameraController(oc::Renderer::aspectRatio, false, false) 
 {
-}
-
-void Game::OnAttach() {
 	spy_texture = oc::Texture2D::Create(spy_texture_path);
 }
 
+void Game::OnAttach() {
+	//m_GameObjectCollection->OnCreate();
+
+	spy.OnCreate();
+}
+
 void Game::OnDetach() {
+	//m_GameObjectCollection->OnDestroy();
+	spy.OnDestroy();
 }
 
 void Game::OnUpdate(oc::Timestep ts) {
 
 	m_CameraController.OnUpdate(ts);
 
+	//m_GameObjectCollection->OnUpdate(ts);
+	spy.OnUpdate(ts);
 }
 
-void Game::OnLateUpdate(oc::Timestep ds)
+void Game::OnLateUpdate(oc::Timestep ts)
 {
+	spy.OnLateUpdate(ts);
+	//m_GameObjectCollection->OnLateUpdate(ts);
 }
 
 void Game::OnRender() {
@@ -31,11 +40,13 @@ void Game::OnRender() {
 	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 
+	//spy.Render();
+	//m_GameObjectCollection->Render();
 
 	oc::Renderer2D::DrawSprite(
 		sprite_index,
-		placeholder, // position
-		0.2f, // size
+		spy.transform.position, // position
+		-0.2f, // size
 		spy_texture,
 		20, 
 		4,

@@ -14,6 +14,7 @@ namespace oc {
 	ImGuiLayer* Scene::m_ImGuiLayer = new ImGuiLayer();
 
 	void Scene::OnInit() {
+
 	}
 
 	void Scene::OnAttach() {
@@ -32,7 +33,7 @@ namespace oc {
 		}
 	}
 
-	void Scene::Update(oc::Timestep deltaTime, bool minimized) {
+	void Scene::OnUpdate(oc::Timestep deltaTime, bool minimized) {
 
 		// Iterate over layers and run update
 		if (!minimized) {

@@ -149,7 +149,7 @@ namespace oc {
 	* Transforms coordinates from (0 -> 1) by (0 -> 1) to their correct positions
 	*/
 	glm::vec3 normalized_to_scaled(const glm::vec3& position, const glm::vec2& size) {
-		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (size.x * Renderer::aspectRatio), 2 * (position.y - 0.5f) + (size.y), 0.0f };
+		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (abs(size.x) * Renderer::aspectRatio), 2 * (position.y - 0.5f) + abs(size.y), 0.0f };
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -206,7 +206,7 @@ namespace oc {
 		glm::mat4 rotation = glm::mat4(1.0f);
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), normalized_to_scaled(position, { size, size }))
 			* rotation
-			* glm::scale(glm::mat4(1.0f), { size * 2, size * 2, 1.0f }
+			* glm::scale(glm::mat4(1.0f), { size * 2, abs(size) * 2, 1.0f }
 		);
 		
 		// Shift UV coordinates by amount dependent on parent sprite

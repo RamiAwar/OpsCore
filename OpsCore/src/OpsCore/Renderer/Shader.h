@@ -54,7 +54,7 @@ namespace oc {
 		void _List() const;
 
 	private:
-		std::unordered_map<std::string, std::shared_ptr<Shader>> m_Shaders;
+		std::unordered_map<std::string,Ref<Shader>> m_Shaders;
 	};
 
 }

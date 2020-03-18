@@ -10,9 +10,9 @@ namespace oc {
 		m_CurrentScene->OnEvent(e);
 	}
 
-	void SceneStateMachine::Update(oc::Timestep ts, bool minimized) {
+	void SceneStateMachine::OnUpdate(oc::Timestep ts, bool minimized) {
 		
-		m_CurrentScene->Update(ts, minimized);
+		m_CurrentScene->OnUpdate(ts, minimized);
 
 		if (m_CurrentScene->GetShutdown()) {
 			

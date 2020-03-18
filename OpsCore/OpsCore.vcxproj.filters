@@ -16,6 +16,9 @@
     <Filter Include="src\OpsCore\ImGui">
       <UniqueIdentifier>{81346F4D-ED4A-6DE3-36C2-F804A2173E6B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\OpsCore\Math">
+      <UniqueIdentifier>{5015CFD3-3C0E-EE25-6540-D3AA5198CD31}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\OpsCore\Platform">
       <UniqueIdentifier>{4B50408D-37DF-C956-E0FD-DD51CC6BDAFC}</UniqueIdentifier>
     </Filter>
@@ -63,10 +66,16 @@
     <ClInclude Include="src\OpsCore\Core\Application.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Component.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Core.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Entrypoint.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\GameObject.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Input.h">
@@ -96,6 +105,9 @@
     <ClInclude Include="src\OpsCore\Core\Timestep.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Transform.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Window.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
@@ -122,6 +134,9 @@
     </ClInclude>
     <ClInclude Include="src\OpsCore\ImGui\ImGuiWidgets.h">
       <Filter>src\OpsCore\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Math\Quaternion.h">
+      <Filter>src\OpsCore\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
@@ -1338,9 +1353,13 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\GameObjectCollection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\GameObject.cpp">
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Core\Layer.cpp">
@@ -1366,6 +1385,9 @@
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiLayer.cpp">
       <Filter>src\OpsCore\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Math\Quaternion.cpp">
+      <Filter>src\OpsCore\Math</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\OpsCore\Platform\OpenGL</Filter>
@@ -1427,5 +1449,6 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\GameObjectCollection.cpp" />
   </ItemGroup>
 </Project>

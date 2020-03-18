@@ -35,7 +35,6 @@ public:
 	Main() {
 		
 		oc::SceneStateMachine::instance()->Add("menu", oc::CreateRef<SplashScreenScene>());
-		
 		oc::SceneStateMachine::instance()->Add("demo", oc::CreateRef<DemoScene>());
 
 	}

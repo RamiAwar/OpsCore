@@ -11,6 +11,8 @@
 #include "OpsCore/Renderer/Cameras/OrthographicCameraController.h"
 #include "OpsCore/Core/Scene.h"
 #include "OpsCore/Core/SceneStateMachine.h"
+#include "OpsCore/Core/GameObject.h"
+#include "OpsCore/Core/GameObjectCollection.h"
 
 
 // ------- RENDERING ------------------

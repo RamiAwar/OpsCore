@@ -21,7 +21,7 @@ namespace oc{
 
 		void OnEvent(Event& e);
 		// TODO: Get rid of minimized boolean here by making application window accessible?
-		void Update(Timestep ts, bool minimized);
+		void OnUpdate(Timestep ts, bool minimized);
 
 		void SetActive(std::string name);
 

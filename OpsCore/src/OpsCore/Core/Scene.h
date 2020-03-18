@@ -24,7 +24,7 @@ namespace oc {
 		virtual void OnEvent(Event& e);
 
 		// TODO: Change boolean minimized to a struct representing various window properties
-		virtual void Update(oc::Timestep ts, bool minimized);
+		virtual void OnUpdate(oc::Timestep ts, bool minimized);
 
 		virtual void PushLayer(Layer* layer);
 		virtual void PushOverlay(Layer* layer);
