@@ -1354,6 +1354,8 @@
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\GameObjectCollection.h" />
+    <ClInclude Include="src\OpsCore\Core\Animation.h" />
+    <ClInclude Include="src\OpsCore\Core\Sprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
@@ -1450,5 +1452,7 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Core\GameObjectCollection.cpp" />
+    <ClCompile Include="src\OpsCore\Core\Animation.cpp" />
+    <ClCompile Include="src\OpsCore\Core\Sprite.cpp" />
   </ItemGroup>
 </Project>

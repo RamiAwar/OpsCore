@@ -6,15 +6,6 @@
 #include "OpsCore/Core/Layer.h" // Just here for clarity
 #include "OpsCore/ImGui/ImGuiLayer.h"
 
-// ------- CORE ----------------------
-#include "OpsCore/Core/Timestep.h"
-#include "OpsCore/Renderer/Cameras/OrthographicCameraController.h"
-#include "OpsCore/Core/Scene.h"
-#include "OpsCore/Core/SceneStateMachine.h"
-#include "OpsCore/Core/GameObject.h"
-#include "OpsCore/Core/GameObjectCollection.h"
-
-
 // ------- RENDERING ------------------
 #include "OpsCore/Renderer/Buffer.h"
 #include "OpsCore/Renderer/VertexArray.h"
@@ -23,8 +14,18 @@
 #include "OpsCore/Renderer/RenderCommand.h"
 #include "OpsCore/Renderer/Renderer.h"
 #include "OpsCore/Renderer/Renderer2D.h"
-#include "OpsCore/Renderer/Cameras/OrthographicCamera.h"
 #include "OpsCore/Renderer/Texture.h"
+
+// ------- CORE ----------------------
+#include "OpsCore/Core/Timestep.h"
+#include "OpsCore/Renderer/Cameras/OrthographicCameraController.h"
+#include "OpsCore/Renderer/Cameras/OrthographicCamera.h"
+#include "OpsCore/Core/Scene.h"
+#include "OpsCore/Core/SceneStateMachine.h"
+#include "OpsCore/Core/GameObject.h"
+#include "OpsCore/Core/GameObjectCollection.h"
+#include "OpsCore/Core/Sprite.h"
+
 
 
 // ------- IMGUI ----------------------

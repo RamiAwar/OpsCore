@@ -25,11 +25,9 @@ private:
 	
 	oc::GameObjectCollection m_GameObjectCollection;
 	
-	// TODO: Don't want to store textures here. Only sprites
-	oc::Ref<oc::Texture2D> spy_texture;
-	std::string spy_texture_path = "assets/sprites/spy/spy.atlas.png";
-	glm::vec2 placeholder = glm::vec2(0.0f);
-	int sprite_index = 0;
+	oc::Sprite spy_sprite;
+
+	glm::vec2 placeholder;
 
 	Player spy;
 
