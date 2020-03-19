@@ -25,8 +25,6 @@ private:
 	
 	oc::GameObjectCollection m_GameObjectCollection;
 	
-	oc::Sprite spy_sprite;
-
 	glm::vec2 placeholder;
 
 	Player spy;

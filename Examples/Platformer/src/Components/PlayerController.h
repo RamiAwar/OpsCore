@@ -21,7 +21,9 @@ public:
 	void Sheathe(oc::Timestep ts);
 	void Shoot(oc::Timestep ts);
 
+	void SetHorizontalSpeed(float f) { m_PlayerHorizontalSpeed = f; }
+
 public:
-	float m_PlayerHorizontalSpeed = 0.05f;
+	float m_PlayerHorizontalSpeed = 0.1f;
 
 };

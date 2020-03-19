@@ -9,6 +9,9 @@ void Player::OnCreate()
 
 	AddComponent("InputHandler", m_InputHandler);
 	AddComponent("PlayerController", m_PlayerController);
+
+
+	m_PlayerController->SetHorizontalSpeed(0.3f);
 }
 
 void Player::OnDestroy()
@@ -31,4 +34,5 @@ void Player::OnLateUpdate(oc::Timestep ts)
 
 void Player::Render()
 {
+	m_Sprite.Render(this->transform.position, 0.5f);
 }

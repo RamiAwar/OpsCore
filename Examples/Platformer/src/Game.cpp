@@ -2,8 +2,7 @@
 
 
 Game::Game(const std::string& name) : Layer("Game"), 
-	m_CameraController(oc::Renderer::aspectRatio, false, false),
-	spy_sprite(oc::Sprite("assets/sprites/spy/spy.atlas.png", 20, 4, 80))
+	m_CameraController(oc::Renderer::aspectRatio, false, false)
 {
 }
 
@@ -39,14 +38,12 @@ void Game::OnRender() {
 
 	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	spy_sprite.Render(placeholder, 0.5f);
+	
 
-	//spy.Render();
+
+	spy.Render();
+
 	//m_GameObjectCollection->Render();
-
-
-
-
 
 	oc::Renderer2D::EndScene();
 }
@@ -60,9 +57,8 @@ void Game::OnImGuiRender() {
 	ImGui::Begin("Debug");
 
 	ImGui::Text("Aspect Ratio: %f", oc::Renderer::aspectRatio);
-	ImGui::SliderFloat2("Placeholder", glm::value_ptr(placeholder), 0.0f, 1.0f);
 
-	ImGui::DragInt("Index", &spy_sprite.currentIndex, 1, 0, 79);
+	ImGui::DragInt("Index", &spy.GetSprite()->currentIndex, 1, 0, 79);
 
 	if (ImGui::Button("Switch")) {
 		oc::SceneStateMachine::instance()->SetActive("menu");
