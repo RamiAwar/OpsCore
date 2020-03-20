@@ -87,6 +87,10 @@ class MoveState : public SpyAnimationState {
 };
 
 class SheatheState : public SpyAnimationState {
+public:
+	SheatheState()
+		:m_SheatheTimer(0.0f)
+	{}
 
 	// Inherited via SpyAnimationState
 	virtual void enter(oc::GameObject*) override;
@@ -97,6 +101,9 @@ class SheatheState : public SpyAnimationState {
 	virtual SpyAnimationState* Shoot(oc::GameObject* player) override;
 	virtual SpyAnimationState* Idle(oc::GameObject* player) override;
 
+private:
+	float m_SheatheTimer;
+	const float SHEATHE_TIME = 1.0f;
 };
 
 class ShootState : public SpyAnimationState {
@@ -113,7 +120,7 @@ class ShootState : public SpyAnimationState {
 };
 
 class MoveGunState : public SpyAnimationState {
-
+public:
 	// Inherited via SpyAnimationState
 	virtual void enter(oc::GameObject*) override;
 	virtual void update(oc::Timestep ts, oc::GameObject*) override;

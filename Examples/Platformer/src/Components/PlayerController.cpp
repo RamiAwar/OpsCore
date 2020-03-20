@@ -1,5 +1,5 @@
 #include "PlayerController.h"
-
+#include "Player.h"
 
 
 void PlayerController::OnUpdate(oc::Timestep ts)
@@ -18,9 +18,12 @@ void PlayerController::MoveLeft(oc::Timestep ts) {
 }
 
 void PlayerController::Sheathe(oc::Timestep ts) {
-	//m_ParentGameObject->GetAnimationStateMachine()->SetState("sheathe");
 }
 
 void PlayerController::Shoot(oc::Timestep ts) {
-	//m_ParentGameObject->GetAnimationStateMachine()->SetState("shoot");
+	if (dynamic_cast<Player*>(m_ParentGameObject)->m_Sheathed) return;
+	else {
+		// shoot
+
+	}
 }

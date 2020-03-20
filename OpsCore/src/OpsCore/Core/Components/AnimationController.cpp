@@ -23,7 +23,7 @@ void oc::AnimationController::OnUpdate(Timestep ts)
 void oc::AnimationController::OnLateUpdate(Timestep ts)
 {
 	m_Sprite->currentIndex = m_CurrentAnimation->GetCurrentIndex();
-	OC_CLIENT_INFO("Updated sprite index");
+	//OC_CLIENT_INFO("Updated sprite index");
 	m_CurrentAnimation->Update(ts);
 }
 
@@ -32,16 +32,16 @@ void oc::AnimationController::LoadSprite(const std::string& path, int rows, int 
 	m_Sprite = CreateRef<Sprite>(oc::Sprite(path, rows, cols, nFrames));
 }
 
-void oc::AnimationController::AddAnimation(const std::string& name, Ref<Animation> animation)
-{
-	OC_ASSERT(!Find(name), "Animation with name '{}' already exists!", name);
-	m_AnimationList[name] = animation;
-}
+//void oc::AnimationController::AddAnimation(const std::string& name, Ref<Animation> animation)
+//{
+//	OC_ASSERT(!Find(name), "Animation with name '{}' already exists!", name);
+//	m_AnimationList[name] = animation;
+//}
 
-void oc::AnimationController::AddAnimation(const std::string& name, int startIndex, int endIndex, float timePerFrame)
+void oc::AnimationController::AddAnimation(const std::string& name, int startIndex, int endIndex, float timePerFrame, bool loop)
 {
 	OC_ASSERT(!Find(name), "Animation with name '{}' already exists!", name);
-	m_AnimationList[name] = oc::CreateRef<oc::Animation>(oc::Animation(startIndex, endIndex, timePerFrame));
+	m_AnimationList[name] = oc::CreateRef<oc::Animation>(oc::Animation(startIndex, endIndex, timePerFrame, loop));
 }
 
 void oc::AnimationController::SetAnimation(const std::string& name)

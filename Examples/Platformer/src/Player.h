@@ -22,7 +22,7 @@ public:
 
 	//oc::Sprite* GetSprite() { return &m_Sprite; }
 
-	bool m_Sheathed = true;
+	bool m_Sheathed;
 
 private:
 

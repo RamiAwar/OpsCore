@@ -2,9 +2,10 @@
 #include "Components/PlayerController.h"
 
 void PlayerAnimationController::OnCreate() {
-	OC_CLIENT_INFO("Player animation controller on create");
+	//OC_CLIENT_INFO("Player animation controller on create");
 	m_CurrentAnimationState = new IdleState();
 	m_CurrentAnimationState->enter(m_ParentGameObject);
+	m_Sprite->currentIndex = m_CurrentAnimation->GetCurrentIndex();
 }
 
 void PlayerAnimationController::Render() {
@@ -16,9 +17,9 @@ void PlayerAnimationController::Render() {
 }
 
 void PlayerAnimationController::OnUpdate(oc::Timestep ts) {
-	OC_INFO("Updating current animation state");
+	//OC_INFO("Updating current animation state");
 	m_CurrentAnimationState->update(ts, m_ParentGameObject);
-	OC_INFO("State updated successfully");
+	//OC_INFO("State updated successfully");
 }
 
 void PlayerAnimationController::MoveRight(oc::Timestep ts) {
@@ -27,6 +28,7 @@ void PlayerAnimationController::MoveRight(oc::Timestep ts) {
 		delete m_CurrentAnimationState;
 		m_CurrentAnimationState = state;
 		m_CurrentAnimationState->enter(m_ParentGameObject);
+		m_CurrentAnimation->Reset();
 	}
 }
 
@@ -36,6 +38,7 @@ void PlayerAnimationController::Idle(oc::Timestep ts) {
 		delete m_CurrentAnimationState;
 		m_CurrentAnimationState = state;
 		m_CurrentAnimationState->enter(m_ParentGameObject);
+		m_CurrentAnimation->Reset();
 	}
 }
 
@@ -45,6 +48,7 @@ void PlayerAnimationController::MoveLeft(oc::Timestep ts) {
 		delete m_CurrentAnimationState;
 		m_CurrentAnimationState = state;
 		m_CurrentAnimationState->enter(m_ParentGameObject);
+		m_CurrentAnimation->Reset();
 	}
 }
 
@@ -54,6 +58,7 @@ void PlayerAnimationController::Sheathe(oc::Timestep ts) {
 		delete m_CurrentAnimationState;
 		m_CurrentAnimationState = state;
 		m_CurrentAnimationState->enter(m_ParentGameObject);
+		m_CurrentAnimation->Reset();
 	}
 }
 
@@ -63,5 +68,6 @@ void PlayerAnimationController::Shoot(oc::Timestep ts) {
 		delete m_CurrentAnimationState;
 		m_CurrentAnimationState = state;
 		m_CurrentAnimationState->enter(m_ParentGameObject);
+		m_CurrentAnimation->Reset();
 	}
 }

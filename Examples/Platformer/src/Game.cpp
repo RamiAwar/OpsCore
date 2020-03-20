@@ -58,6 +58,10 @@ void Game::OnImGuiRender() {
 
 	ImGui::Text("Aspect Ratio: %f", oc::Renderer::aspectRatio);
 
+	for (auto& element : std::dynamic_pointer_cast<oc::AnimationController>(spy.GetComponent("PlayerAnimationController"))->m_AnimationList) {
+		ImGui::SliderFloat(element.first.c_str(), &(element.second->m_TimePerFrame), 0.0f, 0.4f);
+	}
+
 	//ImGui::DragInt("Index", &spy.GetSprite()->currentIndex, 1, 0, 79);
 
 	if (ImGui::Button("Switch")) {

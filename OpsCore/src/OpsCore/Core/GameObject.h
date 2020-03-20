@@ -27,8 +27,8 @@ namespace oc {
 
 
 	private:
-		std::string tag;
 		std::unordered_map<std::string , Ref<Component>> m_ComponentList;
+		std::string tag;
 	
 	};
 

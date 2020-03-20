@@ -4,6 +4,8 @@
 namespace oc {
 	
 	bool Animation::Update(Timestep ts) {
+		
+		OC_INFO("Current frame: {}", m_CurrentIndex);
 
 		if (m_TotalFrames > 0) {
 			m_CurrentFrameTime += ts;
@@ -20,12 +22,19 @@ namespace oc {
 	void Animation::IncrementFrame() {
 
 		// TODO: Deal with non-looping animations
-		m_CurrentIndex = m_StartIndex + (m_CurrentIndex + 1) % m_TotalFrames;
+		if (m_Loop) {
+			m_LocalIndex = (m_LocalIndex + 1) % m_TotalFrames;
+			m_CurrentIndex = m_StartIndex + m_LocalIndex;
+		} 
+		else {
+			if(m_CurrentIndex < m_EndIndex) m_CurrentIndex++;
+		}
 	}
 
 	void Animation::Reset() {
-		m_CurrentIndex = 0;
+		m_CurrentIndex = m_StartIndex;
 		m_CurrentFrameTime = 0.0f;
+		m_LocalIndex = 0;
 	}
 
 

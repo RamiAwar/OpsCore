@@ -21,12 +21,19 @@ public:
 	void Sheathe(oc::Timestep ts);
 	void Shoot(oc::Timestep ts);
 
-	inline void UpdatePosition(oc::Timestep ts) {m_ParentGameObject->GetTransform()->position.x += ts * m_PlayerHorizontalSpeed;}
+	inline void UpdatePosition(oc::Timestep ts) {
+		//if (m_MovementDelay >= MOVEMENT_DELAY) {
+			m_ParentGameObject->GetTransform()->position.x += ts * m_PlayerHorizontalSpeed;
+		//}
+		//m_MovementDelay += ts;
+	}
 
 	void _SetHorizontalSpeed(float f) { m_PlayerHorizontalSpeed = f; }
 	float _GetHorizontalSpeed() { return m_PlayerHorizontalSpeed; }
 	
 public:
+	float m_MovementDelay = 0.0f;
+	const float MOVEMENT_DELAY = 0.2f;
 	float m_PlayerHorizontalSpeed = 0.1f;
 
 };

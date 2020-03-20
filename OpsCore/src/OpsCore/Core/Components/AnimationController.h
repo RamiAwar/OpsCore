@@ -27,17 +27,20 @@ namespace oc {
 		inline void BindSprite(Ref<Sprite> sprite) { m_Sprite = sprite; }
 		void LoadSprite(const std::string& path, int rows, int cols, int nFrames);
 
-		void AddAnimation(const std::string& name, Ref<Animation> animation);
-		void AddAnimation(const std::string& name, int startIndex, int endIndex, float timePerFrame = 0.01f);
+		//void AddAnimation(const std::string& name, Ref<Animation> animation);
+		void AddAnimation(const std::string& name, int startIndex, int endIndex, float timePerFrame = 0.01f, bool loop=true);
 		void SetAnimation(const std::string& name);
 		bool Find(const std::string& name);
 
-	protected:
-		
+
+		//protected:
+		// NOT MEANT TO BE USED EXCEPT IN EDITOR
+		// TODO: FIX THIS ACCESSIBILITY PROBLEM
+		std::unordered_map<std::string, Ref<Animation>> m_AnimationList;
+
 		Ref<Sprite> m_Sprite;
 		Ref<Animation> m_CurrentAnimation;
 		//AnimationState* m_CurrentAnimationState;
 
-		std::unordered_map<std::string, Ref<Animation>> m_AnimationList;
 	};
 }
