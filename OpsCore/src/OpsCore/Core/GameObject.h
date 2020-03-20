@@ -26,7 +26,6 @@ namespace oc {
 		bool Find(const std::string& name);
 
 
-
 	private:
 		std::string tag;
 		std::unordered_map<std::string , Ref<Component>> m_ComponentList;

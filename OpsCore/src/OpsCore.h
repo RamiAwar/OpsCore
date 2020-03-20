@@ -25,6 +25,8 @@
 #include "OpsCore/Core/GameObject.h"
 #include "OpsCore/Core/GameObjectCollection.h"
 #include "OpsCore/Core/Sprite.h"
+#include "OpsCore/Core/Animation.h"
+#include "OpsCore/Core/Components/AnimationController.h"
 
 
 

@@ -40,6 +40,11 @@ namespace oc {
 			for (Layer* layer : *m_LayerStack) {
 				layer->OnUpdate(deltaTime);
 			}
+
+			for (Layer* layer : *m_LayerStack) {
+				layer->OnLateUpdate(deltaTime);
+			}
+
 			for (Layer* layer : *m_LayerStack) {
 				layer->OnRender();
 			}

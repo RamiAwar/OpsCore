@@ -1356,6 +1356,9 @@
     <ClInclude Include="src\OpsCore\Core\GameObjectCollection.h" />
     <ClInclude Include="src\OpsCore\Core\Animation.h" />
     <ClInclude Include="src\OpsCore\Core\Sprite.h" />
+    <ClInclude Include="src\OpsCore\Core\Components\AnimationController.h" />
+    <ClInclude Include="src\OpsCore\Core\AnimationState.h" />
+    <ClInclude Include="src\OpsCore\Core\Command.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
@@ -1454,5 +1457,6 @@
     <ClCompile Include="src\OpsCore\Core\GameObjectCollection.cpp" />
     <ClCompile Include="src\OpsCore\Core\Animation.cpp" />
     <ClCompile Include="src\OpsCore\Core\Sprite.cpp" />
+    <ClCompile Include="src\OpsCore\Core\Components\AnimationController.cpp" />
   </ItemGroup>
 </Project>

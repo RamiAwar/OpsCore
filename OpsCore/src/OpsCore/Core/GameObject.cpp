@@ -11,6 +11,7 @@ namespace oc {
 			element.second->OnCreate();
 		}
 	}
+
 	void GameObject::OnDestroy() {
 		for (auto element : m_ComponentList) {
 			element.second->OnDestroy();

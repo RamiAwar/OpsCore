@@ -1,5 +1,6 @@
 #pragma once
 #include "OpsCore/Utils/debugbreak.h"
+#include "OpsCore/Core/Log.h"
 #include <memory>
 
 #ifdef _WIN32

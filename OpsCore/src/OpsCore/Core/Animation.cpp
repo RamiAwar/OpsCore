@@ -3,9 +3,9 @@
 
 namespace oc {
 	
-	bool Animation::UpdateFrame(Timestep ts) {
+	bool Animation::Update(Timestep ts) {
 
-		if (m_Sprite->totalFrames > 0) {
+		if (m_TotalFrames > 0) {
 			m_CurrentFrameTime += ts;
 
 			if (m_CurrentFrameTime >= m_TimePerFrame) {
@@ -20,11 +20,11 @@ namespace oc {
 	void Animation::IncrementFrame() {
 
 		// TODO: Deal with non-looping animations
-		m_Sprite->currentIndex = m_StartIndex + (m_Sprite->currentIndex + 1) % m_TotalFrames;
+		m_CurrentIndex = m_StartIndex + (m_CurrentIndex + 1) % m_TotalFrames;
 	}
 
 	void Animation::Reset() {
-		m_CurrentFrame = 0;
+		m_CurrentIndex = 0;
 		m_CurrentFrameTime = 0.0f;
 	}
 

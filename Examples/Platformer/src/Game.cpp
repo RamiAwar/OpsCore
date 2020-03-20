@@ -58,7 +58,7 @@ void Game::OnImGuiRender() {
 
 	ImGui::Text("Aspect Ratio: %f", oc::Renderer::aspectRatio);
 
-	ImGui::DragInt("Index", &spy.GetSprite()->currentIndex, 1, 0, 79);
+	//ImGui::DragInt("Index", &spy.GetSprite()->currentIndex, 1, 0, 79);
 
 	if (ImGui::Button("Switch")) {
 		oc::SceneStateMachine::instance()->SetActive("menu");
