@@ -1,6 +1,5 @@
 #pragma once
 #include "OpsCore/Utils/debugbreak.h"
-#include "OpsCore/Core/Log.h"
 #include <memory>
 
 #ifdef _WIN32
@@ -59,7 +58,6 @@ namespace oc {
 #ifdef OC_DEBUG
 	#define OC_ENABLE_ASSERTS
 #endif
-
 
 
 #ifdef OC_ENABLE_ASSERTS

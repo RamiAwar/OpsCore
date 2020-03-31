@@ -22,12 +22,14 @@ workspace "OpsCore"
 	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
 	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
 	IncludeDir["spdlog"] = "OpsCore/vendor/spdlog/include"
+	IncludeDir["catch2"] = "OpsCore/vendor/Catch2"
 
 
 
 	-- EXAMPLE PROJECTS INCLUDES
 	include "Examples/Pong/pong.premake5.lua"
 	include "Examples/Sandbox/sandbox.premake5.lua"  
+	include "Examples/Test/test.premake5.lua"  
 	include "Examples/Platformer/platformer.premake5.lua"
 	
 	-- DEPENDENCIES INCLUDES
@@ -61,6 +63,8 @@ workspace "OpsCore"
 			"%{prj.name}/src/**.cpp",
 			"%{IncludeDir.glm}/glm/**.hpp",
 			"%{IncludeDir.glm}/glm/**.inl",
+			"%{IncludeDir.catch2}/catch2.hpp"		
+
 		}
 
 		includedirs
@@ -70,13 +74,17 @@ workspace "OpsCore"
 			"%{IncludeDir.glfw}",
 			"%{IncludeDir.glad}",
 			"%{IncludeDir.imgui}",
-			"%{IncludeDir.glm}"		}
+			"%{IncludeDir.glm}",
+			"%{IncludeDir.catch2}"		
+
+		}
 
 		links{
 			"GLFW",
 			"opengl32.lib",
 			"Glad",
-			"ImGui"		}
+			"ImGui"		
+		}
 
 		defines
 		{

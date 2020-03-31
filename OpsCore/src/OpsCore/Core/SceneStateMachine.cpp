@@ -19,8 +19,8 @@ namespace oc {
 			m_CurrentScene->ToggleShutdown();
 			m_CurrentScene->OnDetach();
 
-			m_CurrentScene = m_NextScene;
-			m_CurrentSceneName = m_NextSceneName;
+			m_CurrentScene = m_QueuedScene;
+			m_CurrentSceneName = m_QueuedSceneName;
 
 			m_CurrentScene->OnInit();
 			m_CurrentScene->OnAttach();
@@ -44,8 +44,8 @@ namespace oc {
 		if (m_CurrentScene != NULL) {
 			m_CurrentScene->ToggleShutdown();
 
-			m_NextScene = m_SceneList[name];
-			m_NextSceneName = name;
+			m_QueuedScene = m_SceneList[name];
+			m_QueuedSceneName = name;
 		}
 		else {
 			m_CurrentScene = m_SceneList[name];

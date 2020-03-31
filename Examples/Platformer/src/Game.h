@@ -5,6 +5,8 @@
 
 #include "Player.h"
 
+
+
 class Game : public oc::Layer {
 
 public:
@@ -23,10 +25,13 @@ private:
 
 	oc::OrthographicCameraController m_CameraController;
 	
-	oc::GameObjectCollection m_GameObjectCollection;
+	//oc::GameObjectCollection m_GameObjectCollection;
 	
-	glm::vec2 placeholder;
+	//glm::vec2 placeholder;
 
-	Player spy;
+	//Player spy;
 
+	oc::Entity player;
+
+	
 };

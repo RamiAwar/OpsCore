@@ -37,8 +37,8 @@ namespace oc{
 		SceneStateMachine() {} // Private constructor
 
 		std::unordered_map<std::string, Ref<Scene>> m_SceneList;
-		Ref<Scene> m_CurrentScene, m_NextScene;
-		std::string m_CurrentSceneName, m_NextSceneName;
+		Ref<Scene> m_CurrentScene, m_QueuedScene;
+		std::string m_CurrentSceneName, m_QueuedSceneName;
 	};
 
 }

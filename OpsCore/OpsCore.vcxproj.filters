@@ -10,6 +10,9 @@
     <Filter Include="src\OpsCore\Core">
       <UniqueIdentifier>{CFD4C9D3-BBCD-E825-E4FF-CDAAD057C831}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\OpsCore\Core\Components">
+      <UniqueIdentifier>{84BA72BF-F0C7-A0A5-79AE-9C90E5BA6C5C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\OpsCore\Events">
       <UniqueIdentifier>{1B56B4F2-073A-7548-709A-6F9B5C9D5FCA}</UniqueIdentifier>
     </Filter>
@@ -40,6 +43,9 @@
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\Catch2">
+      <UniqueIdentifier>{774D61B1-E30D-DDE7-AC48-266518C821C4}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor\glm">
       <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
     </Filter>
@@ -66,16 +72,13 @@
     <ClInclude Include="src\OpsCore\Core\Application.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Core\Component.h">
+    <ClInclude Include="src\OpsCore\Core\Command.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Core.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Entrypoint.h">
-      <Filter>src\OpsCore\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OpsCore\Core\GameObject.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Input.h">
@@ -102,10 +105,16 @@
     <ClInclude Include="src\OpsCore\Core\SceneStateMachine.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Core\Timestep.h">
+    <ClInclude Include="src\OpsCore\Core\Sprite.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Core\Transform.h">
+    <ClInclude Include="src\OpsCore\Core\System.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\SystemManager.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Timestep.h">
       <Filter>src\OpsCore\Core</Filter>
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\Window.h">
@@ -212,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="src\ocpch.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="vendor\Catch2\catch2.hpp">
+      <Filter>vendor\Catch2</Filter>
     </ClInclude>
     <ClInclude Include="vendor\glm\glm\common.hpp">
       <Filter>vendor\glm\glm</Filter>
@@ -1353,18 +1365,41 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\OpsCore\Core\GameObjectCollection.h" />
-    <ClInclude Include="src\OpsCore\Core\Animation.h" />
-    <ClInclude Include="src\OpsCore\Core\Sprite.h" />
-    <ClInclude Include="src\OpsCore\Core\Components\AnimationController.h" />
-    <ClInclude Include="src\OpsCore\Core\AnimationState.h" />
-    <ClInclude Include="src\OpsCore\Core\Command.h" />
+    <ClInclude Include="src\OpsCore\Core\ECS\Component.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\ComponentPack.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\ComponentPackManager.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\Entity.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\GameObjectCollection.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\GameObject.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\Animation2D.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\Transform.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\Components\AnimationController.h">
+      <Filter>src\OpsCore\Core\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\AnimationState.h">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OpsCore\Core\ECS\World.h" />
+    <ClInclude Include="src\OpsCore\Core\VVector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
-      <Filter>src\OpsCore\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OpsCore\Core\GameObject.cpp">
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Core\Layer.cpp">
@@ -1380,6 +1415,9 @@
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\Core\SceneStateMachine.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\Sprite.cpp">
       <Filter>src\OpsCore\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\OpsCore\ImGui\ImGuiBuild.cpp">
@@ -1454,9 +1492,20 @@
     <ClCompile Include="src\ocpch.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\OpsCore\Core\GameObjectCollection.cpp" />
-    <ClCompile Include="src\OpsCore\Core\Animation.cpp" />
-    <ClCompile Include="src\OpsCore\Core\Sprite.cpp" />
-    <ClCompile Include="src\OpsCore\Core\Components\AnimationController.cpp" />
+    <ClCompile Include="src\OpsCore\Core\ECS\ComponentPack.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\ECS\GameObject.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\ECS\GameObjectCollection.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\Animation2D.cpp">
+      <Filter>src\OpsCore\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\ECS\Components\AnimationController.cpp">
+      <Filter>src\OpsCore\Core\Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,9 +1,9 @@
 #include "ocpch.h"
-#include "OpsCore/Core/Animation.h"
+#include "OpsCore/Core/Animation2D.h"
 
 namespace oc {
 	
-	bool Animation::Update(Timestep ts) {
+	bool Animation2D::Update(Timestep ts) {
 		
 		OC_INFO("Current frame: {}", m_CurrentIndex);
 
@@ -19,7 +19,7 @@ namespace oc {
 		return false;
 	}
 
-	void Animation::IncrementFrame() {
+	void Animation2D::IncrementFrame() {
 
 		// TODO: Deal with non-looping animations
 		if (m_Loop) {
@@ -31,7 +31,7 @@ namespace oc {
 		}
 	}
 
-	void Animation::Reset() {
+	void Animation2D::Reset() {
 		m_CurrentIndex = m_StartIndex;
 		m_CurrentFrameTime = 0.0f;
 		m_LocalIndex = 0;

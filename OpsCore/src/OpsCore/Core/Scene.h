@@ -8,6 +8,7 @@
 
 #include "OpsCore/Core/Timestep.h"
 
+
 namespace oc {
 
 	class Scene
@@ -32,12 +33,15 @@ namespace oc {
 		void ToggleShutdown();
 		inline bool GetShutdown() { return m_Shutdown; }
 
+
 	protected:
 
 		// TODO: Change ImGuiLayer to removable layer, not forced initialization 
 		static ImGuiLayer* m_ImGuiLayer; 
 		LayerStack* m_LayerStack; // necessary to initialize to instance
 		bool m_Shutdown;
+
+		
 
 	};
 

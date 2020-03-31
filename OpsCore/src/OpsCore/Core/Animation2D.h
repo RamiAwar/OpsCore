@@ -5,10 +5,10 @@
 
 namespace oc {
 
-	class Animation
+	class Animation2D
 	{
 	public:
-		Animation(int startIndex, int endIndex, float timePerFrame = 0.01f, bool loop=true) 
+		Animation2D(int startIndex, int endIndex, float timePerFrame = 0.01f, bool loop=true) 
 			: m_CurrentIndex(startIndex), m_CurrentFrameTime(0.0f), m_LocalIndex(0), m_TimePerFrame(timePerFrame), 
 			m_StartIndex(startIndex), m_EndIndex(endIndex), m_Loop(loop)
 		{

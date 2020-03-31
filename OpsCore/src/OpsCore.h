@@ -22,13 +22,16 @@
 #include "OpsCore/Renderer/Cameras/OrthographicCamera.h"
 #include "OpsCore/Core/Scene.h"
 #include "OpsCore/Core/SceneStateMachine.h"
-#include "OpsCore/Core/GameObject.h"
-#include "OpsCore/Core/GameObjectCollection.h"
 #include "OpsCore/Core/Sprite.h"
-#include "OpsCore/Core/Animation.h"
-#include "OpsCore/Core/Components/AnimationController.h"
+#include "OpsCore/Core/Animation2D.h"
+
+// ------ CORE Data Structures ------
+#include "OpsCore/Core/VVector.h"
 
 
+// ------- ECS ----------------------
+#include "OpsCore/Core/ECS/World.h"
+#include "OpsCore/Core/ECS/Entity.h"
 
 // ------- IMGUI ----------------------
 #include "OpsCore/ImGui/ImGuiFileDialog.h"
