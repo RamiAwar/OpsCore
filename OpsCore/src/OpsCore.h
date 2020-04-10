@@ -32,6 +32,7 @@
 // ------- ECS ----------------------
 #include "OpsCore/Core/ECS/World.h"
 #include "OpsCore/Core/ECS/Entity.h"
+#include "OpsCore/Core/ECS/Archetype.h"
 
 // ------- IMGUI ----------------------
 #include "OpsCore/ImGui/ImGuiFileDialog.h"

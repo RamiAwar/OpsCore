@@ -1397,6 +1397,7 @@
     </ClInclude>
     <ClInclude Include="src\OpsCore\Core\ECS\World.h" />
     <ClInclude Include="src\OpsCore\Core\VVector.h" />
+    <ClInclude Include="src\OpsCore\Core\ECS\Archetype.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\OpsCore\Core\Application.cpp">
@@ -1507,5 +1508,6 @@
     <ClCompile Include="src\OpsCore\Core\ECS\Components\AnimationController.cpp">
       <Filter>src\OpsCore\Core\Components</Filter>
     </ClCompile>
+    <ClCompile Include="src\OpsCore\Core\ECS\World.cpp" />
   </ItemGroup>
 </Project>
