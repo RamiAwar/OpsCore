@@ -40,19 +40,90 @@ public:
 	}
 
 	/**
-	*	Constructs and allocates a component array with _space bytes, of element size _element_size.
+	*	Constructs and allocates a component array with <n_elements> elements, of element size _element_size.
+	*	_element_size : sizeof(component)
+	*	n_elements : maximum number of elements before resizing ( double this upon resize )
 	**/
-	ComponentArray(size_t _element_size, size_t _space=0) {
+	ComponentArray(size_t _element_size, size_t n_elements = 1) {
 		element_size = _element_size;
 		size = 0;
-		if (_space == 0) {
+		if (n_elements == 0) {
 			space = _element_size * DEFAULT_ARRAY_SIZE;
 		}
 		else {
-			space = _space;
+			space = n_elements*element_size;
 		}
 
 		base = malloc(space);
+	}
+
+
+	/**
+	*	ComponentArray copy constructor
+	**/
+	ComponentArray(const ComponentArray& other)
+		: element_size(other.element_size),
+		size(other.size),
+		space(other.space),
+		base(other.base)
+	{}
+
+	/** 
+	*	Move constructor
+	**/
+	ComponentArray(ComponentArray&& other)
+		:size(other.size),
+		space(other.space),
+		base(other.base),
+		element_size(other.element_size)
+	{
+		other.base = nullptr;
+	}
+
+	ComponentArray& operator=(ComponentArray&& other) {
+		if (this != &other) {
+			free(base);
+			base = other.base;
+			size = other.size;
+			space = other.space;
+			other.base = nullptr;
+			other.size = 0;
+			other.space = 1;
+			return *this;
+		}
+	}
+
+	ComponentArray& operator=(ComponentArray& other) {
+		if (this != &other) {
+			free(base);
+			base = other.base;
+			size = other.size;
+			space = other.space;
+			return *this;
+		}
+	}
+
+	void* create_empty_slot() {
+		if (size * element_size < space) {
+			char* cp = (char*)base;
+			size = size + 1;
+			return (void*)(cp + (size - 1)* element_size);
+		}
+		else {
+			void* out = realloc(base, space * 2);
+
+			if (out != nullptr) {
+				base = out;
+				space = space * 2;
+			}
+			else {
+				throw std::exception("ComponentArray: Bad allocation.");
+			}
+
+			size = size + 1;
+			char* cp = (char*)base;
+			return (void*)(cp + (size - 1) * element_size);
+		}
 	}
 
 	void push_back(void* val)

@@ -39,7 +39,9 @@ namespace oc::ECS {
 		/**
 		*	Checks if the entity is alive by comparing the give entity's generation to the stored entity's generation
 		**/
-		inline bool IsAlive(Entity entity);
+		inline bool IsAlive(Entity entity) {
+			return entity.generation == entities[entity.index].generation;
+		}
 
 		/**
 		*	Getter functions for testing

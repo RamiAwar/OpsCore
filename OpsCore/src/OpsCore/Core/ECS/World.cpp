@@ -6,17 +6,18 @@
 namespace oc::ECS {
 
 	World::World()
-		/*: archetypes(oc::VVector<Archetype>(sizeof(Archetype)* MAX_ARCHETYPES))*/
+		: archetypes(oc::VVector<Archetype>(1000*MB))
 	{
 		// Create empty archetype
 		this->entityManager = new EntityManager();
-		this->empty_archetype = new Archetype({ 0, {} });
+		this->archetypes.push_back(Archetype({ 0, {} }));
 
 
 		//this->archetypes = oc::VVector<Archetype>(MAX_ARCHETYPES * sizeof(Archetype));
 
 		//Signature empty_signature = { {0}, 0, 0 }; // Empty archetype signature
-		//Archetype empty_archetype = { empty_signature, {} };
+		//Archetype 
+		// chetype = { empty_signature, {} };
 		//archetypes.push_back(empty_archetype);
 
 		//root_archetype_node = new ArchetypeNode({ &archetypes[0], {}, {} });
@@ -43,7 +44,7 @@ namespace oc::ECS {
 		}
 
 		// Find the archetype that this entity is attached to
-		Record record = archetype_index[entity.index];
+		Record record = entity_archetype_map[entity.index];
 
 		// Find destination archetype
 		// Loop over all addition edges

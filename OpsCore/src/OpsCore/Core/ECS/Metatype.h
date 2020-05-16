@@ -12,6 +12,10 @@ namespace oc::ECS {
 
 		uint16_t size{ 0 };
 		uint64_t hash;
+		
+		using ConstructorFn = void(void*);
+
+		ConstructorFn* constructor;
 
 		friend bool operator== (const Metatype& a, const Metatype& b) {
 			return a.hash == b.hash;
@@ -30,6 +34,9 @@ namespace oc::ECS {
 				Metatype m;
 				m.size = sizeof(T);
 				m.hash = hash;
+				m.constructor = [](void* ptr){
+					new(ptr) T{};
+				};
 				metatype_cache[hash] = m;
 			}
 

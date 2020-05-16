@@ -19,9 +19,11 @@ namespace oc::ECS {
 	struct Archetype {
 
 		uint64_t signature;
+		const Metatype** types;
+		size_t n_types;
 
 		// TODO: change to VVector
-		std::vector<ComponentArray*> components; // Vertical list of component types
+		std::vector<ComponentArray> components; // Vertical list of component types
 
 	};
 
@@ -29,18 +31,5 @@ namespace oc::ECS {
 
 
 
-
-	//struct ArchetypeNode; // forward declaration
-
-	//struct ArchetypeEdge {
-	//	ArchetypeNode* node;
-	//	uint64_t component_hash;
-	//};
-
-	//struct ArchetypeNode {
-	//	Archetype* archetype;
-	//	std::vector<ArchetypeEdge> addition;
-	//	std::vector<ArchetypeEdge> removal;
-	//};
 
 }

@@ -46,8 +46,6 @@ namespace oc::ECS {
 		next_available = index;
 	}
 
-	inline bool EntityManager::IsAlive(Entity entity) {
-		return entity.generation == entities[entity.index].generation;
-	}
+
 
 }

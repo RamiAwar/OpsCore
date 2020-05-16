@@ -14,8 +14,8 @@
 namespace oc::ECS {
 
 	struct Record {
-		Archetype* node;
-		int index;
+		Archetype* archetype;
+		int component_index;
 	};
 
 	class World {
@@ -40,37 +40,69 @@ namespace oc::ECS {
 			// Create empty entity
 			Entity entity = entityManager->CreateEntity();
 			Archetype* archetype = nullptr;
+			Record record;
 
 			if constexpr (sizeof...(Components) != 0) {
 
 				// Create metatype list (hash of each component + their sizes)
 				const Metatype* types[] = { Metatype::BuildMetatype<Components>()... };
 				constexpr size_t n_types = (sizeof(types) / sizeof(*types));
+				
 				// Sort metatypes
 				sort_metatypes(types, n_types);
 				
 				// Find or create archetype with signature x
 				uint64_t signature = hash_fnv1a(types, n_types);
-				//std::cout << signature << std::endl;
-			
+
 				auto iter = signature_archetype_map.find(signature);
 				if (iter != signature_archetype_map.end()) {
 					// If archetype found
 					archetype = iter->second;
+					// Add default components
+					int entity_index = archetype->components[0]._size();
+					for (int i = 0; i < n_types; i++) {
+						void* component = archetype->components[i].create_empty_slot();
+						types[i]->constructor(component);
+					}
+					// Create and add record
+					record.archetype = archetype;
+					record.component_index = entity_index;
+					entity_archetype_map[entity.index] = record;
 				}
 				else {
 					// Create archetype
-					/*Archetype arch = { signature, std::vector<ComponentArray*>(n_types) };
+					Archetype arch;
+					arch.signature = signature;
+					arch.n_types = n_types;
+					arch.types = (const Metatype**)malloc(n_types*sizeof(Metatype*));
+					
+					
 					for (int i = 0; i < n_types; i++) {
-						void* buffer = malloc(types[i]->size * MAX_ENTITIES);
-					}*/
+						
+						arch.types[i] = types[i];
+
+						ComponentArray arr(types[i]->size);
+
+						void* component = arr.create_empty_slot();
+						types[i]->constructor(component);
+						
+						arch.components.push_back(std::move(arr));
+					}
+					// Add archetype to archetypes array
+					archetypes.push_back(std::move(arch));
+					signature_archetype_map[signature] = &archetypes[archetypes.size() - 1];
+					record.archetype = &archetypes[archetypes.size() - 1];
+					record.component_index = 0;
+					entity_archetype_map[entity.index] = record;
 				}
 
 			} else {
-				archetype = empty_archetype;
+
+				record.archetype = &archetypes[0];
+				record.component_index = 0;
+				entity_archetype_map[entity.index] = record;
 			}
 
-			//return BindEntityArchetype(entity, archetype);
 			return entity;
 		}
 
@@ -86,19 +118,27 @@ namespace oc::ECS {
 		template<typename T>
 		inline void AddComponent(Entity entity, T component);
 
-	/*	template<typename T>
+		template<typename T>
 		bool HasComponent(Entity entity) {
 			
-			Record& record = entity_index[entity];
-			Archetype* archetype = record.archetype;
-
-			for (int i = 0; i < archetype->signature.size; i++) {
-				if (hash_fnv1a(typeid(T).name()) == archetype->signature.component_hashes[i]) {
-					return static_cast<T*>(archetype->components[i].elements[record.index * (int)archetype->components[i].elements.size]);
-				}
+			// Check that entity is still alive
+			if (!entityManager->IsAlive(entity)) {
+				throw std::exception("Attempting to add component to an entity that was destroyed.");
 			}
 
-		}*/
+			const Record& record = entity_archetype_map[entity.index];
+			uint64_t hash = typeid(T).hash_code();
+
+			// Find the component index (fine to loop only 32 components)
+			for (int i = 0; i < record.archetype->n_types; i++) {
+				if (hash == record.archetype->types[i]->hash) {
+					// Component found, return it
+					return true;
+				}
+			}
+			
+			return false;
+		}
 
 
 		/**
@@ -110,21 +150,22 @@ namespace oc::ECS {
 		T* GetComponent(Entity entity) {
 			
 			// Check that entity is still alive
-			if (!isAlive(entity)) {
+			if (!entityManager->IsAlive(entity)) {
 				throw std::exception("Attempting to add component to an entity that was destroyed.");
 			}
 			
-			Record* record = archetype_index[entity.id];
-			uint32_t hash = GenerateComponentHash<T>();
+			const Record& record = entity_archetype_map[entity.index];
+			uint64_t hash = typeid(T).hash_code();
 
 			// Find the component index (fine to loop only 32 components)
-			for (int i = 0; i < record.node->archetype->signature.size; i++) {
-				if (hash == record->node->archetype->signature.component_hashes[i]) {
-					return static_cast<T*>(record->node->archetype->components[i].elements[record->index]);
+			for (int i = 0; i < record.archetype->n_types; i++) {
+				if (hash == record.archetype->types[i]->hash) {
+					// Component found, return it
+					return (T*)(record.archetype->components[i][record.component_index]);
 				}
 			}
 			
-			throw std::exception("Component does not exist!");
+			throw std::exception("Error: Component does not exist!");
 		}
 
 
@@ -190,7 +231,7 @@ namespace oc::ECS {
 		**/
 		std::unordered_map<uint64_t, Archetype*> signature_archetype_map;
 
-		Archetype* empty_archetype;
+		oc::VVector<Archetype> archetypes;
 	}; 
 
 }

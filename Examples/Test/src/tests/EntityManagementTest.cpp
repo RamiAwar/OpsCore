@@ -55,6 +55,15 @@ SCENARIO("Entity/Component Interaction", "[ECS]") {
         
         using Position = glm::vec2;
         using Rotation = float;
+        struct Health {
+            int max_health;
+            int health;
+
+            Health()
+                :max_health(5),
+                health(max_health) 
+            {}
+        };
 
         WHEN("Creating entities") {
 
@@ -68,8 +77,14 @@ SCENARIO("Entity/Component Interaction", "[ECS]") {
 
             REQUIRE(oc::ECS::metatype_cache.size() == 2);
 
+            oc::ECS::Entity e1 = world.CreateEntity<Health>();
 
+            REQUIRE(oc::ECS::metatype_cache.size() == 3);
+
+                
            
+
+
         }
 
     }

@@ -18,14 +18,14 @@ SCENARIO("Custom Memory Allocations", "[memory]") {
         ComponentArray* arr = new ComponentArray(sizeof(Position));
         
         REQUIRE(arr->_size() == 0);
-        REQUIRE(arr->_capacity() == sizeof(Position) * 100);
+        REQUIRE(arr->_capacity() == sizeof(Position));
         REQUIRE(arr->_element_size() == sizeof(Position));
 
         Position p1(1,2,3);
         arr->push_back(&p1);
 
         REQUIRE(arr->_size() == 1);
-        REQUIRE(arr->_capacity() == sizeof(Position) * 100);
+        REQUIRE(arr->_capacity() == sizeof(Position));
         REQUIRE(arr->_element_size() == sizeof(Position));
 
         Position* p = (Position*)(*arr)[0];
@@ -71,18 +71,4 @@ SCENARIO("Custom Memory Allocations", "[memory]") {
 
 }
 
-
-/*
-Can someone help me with some void* arithmetic? Can't figure out what's wrong. I'm trying to build a dynamic array class that uses void* (type agnostic, takes in element size).
-I'm allocating like this, where space is the amount of memory im reserving:
-```
-void* base = malloc(_space);
-```
-Then i push_back like this, where (size) is the index of the last element:
-```
-size = size + 1;
-char* cp = (char*)base;
-memcpy(cp + size * element_size, val, element_size);
-```
-*/
 
