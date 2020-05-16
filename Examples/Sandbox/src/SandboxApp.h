@@ -1,6 +1,7 @@
 #include <OpsCore.h>
 #include "imgui.h"
 
+#include "OpsCore/Core/Entrypoint.h"
 
 class ExampleLayer : public oc::Layer {
 

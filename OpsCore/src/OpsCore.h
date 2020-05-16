@@ -7,12 +7,13 @@
 #include "OpsCore/ImGui/ImGuiLayer.h"
 
 // ------- RENDERING ------------------
+
 #include "OpsCore/Renderer/Buffer.h"
 #include "OpsCore/Renderer/VertexArray.h"
 #include "OpsCore/Renderer/Shader.h"
 #include "OpsCore/Platform/OpenGL/OpenGLShader.h"
 #include "OpsCore/Renderer/RenderCommand.h"
-#include "OpsCore/Renderer/Renderer.h"
+#include "OpsCore/Renderer/Renderer.h" 
 #include "OpsCore/Renderer/Renderer2D.h"
 #include "OpsCore/Renderer/Texture.h"
 
@@ -31,8 +32,7 @@
 
 // ------- ECS ----------------------
 #include "OpsCore/Core/ECS/World.h"
-#include "OpsCore/Core/ECS/Entity.h"
-#include "OpsCore/Core/ECS/Archetype.h"
+
 
 // ------- IMGUI ----------------------
 #include "OpsCore/ImGui/ImGuiFileDialog.h"

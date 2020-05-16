@@ -11,21 +11,29 @@ using namespace std;
 
 SCENARIO("Virtual Memory Allocations", "[memory]") {
 
+    
     GIVEN("1GB of virtual memory reserved, system information fetched") {
-        
-        oc::VVector<uint32_t> entities(GB);
+    
+        struct Position {
+            uint32_t x;
+        };
+
+        oc::VVector<Position> empty(0);
+        REQUIRE(empty.size() == 0);
+
+        oc::VVector<Position> entities(GB);
 
         WHEN("Array operations performed"){
 
             INFO("Checking push_back");
-            entities.push_back(128);
-            REQUIRE(entities[0] == 128);
-            REQUIRE(entities._block_offset() == sizeof(uint32_t));
+            entities.push_back({ 128 });
+            REQUIRE(entities[0].x == 128);
+            REQUIRE(entities._block_offset() == sizeof(Position));
             
 
             INFO("Checking subscript assignment");
-            entities[0] = 500;
-            REQUIRE(entities[0] == 500);
+            entities[0] = { 500 };
+            REQUIRE(entities[0].x == 500);
             
             INFO("Checking invalid index access");
             REQUIRE_THROWS(entities[1]);
@@ -42,11 +50,11 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
             INFO("Allocating exactly one page");
 
             for (int i = 0; i < 1024; i++) {
-                entities.push_back(i);
+                entities.push_back({ (uint32_t)i });
             }
 
             REQUIRE(entities.size() == 1024);
-            REQUIRE(entities._block_offset() == 1024 * sizeof(uint32_t));
+            REQUIRE(entities._block_offset() == 1024 * sizeof(Position));
 
                    
             INFO("Allocating more than one page");
@@ -54,7 +62,7 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
             REQUIRE(entities._block_offset() == entities._page_size());
             REQUIRE(entities.size() == 1024);
 
-            entities.push_back(100);
+            entities.push_back({ 100 });
 
             REQUIRE(entities.size() == 1025);
         }
@@ -62,8 +70,28 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
         WHEN("Bulk allocating 5000 pages of memory") {
 
             while (entities._get_page_count() != 5000) {
-                entities.push_back(9999);
+                entities.push_back({ 9999 });
             }
+        }
+
+        WHEN("VVector is copied into another VVector") {
+            
+            REQUIRE(entities.size() == 0);
+            
+            // Push back one element
+            entities.push_back({ 999 });
+            REQUIRE(entities.size() == 1);
+
+
+            INFO("Checking for double frees");
+
+            {
+                oc::VVector<Position> test = entities;
+            }
+
+            // Attempt to access this element
+            REQUIRE(entities[0].x == 999); // Read access error if not deep copying
+        
         }
 
 

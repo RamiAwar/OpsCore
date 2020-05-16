@@ -6,7 +6,14 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
+#ifdef OC_PLATFORM_WINDOWS
+	#include <Windows.h>
+#endif
+
 namespace oc {
+
+	
+
 
 	class winWindow : public Window {
 	public:
@@ -24,6 +31,25 @@ namespace oc {
 		bool IsVSync() const override;
 
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
+
+		#ifdef OC_PLATFORM_WINDOWS
+
+		static void HideConsole()
+		{
+			::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+		}
+
+		static void ShowConsole()
+		{
+			::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+		}
+
+		static bool IsConsoleVisible()
+		{
+			return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
+		}
+
+		#endif
 
 	private:
 		virtual void Init(const WindowProperties& properties);

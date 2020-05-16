@@ -41,24 +41,6 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 
 	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	/*glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
-	for (int i = 0; i < 20; i++) {
-		for (int j = 0; j < 20; j++) {
-			glm::vec3 pos(i * 0.11f, j * 0.11f, 0.0f);
-			glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos)*scale;
-
-			if((i+j)%2 == 0){
-				std::dynamic_pointer_cast<oc::OpenGLShader>(square_shader)->UploadUniformFloat3("u_Color", m_RedColor);
-				oc::Renderer::Submit(square_shader, square_va, transform);
-			}else{
-				std::dynamic_pointer_cast<oc::OpenGLShader>(square_shader)->UploadUniformFloat3("u_Color", m_BlueColor);
-				oc::Renderer::Submit(square_shader, square_va, transform);
-			}
-		
-		}
-	}*/
-
 
 	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
 							 { 1.0f, 1.0f }, // size
@@ -189,10 +171,11 @@ void ExampleLayer::OnImGuiRender() {
 }
 
 
-
-class Sandbox : public oc::Application {
+class Sandbox : public oc::Scene {
 public:
-	Sandbox() {
+	Sandbox() {}
+
+	void OnAttach(){
 		PushLayer(new ExampleLayer());
 	}
 
@@ -200,9 +183,25 @@ public:
 
 };
 
+class Main : public oc::Application {
+public:
+
+	Main() {
+		#ifdef OC_PLATFORM_WINDOWS
+		
+		#endif
+		oc::SceneStateMachine::instance()->Add("test", oc::CreateRef<Sandbox>());
+	
+	}
+
+	~Main() {};
+
+};
 
 // Defining CreateApplication in client
 oc::Application* oc::CreateApplication() {
-	return new Sandbox();
+	
+	return new Main();
+
 }
 

@@ -17,9 +17,9 @@ namespace oc {
     private:
 
         T* base_block;
-        uint32_t reserved;
         uint32_t page_count;
         uint32_t  block_offset;
+        uint32_t reserved;
         size_t _size;
         DWORD PAGE_SIZE;
 
@@ -32,15 +32,34 @@ namespace oc {
             GetSystemInfo(&info);
             PAGE_SIZE = info.dwPageSize;
 
-            base_block = (T*)VirtualAlloc(NULL, reserve, MEM_RESERVE, PAGE_READWRITE);
+            base_block = (T*)VirtualAlloc(NULL, reserved, MEM_RESERVE, PAGE_READWRITE);
 
             _commit();
         }
+
+        VVector() : VVector(0) {}
 
         ~VVector() {
 
             VirtualFree(base_block, 0, MEM_RELEASE);
 
+        }
+
+        VVector(const VVector& other)
+            :reserved(other.reserved),
+             _size(other._size),
+             page_count(other.page_count),
+             block_offset(other.block_offset),
+             PAGE_SIZE(other.PAGE_SIZE)
+        {
+            base_block = (T*)VirtualAlloc(NULL, reserved, MEM_RESERVE, PAGE_READWRITE);
+            base_block = (T*)VirtualAlloc((LPVOID)base_block, ((long long)page_count) * PAGE_SIZE, MEM_COMMIT, PAGE_READWRITE);
+            
+            // Copy all elements one by one (could be parallelized)
+            // TODO: parallelize
+            for (int i = 0; i < _size; i++) {
+                base_block[i] = other.base_block[i];
+            }
         }
 
 
@@ -49,6 +68,13 @@ namespace oc {
             if (index >= _size) throw std::out_of_range("VVector : Index out of range");
             return base_block[index];
         }
+
+        inline T& at(int index) {
+            if (index < 0) throw std::out_of_range("VVector: Attempt to access negative indices.");
+            if (index >= _size) throw std::out_of_range("VVector : Index out of range");
+            return base_block[index];
+        }
+
 
         /**
         *   Add element to the back of the array

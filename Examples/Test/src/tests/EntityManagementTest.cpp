@@ -2,6 +2,7 @@
 #include <OpsCore.h>
 
 
+
 SCENARIO("Entity creation/deletion", "[ECS]") {
 
     GIVEN("An ECS::World object and vector of oc::ECS::Entities") {
@@ -51,12 +52,24 @@ SCENARIO("Entity/Component Interaction", "[ECS]") {
     GIVEN("An ECS::World object and vector of oc::ECS::Entities") {
 
         oc::ECS::World world;
-        std::vector<oc::ECS::Entity> entities; // don't need to use my DS here, won't be looping through these
- 
+        
+        using Position = glm::vec2;
+        using Rotation = float;
+
         WHEN("Creating entities") {
 
-            
+            for (int i = 0; i < 10; i++) {
+                world.CreateEntity<Position, Rotation>();
+            }
 
+            REQUIRE(oc::ECS::metatype_cache.size() == 2);
+
+            world.CreateEntity<Position>();
+
+            REQUIRE(oc::ECS::metatype_cache.size() == 2);
+
+
+           
         }
 
     }
