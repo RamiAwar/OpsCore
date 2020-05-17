@@ -2,7 +2,7 @@
 #include "Menu.h"
 
 // ------- Entry point -----------
-#include "OpsCore/Core/Entrypoint.h"
+#include "PumpkinBox/Core/Entrypoint.h"
 
 class DemoScene : public oc::Scene {
 public:

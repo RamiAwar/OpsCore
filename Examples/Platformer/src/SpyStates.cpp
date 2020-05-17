@@ -6,7 +6,7 @@
 
 void IdleState::enter(oc::GameObject* spy) {
 	std::dynamic_pointer_cast<PlayerAnimationController>(spy->GetComponent("PlayerAnimationController"))->SetAnimation("idle");
-	OC_CLIENT_INFO("Entered Idle state");
+	PB_CLIENT_INFO("Entered Idle state");
 }
 
 SpyAnimationState* IdleState::MoveRight(oc::GameObject* player) { return new MoveState(); }
@@ -18,7 +18,7 @@ SpyAnimationState* IdleState::Idle(oc::GameObject* player) {return nullptr;}
 
 // -------------- IDLE GUN ----------------
 void IdleGunState::enter(oc::GameObject* spy) {
-	OC_CLIENT_INFO("Entered Idle Gun state");
+	PB_CLIENT_INFO("Entered Idle Gun state");
 	std::dynamic_pointer_cast<PlayerAnimationController>(spy->GetComponent("PlayerAnimationController"))->SetAnimation("idlegun");
 }
 
@@ -31,7 +31,7 @@ SpyAnimationState* IdleGunState::Idle(oc::GameObject* player){return nullptr;}
 
 // ------------- MOVE STATE ---------------
 void MoveState::enter(oc::GameObject* spy) {
-	OC_CLIENT_INFO("Entered Move state");
+	PB_CLIENT_INFO("Entered Move state");
 	std::dynamic_pointer_cast<PlayerAnimationController>(spy->GetComponent("PlayerAnimationController"))->SetAnimation("run");
 }
 
@@ -47,7 +47,7 @@ SpyAnimationState* MoveState::Idle(oc::GameObject* player){return new IdleState(
 
 // ------------- MOVE GUN STATE ---------------
 void MoveGunState::enter(oc::GameObject* spy) {
-	OC_CLIENT_INFO("Entered MoveGun state");
+	PB_CLIENT_INFO("Entered MoveGun state");
 	std::dynamic_pointer_cast<PlayerAnimationController>(spy->GetComponent("PlayerAnimationController"))->SetAnimation("rungun");
 }
 
@@ -62,7 +62,7 @@ SpyAnimationState* MoveGunState::Idle(oc::GameObject* player){ return new IdleGu
 
 // ------------- SHEATHE STATE ---------------
 void SheatheState::enter(oc::GameObject* spy){
-	OC_CLIENT_INFO("Entered Sheathe state");
+	PB_CLIENT_INFO("Entered Sheathe state");
 	dynamic_cast<Player*>(spy)->m_Sheathed = !dynamic_cast<Player*>(spy)->m_Sheathed;
 
 	if (dynamic_cast<Player*>(spy)->m_Sheathed) 

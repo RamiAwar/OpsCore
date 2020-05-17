@@ -1,6 +1,6 @@
 #pragma once
 
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 
 class SpyAnimationState : public oc::AnimationState {
 	

@@ -1,8 +1,8 @@
 #include <catch2.hpp>
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 
 
-using namespace oc::ECS;
+using namespace pb::ECS;
 
 SCENARIO("Archetype Signature Test", "[ECS]") {
 
@@ -56,7 +56,7 @@ SCENARIO("Archetype Creation Test", "[ECS]") {
 
         World world;
         Entity player = world.CreateEntity<Position, Rotation, RigidBody>();
-        oc::VVector<Archetype> archetypes(500*MB);
+        pb::VVector<Archetype> archetypes(500*MB);
         
 
         INFO("Create empty Archetype and ArchetypeNode")

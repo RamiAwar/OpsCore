@@ -1,9 +1,9 @@
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 #include "imgui.h"
 
-#include "OpsCore/Core/Entrypoint.h"
+#include "PumpkinBox/Core/Entrypoint.h"
 
-class ExampleLayer : public oc::Layer {
+class ExampleLayer : public pb::Layer {
 
 public:
 
@@ -11,16 +11,16 @@ public:
 
 	void OnAttach() override;
 	void OnDetach() override;
-	void OnUpdate(oc::Timestep ds) override;
-	void OnEvent(oc::Event& event) override;
+	void OnUpdate(pb::Timestep ds) override;
+	void OnEvent(pb::Event& event) override;
 	virtual void OnImGuiRender() override;
 
 private:
 
-	oc::OrthographicCameraController m_CameraController;
+	pb::OrthographicCameraController m_CameraController;
 
-	oc::Ref<oc::Texture2D> checkerboard_texture;
-	oc::Ref<oc::Texture2D> mushroom_texture;
+	pb::Ref<pb::Texture2D> checkerboard_texture;
+	pb::Ref<pb::Texture2D> mushroom_texture;
 
 	std::string m_CheckerboardPath = "assets/textures/checkerboard.png";
 	std::string m_MushroomPath = "assets/textures/super.png";

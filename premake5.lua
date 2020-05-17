@@ -1,4 +1,4 @@
-workspace "OpsCore"
+workspace "PumpkinBox"
 	
 	architecture "x64"
 	startproject "SandboxApp"
@@ -17,12 +17,12 @@ workspace "OpsCore"
 	IncludeDir = {}
 
 	-- INCLUDE DIRECTORIES
-	IncludeDir["glm"] = "OpsCore/vendor/glm"
-	IncludeDir["imgui"] = "OpsCore/vendor/imgui"
-	IncludeDir["glfw"] = "OpsCore/vendor/GLFW/include"
-	IncludeDir["glad"] = "OpsCore/vendor/Glad/include"
-	IncludeDir["spdlog"] = "OpsCore/vendor/spdlog/include"
-	IncludeDir["catch2"] = "OpsCore/vendor/Catch2"
+	IncludeDir["glm"] = "PumpkinBox/vendor/glm"
+	IncludeDir["imgui"] = "PumpkinBox/vendor/imgui"
+	IncludeDir["glfw"] = "PumpkinBox/vendor/GLFW/include"
+	IncludeDir["glad"] = "PumpkinBox/vendor/Glad/include"
+	IncludeDir["spdlog"] = "PumpkinBox/vendor/spdlog/include"
+	IncludeDir["catch2"] = "PumpkinBox/vendor/Catch2"
 
 
 
@@ -33,15 +33,15 @@ workspace "OpsCore"
 	include "Examples/Platformer/platformer.premake5.lua"
 	
 	-- DEPENDENCIES INCLUDES
-	include "OpsCore/vendor/glad.premake5.lua"
-	include "OpsCore/vendor/glfw.premake5.lua"
-	include "OpsCore/vendor/imgui.premake5.lua"
+	include "PumpkinBox/vendor/glad.premake5.lua"
+	include "PumpkinBox/vendor/glfw.premake5.lua"
+	include "PumpkinBox/vendor/imgui.premake5.lua"
 
 
 	-- OPSCORE PROJECT BUILD CONFIGURATION
-	project "OpsCore"
+	project "PumpkinBox"
 		
-		location "OpsCore"
+		location "PumpkinBox"
 		kind "StaticLib"
 		language "C++"
 		staticruntime "on"
@@ -52,8 +52,8 @@ workspace "OpsCore"
 		objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
 		-- Precompiled headers
-		pchheader "ocpch.h"
-		pchsource "%{prj.name}/src/ocpch.cpp" -- only necessary for visual studio
+		pchheader "pbpch.h"
+		pchsource "%{prj.name}/src/pbpch.cpp" -- only necessary for visual studio
 
 		
 
@@ -104,34 +104,34 @@ workspace "OpsCore"
 			}
 
 		filter {"system:windows","configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			buildoptions "/MDd"
 			symbols "On"
 
 		filter {"system:windows", "configurations:Release"}
-			defines "OC_RELEASE"
+			defines "PB_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
 			
 		filter {"system:windows", "configurations:Dist"}
-			defines "OC_DIST"
+			defines "PB_DIST"
 			buildoptions "/MD"
 			optimize "On"
 			
 		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			symbols "On"
 			
 		filter {"system:macosx", "configurations:Release"}
-			defines "OC_RELEASE"
+			defines "PB_RELEASE"
 			optimize "On"
 			
 		filter {"system:macosx", "configurations:Dist"}
-			defines "OC_RELEASE"
+			defines "PB_RELEASE"
 			optimize "On"
 
 		filter {"system:linux", "configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			symbols "On"
 
 	

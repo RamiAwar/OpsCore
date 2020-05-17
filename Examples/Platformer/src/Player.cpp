@@ -3,7 +3,7 @@
 void Player::OnCreate()
 {
 
-	OC_INFO("Player on create");
+	PB_INFO("Player on create");
 
 	m_Sheathed = true;
 
@@ -41,30 +41,30 @@ void Player::OnDestroy()
 
 void Player::OnUpdate(oc::Timestep ts)
 {
-	//OC_CLIENT_INFO("Player on update");
+	//PB_CLIENT_INFO("Player on update");
 	Command* command = std::dynamic_pointer_cast<InputHandler>(GetComponent("InputHandler"))->HandleInput();
 	if (command) {
-		//OC_CLIENT_INFO("Command received");
+		//PB_CLIENT_INFO("Command received");
 		command->execute(ts, std::dynamic_pointer_cast<PlayerController>(GetComponent("PlayerController")));
 		command->animate(ts, std::dynamic_pointer_cast<PlayerAnimationController>(GetComponent("PlayerAnimationController")));
 	}
 
 	oc::GameObject::OnUpdate(ts);
 
-	//OC_CLIENT_INFO("Finished processing input");
+	//PB_CLIENT_INFO("Finished processing input");
 
 }
 
 void Player::OnLateUpdate(oc::Timestep ts)
 {
-	//OC_CLIENT_INFO("player on late Update");
+	//PB_CLIENT_INFO("player on late Update");
 	oc::GameObject::OnLateUpdate(ts);
-	//OC_CLIENT_INFO("Finished player on late update");
+	//PB_CLIENT_INFO("Finished player on late update");
 }
 
 void Player::Render()
 {
-	//OC_CLIENT_INFO("Player render");
+	//PB_CLIENT_INFO("Player render");
 	oc::GameObject::Render();
-	//OC_CLIENT_INFO("Finished player render");
+	//PB_CLIENT_INFO("Finished player render");
 }

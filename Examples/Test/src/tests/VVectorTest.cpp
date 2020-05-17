@@ -1,7 +1,7 @@
 #include <catch2.hpp>
 #include <windows.h>
 
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 
 #define GB 1000001536
 
@@ -18,10 +18,10 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
             uint32_t x;
         };
 
-        oc::VVector<Position> empty(0);
+        pb::VVector<Position> empty(0);
         REQUIRE(empty.size() == 0);
 
-        oc::VVector<Position> entities(GB);
+        pb::VVector<Position> entities(GB);
 
         WHEN("Array operations performed"){
 
@@ -86,7 +86,7 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
             INFO("Checking for double frees");
 
             {
-                oc::VVector<Position> test = entities;
+                pb::VVector<Position> test = entities;
             }
 
             // Attempt to access this element

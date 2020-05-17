@@ -1,13 +1,13 @@
 #include <catch2.hpp>
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 
 
 
 SCENARIO("Entity creation/deletion", "[ECS]") {
 
-    GIVEN("An ECS::World object and vector of oc::ECS::Entities") {
+    GIVEN("An ECS::World object and vector of pb::ECS::Entities") {
 
-        oc::ECS::World world;
+        pb::ECS::World world;
 
         WHEN("Creating entities") {
             
@@ -22,7 +22,7 @@ SCENARIO("Entity creation/deletion", "[ECS]") {
 
             REQUIRE(world._GetNextAvailable() == 999);
 
-            oc::ECS::Entity t = world.CreateEntity();
+            pb::ECS::Entity t = world.CreateEntity();
             REQUIRE(t.index == 999);
             REQUIRE(t.generation == 1);
 
@@ -49,9 +49,9 @@ SCENARIO("Entity creation/deletion", "[ECS]") {
 
 SCENARIO("Entity/Component Interaction", "[ECS]") {
 
-    GIVEN("An ECS::World object and vector of oc::ECS::Entities") {
+    GIVEN("An ECS::World object and vector of pb::ECS::Entities") {
 
-        oc::ECS::World world;
+        pb::ECS::World world;
         
         using Position = glm::vec2;
         using Rotation = float;
@@ -71,15 +71,15 @@ SCENARIO("Entity/Component Interaction", "[ECS]") {
                 world.CreateEntity<Position, Rotation>();
             }
 
-            REQUIRE(oc::ECS::metatype_cache.size() == 2);
+            REQUIRE(pb::ECS::metatype_cache.size() == 2);
 
             world.CreateEntity<Position>();
 
-            REQUIRE(oc::ECS::metatype_cache.size() == 2);
+            REQUIRE(pb::ECS::metatype_cache.size() == 2);
 
-            oc::ECS::Entity e1 = world.CreateEntity<Health>();
+            pb::ECS::Entity e1 = world.CreateEntity<Health>();
 
-            REQUIRE(oc::ECS::metatype_cache.size() == 3);
+            REQUIRE(pb::ECS::metatype_cache.size() == 3);
 
                 
            

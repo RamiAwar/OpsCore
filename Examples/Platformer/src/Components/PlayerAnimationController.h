@@ -1,6 +1,6 @@
 #pragma once
 
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 #include "SpyStates.h"
 
 class PlayerAnimationController : public oc::AnimationController {

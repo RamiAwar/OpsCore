@@ -17,7 +17,7 @@ project "Sandbox"
 
 		includedirs
 		{
-			"../../OpsCore/src",
+			"../../PumpkinBox/src",
 			"../../%{IncludeDir.spdlog}",
 			"../../%{IncludeDir.glm}", 
 			"../../%{IncludeDir.imgui}",
@@ -29,7 +29,7 @@ project "Sandbox"
 			"GLFW", 
 			"Glad", 
 			"ImGui",
-			"OpsCore"
+			"PumpkinBox"
 		}
 
 		filter "system:linux"
@@ -63,24 +63,24 @@ project "Sandbox"
 
 
 		filter {"system:windows","configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			buildoptions "/MDd"
 			symbols "On"
 
 			
 		filter {"system:windows", "configurations:Release"}
-			defines "OC_RELEASE"
+			defines "PB_RELEASE"
 			buildoptions "/MD"
 			optimize "On"
 	
 		filter {"system:macosx", "configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			symbols "On"
 
 		filter {"system:macosx", "configurations:Release"}
-			defines "OC_RELEASE"
+			defines "PB_RELEASE"
 			optimize "On"
 			
 		filter {"system:linux", "configurations:Debug"}
-			defines "OC_DEBUG"
+			defines "PB_DEBUG"
 			symbols "On"

@@ -1,8 +1,8 @@
-#include <OpsCore.h>
+#include <PumpkinBox.h>
 #include "imgui.h"
 
 
-class Game : public oc::Layer {
+class Game : public pb::Layer {
 
 public:
 
@@ -10,18 +10,18 @@ public:
 
 	void OnAttach() override;
 	void OnDetach() override;
-	void OnUpdate(oc::Timestep ds) override;
-	void OnEvent(oc::Event& event) override;
+	void OnUpdate(pb::Timestep ds) override;
+	void OnEvent(pb::Event& event) override;
 	virtual void OnImGuiRender() override;
 
 private:
 
-	oc::ShaderLibrary m_ShaderLibrary;
+	pb::ShaderLibrary m_ShaderLibrary;
 
-	oc::OrthographicCameraController m_CameraController;
+	pb::OrthographicCameraController m_CameraController;
 
-	oc::Ref<oc::Texture2D> checkerboard_texture;
-	oc::Ref<oc::Texture2D> mushroom_texture;
+	pb::Ref<pb::Texture2D> checkerboard_texture;
+	pb::Ref<pb::Texture2D> mushroom_texture;
 
 
 

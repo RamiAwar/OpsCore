@@ -5,15 +5,15 @@ int ExampleLayer::fps_counter = 0;
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_CameraController(oc::Renderer::aspectRatio, true)
+	m_CameraController(pb::Renderer::aspectRatio, true)
 {
-	OC_CLIENT_INFO("Constructing ExampleLayer");
+	PB_CLIENT_INFO("Constructing ExampleLayer");
 }
 
 void ExampleLayer::OnAttach()  
 {
-	checkerboard_texture = oc::Texture2D::Create(m_CheckerboardPath);
-	mushroom_texture = oc::Texture2D::Create(m_MushroomPath);
+	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
+	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
 }
 
 void ExampleLayer::OnDetach() 
@@ -21,7 +21,7 @@ void ExampleLayer::OnDetach()
 
 }
 
-void ExampleLayer::OnUpdate(oc::Timestep ts) 
+void ExampleLayer::OnUpdate(pb::Timestep ts) 
 { 
 		
 	// UPDATE
@@ -35,33 +35,33 @@ void ExampleLayer::OnUpdate(oc::Timestep ts)
 
 
 	// RENDER
-	oc::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-	oc::RenderCommand::Clear();
+	pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+	pb::RenderCommand::Clear();
 
 
-	oc::Renderer2D::BeginScene(m_CameraController.GetCamera());
+	pb::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
 
-	oc::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
+	pb::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
 							 { 1.0f, 1.0f }, // size
 							 checkerboard_blend_color // color
 							); 
 
-	oc::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
+	pb::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
 		{ 0.8f, 1.4f }, // size
 		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
 	);
 
-	oc::Renderer2D::DrawQuad({ 0.5f, 0.5f , -0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
-	oc::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
+	pb::Renderer2D::DrawQuad({ 0.5f, 0.5f , -0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
+	pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
 
-	oc::Renderer2D::EndScene();
+	pb::Renderer2D::EndScene();
 
 	
 }
 
-void ExampleLayer::OnEvent(oc::Event& event) { 
-	//OC_CLIENT_TRACE("{0}", event);
+void ExampleLayer::OnEvent(pb::Event& event) { 
+	//PB_CLIENT_TRACE("{0}", event);
 	m_CameraController.OnEvent(event);
 }
 
@@ -93,7 +93,7 @@ void ExampleLayer::OnImGuiRender() {
 		//		m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
 		//		// update texture
-		//		OC_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
+		//		PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
 
 		//		auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
 		//		m_CurrentShader = texture_shader->GetName();
@@ -124,7 +124,7 @@ void ExampleLayer::OnImGuiRender() {
 		//		m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
 		//		
 		//		// update texture
-		//		OC_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
+		//		PB_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
 		//		texture = oc::Texture2D::Create(m_TexturePathName);
 		//	}
 
@@ -171,7 +171,7 @@ void ExampleLayer::OnImGuiRender() {
 }
 
 
-class Sandbox : public oc::Scene {
+class Sandbox : public pb::Scene {
 public:
 	Sandbox() {}
 
@@ -183,14 +183,14 @@ public:
 
 };
 
-class Main : public oc::Application {
+class Main : public pb::Application {
 public:
 
 	Main() {
-		#ifdef OC_PLATFORM_WINDOWS
+		#ifdef PB_PLATFORM_WINDOWS
 		
 		#endif
-		oc::SceneStateMachine::instance()->Add("test", oc::CreateRef<Sandbox>());
+		pb::SceneStateMachine::instance()->Add("test", pb::CreateRef<Sandbox>());
 	
 	}
 
@@ -199,7 +199,7 @@ public:
 };
 
 // Defining CreateApplication in client
-oc::Application* oc::CreateApplication() {
+pb::Application* pb::CreateApplication() {
 	
 	return new Main();
 

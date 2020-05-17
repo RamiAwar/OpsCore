@@ -2,7 +2,7 @@
 #include "Components/PlayerController.h"
 
 void PlayerAnimationController::OnCreate() {
-	//OC_CLIENT_INFO("Player animation controller on create");
+	//PB_CLIENT_INFO("Player animation controller on create");
 	m_CurrentAnimationState = new IdleState();
 	m_CurrentAnimationState->enter(m_ParentGameObject);
 	m_Sprite->currentIndex = m_CurrentAnimation->GetCurrentIndex();
@@ -17,9 +17,9 @@ void PlayerAnimationController::Render() {
 }
 
 void PlayerAnimationController::OnUpdate(oc::Timestep ts) {
-	//OC_INFO("Updating current animation state");
+	//PB_INFO("Updating current animation state");
 	m_CurrentAnimationState->update(ts, m_ParentGameObject);
-	//OC_INFO("State updated successfully");
+	//PB_INFO("State updated successfully");
 }
 
 void PlayerAnimationController::MoveRight(oc::Timestep ts) {
