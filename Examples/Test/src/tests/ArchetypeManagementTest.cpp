@@ -102,6 +102,7 @@ SCENARIO("World Archetype Add Component Test", "[ECS]") {
 
             Position()
                 :x(5){}
+            Position(int _x) :x(_x) {}
         };
 
         struct Rotation {
@@ -120,6 +121,11 @@ SCENARIO("World Archetype Add Component Test", "[ECS]") {
         REQUIRE(player_position->x == 15);
         REQUIRE(world.GetComponent<Position>(player)->x == 15);
 
+
+        Position pos{ 99 };
+        world.SetComponent<Position>(player, pos);
+
+        REQUIRE(player_position->x == 99);
 
 
     }

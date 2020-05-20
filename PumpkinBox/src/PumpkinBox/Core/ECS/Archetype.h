@@ -28,6 +28,16 @@ namespace pb::ECS {
 	};
 
 
+	/**
+	*	Structure to link entity to an archetype.
+	*	archetype: Pointer to the archetype the entity's components are stored in
+	*	component_index: Index of the entity's components in each component array inside the archetype
+	**/
+	struct Record {
+		Archetype* archetype;
+		int component_index;
+	};
+
 
 
 
