@@ -32,6 +32,7 @@
 
 // ------- ECS ----------------------
 #include "PumpkinBox/Core/ECS/World.h"
+#include "PumpkinBox/Core/ECS/Components/MovementSystem.h"
 
 
 // ------- IMGUI ----------------------

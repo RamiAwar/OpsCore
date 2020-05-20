@@ -4,6 +4,8 @@
 
 #include "EntityManager.h"
 #include "Archetype.h"
+#include "System.h"
+
 #include <unordered_map>
 #include <unordered_set>
 
@@ -159,6 +161,8 @@ namespace pb::ECS {
 		}
 
 		void _FindOrCreateArchetype(const Entity &entity, const Metatype** types, size_t n_types);
+
+		void RegisterSystem(System* system);
 
 		/**
 		*	Testing functions
