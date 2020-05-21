@@ -10,9 +10,6 @@ namespace pb::ECS {
 		this->entityManager = new EntityManager();
 		this->archetypes.push_back(Archetype({ 0, {} }));
 
-		// TODO: Check correct size of systems list
-		std::cout << System::instance_list.size() << std::endl;
-
 	}
 
 	void World::DestroyEntity(Entity entity) {
@@ -71,7 +68,7 @@ namespace pb::ECS {
 			entity_archetype_map[entity.index] = record;
 
 			// Update groups
-			// For every group, need to check every archetype
+			// For every group, need to check new archetype for match
 			for (int i = 0; i < System::instance_list.size(); i++) {
 
 				// Use two pointers to traverse both lists (since sorted by hash)
@@ -98,6 +95,7 @@ namespace pb::ECS {
 					// Add this archetype reference to this group
 					current_group->archetypes.push_back(archetype);
 				}
+				
 
 			}
 		}
@@ -105,7 +103,7 @@ namespace pb::ECS {
 	
 	}
 
-	void World::RegisterSystem(System* system) {
+	void World::LinkSystem(System* system) {
 
 		System::instance_list.push_back(system);
 

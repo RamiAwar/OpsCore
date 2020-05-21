@@ -57,6 +57,7 @@ namespace pb::ECS {
 				record.archetype = &archetypes[0];
 				record.component_index = 0;
 				entity_archetype_map[entity.index] = record;
+
 			}
 			// Return created entity **COPY**, so we can check generation for changes
 			return entity;
@@ -162,7 +163,36 @@ namespace pb::ECS {
 
 		void _FindOrCreateArchetype(const Entity &entity, const Metatype** types, size_t n_types);
 
-		void RegisterSystem(System* system);
+
+		template<typename ...Components>
+		void RegisterSystem(System* system){
+
+			if constexpr (sizeof...(Components) != 0) {
+
+				// Create metatype list (hash of each component + their sizes)
+				const Metatype* types[] = { Metatype::BuildMetatype<Components>()... };
+				constexpr size_t n_types = (sizeof(types) / sizeof(*types));
+
+				// Sort metatypes
+				sort_metatypes(types, n_types);
+
+				// Populate system group signature
+				for (int i = 0; i < n_types; i++) {
+					system->group.signature.push_back(types[i]->hash);
+				}
+				
+				// Link system group with archetypes
+				LinkSystem(system);
+
+			}
+			else {
+
+				// Issue error, as system has to have at least one component
+				PB_ERROR("ECS Error: System registration has to include at least one component!");
+			}
+		}
+
+		void LinkSystem(System* system);
 
 		/**
 		*	Testing functions
@@ -181,7 +211,7 @@ namespace pb::ECS {
 		EntityManager* entityManager;
 		
 		/**
-		*	A map from entity IDs to Archetype pointers. This will quickly get which archetype an entity belongs to.
+		*	A map from entity IDs to Records, which contain archetype pointers and an index. This will quickly get which archetype an entity belongs to.
 		**/
 		std::unordered_map<uint32_t, Record> entity_archetype_map;
 

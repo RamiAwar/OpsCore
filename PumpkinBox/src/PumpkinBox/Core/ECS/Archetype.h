@@ -10,7 +10,6 @@
 
 namespace pb::ECS {
 
-
 	/**
 	*	An archetype houses all entities that have the same set of components
 	*	A key idea in designing this struct is keeping it lightweight. All functionality
