@@ -78,10 +78,15 @@ namespace pb::ECS {
 				// Reset pointers
 				int group_pointer = 0;
 				int archetype_pointer = 0;
+				std::vector<size_t> component_array_indices;
 
 				while (group_pointer < current_group->signature.size() && archetype_pointer < archetype->n_types) {
 
 					if (current_group->signature[group_pointer] == archetype->types[archetype_pointer]->hash) {
+						
+						// Save archetype_pointer as component_array_index
+						component_array_indices.push_back(archetype_pointer);
+						
 						group_pointer++;
 						archetype_pointer++;
 					}
@@ -93,7 +98,7 @@ namespace pb::ECS {
 				// Check if this archetype belongs to this group
 				if (group_pointer == current_group->signature.size()) {
 					// Add this archetype reference to this group
-					current_group->archetypes.push_back(archetype);
+					current_group->matched_archetypes.push_back({ archetype, component_array_indices });
 				}
 				
 
@@ -117,11 +122,17 @@ namespace pb::ECS {
 
 			int group_pointer = 0;
 			int archetype_pointer = 0;
+			std::vector<size_t> component_array_indices;
+
 			while (group_pointer < current_group->signature.size() && archetype_pointer < archetype->n_types) {
 
 				if (current_group->signature[group_pointer] == archetype->types[archetype_pointer]->hash) {
+					// Save archetype_pointer as component_array_index
+					component_array_indices.push_back(archetype_pointer);
+
 					group_pointer++;
 					archetype_pointer++;
+
 				}
 				else {
 					archetype_pointer++;
@@ -131,7 +142,7 @@ namespace pb::ECS {
 			// Check if this archetype belongs to this group
 			if (group_pointer == current_group->signature.size()) {
 				// Add this archetype reference to this group
-				current_group->archetypes.push_back(archetype);
+				current_group->matched_archetypes.push_back({ archetype, component_array_indices });
 			}
 
 		}

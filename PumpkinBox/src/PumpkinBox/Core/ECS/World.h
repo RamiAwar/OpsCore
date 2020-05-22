@@ -8,6 +8,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <numeric>
 
 #define MB 1000000
 
@@ -172,6 +173,16 @@ namespace pb::ECS {
 				// Create metatype list (hash of each component + their sizes)
 				const Metatype* types[] = { Metatype::BuildMetatype<Components>()... };
 				constexpr size_t n_types = (sizeof(types) / sizeof(*types));
+
+				std::vector<size_t> user_defined_indices(n_types);
+				std::iota(user_defined_indices.begin(), user_defined_indices.end(), 0);
+				std::sort(user_defined_indices.begin(), user_defined_indices.end(), [&](size_t i, size_t j) {return types[i] < types[j]; });
+
+				for (int i = 0; i < n_types; i++) {
+					std::cout << user_defined_indices[i] << std::endl;
+				}
+
+				system->group.user_defined_indices = user_defined_indices;
 
 				// Sort metatypes
 				sort_metatypes(types, n_types);
