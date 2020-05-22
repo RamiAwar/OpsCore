@@ -15,7 +15,7 @@ public:
 	void OnEvent(pb::Event& event) override;
 	virtual void OnImGuiRender() override;
 
-private:
+private:	
 
 	pb::OrthographicCameraController m_CameraController;
 

@@ -15,9 +15,18 @@ int main(int argc, char **argv) {
 
 	PB_INFO("Welcome to PumpkinBox.");
 
+	PB_PROFILE_BEGIN_SESSION("Startup", "PumpkinBoxProfile-Startup.json");
 	auto app = pb::CreateApplication();
+	PB_PROFILE_END_SESSION();
+
+
+	PB_PROFILE_BEGIN_SESSION("Runtime", "PumpkinBoxProfile-Runtime.json");
 	app->Run();
+	PB_PROFILE_END_SESSION();
+
+	PB_PROFILE_BEGIN_SESSION("Shutdown", "PumpkinBoxProfile-Shutdown.json");
 	delete app;
+	PB_PROFILE_END_SESSION();
 
 }
 

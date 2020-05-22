@@ -19,9 +19,11 @@
 
 
 #include "PumpkinBox/Core/Log.h"
+#include "PumpkinBox/Core/Profiler.h"
 
 #ifdef PB_PLATFORM_WINDOWS
 
 	#include <Windows.h>
 
 #endif
+
