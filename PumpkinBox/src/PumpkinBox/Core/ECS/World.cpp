@@ -31,7 +31,7 @@ namespace pb::ECS {
 			// If archetype found
 			archetype = iter->second;
 			// Add default components
-			int entity_index = archetype->components[0]._size();
+			size_t entity_index = archetype->components[0]._size();
 			for (int i = 0; i < n_types; i++) {
 				void* component = archetype->components[i].create_empty_slot();
 				types[i]->constructor(component);

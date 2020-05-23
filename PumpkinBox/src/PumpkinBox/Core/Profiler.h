@@ -4,6 +4,7 @@
 #include <chrono>
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 
 #include <thread>
 #include "imgui.h"
@@ -13,11 +14,13 @@
 
 namespace pb{
 
+    using FloatingPointMicroseconds = std::chrono::duration<double, std::micro>;
+
     struct ProfileResult
     {
         std::string Name;
-        long long Start, End;
-        uint32_t ThreadID;
+        FloatingPointMicroseconds Start, End;
+        size_t ThreadID;
     };
 
     struct ProfilingSession
@@ -64,12 +67,12 @@ namespace pb{
 
             m_OutputStream << "{";
             m_OutputStream << "\"cat\":\"function\",";
-            m_OutputStream << "\"dur\":" << (result.End - result.Start) << ',';
+            m_OutputStream << "\"dur\":" << (result.End.count() - result.Start.count()) << ',';
             m_OutputStream << "\"name\":\"" << name << "\",";
             m_OutputStream << "\"ph\":\"X\",";
             m_OutputStream << "\"pid\":0,";
             m_OutputStream << "\"tid\":" << result.ThreadID << ",";
-            m_OutputStream << "\"ts\":" << result.Start;
+            m_OutputStream << "\"ts\":" << result.Start.count();
             m_OutputStream << "}";
 
             m_OutputStream.flush();
@@ -133,7 +136,7 @@ namespace pb{
             }
 
             DataBuffer* data = &buffer_map[result.Name];
-            data->sma_sum += result.End - result.Start;
+            data->sma_sum += result.End.count() - result.Start.count();
             data->sma_sum -= data->sma_points[data->sma_index];
             data->sma_points[data->sma_index] = data->sma_sum/MOVING_AVERAGE;
             data->buffer[data->buffer_index] = data->sma_points[data->sma_index];
@@ -186,10 +189,10 @@ namespace pb{
         {
             auto endTimepoint = std::chrono::high_resolution_clock::now();
 
-            long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
-            long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+            auto start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch();
+            auto end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch();
 
-            uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+            size_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
             Profiler::Get().WriteProfile({ m_Name, start, end, threadID });
             if(m_Visual) VisualProfiler::Get().AddPoint({ m_Name, start, end, threadID });
             m_Stopped = true;
@@ -197,7 +200,7 @@ namespace pb{
     private:
         const bool m_Visual;
         const char* m_Name;
-        std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
+        std::chrono::time_point<std::chrono::steady_clock> m_StartTimepoint;
         bool m_Stopped;
     };
 

@@ -34,7 +34,7 @@ namespace pb::ECS {
 	**/
 	struct Record {
 		Archetype* archetype;
-		int component_index;
+		size_t component_index;
 	};
 
 

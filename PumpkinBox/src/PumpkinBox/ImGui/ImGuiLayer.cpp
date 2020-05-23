@@ -63,7 +63,6 @@ namespace pb {
 
 	void ImGuiLayer::OnDetach()
 	{
-		
 	}
 
 
@@ -93,6 +92,7 @@ namespace pb {
 
 	void ImGuiLayer::Shutdown()
 	{
+		PB_PROFILE_FUNCTION();
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();

@@ -39,12 +39,12 @@ namespace pb {
 		ShaderDataType type;
 
 		uint32_t size;
-		uint32_t offset;
+		size_t offset;
 
 		bool normalized;
 
 		// TODO: fill out default constructor
-		BufferElement() {}
+		BufferElement() = default;
 
 		BufferElement(ShaderDataType _type, const std::string& _name, bool normalized = false)
 			: name(_name), type(_type), size(ShaderDataTypeSize(_type)), offset(0) {}
@@ -91,14 +91,14 @@ namespace pb {
 		std::vector<BufferElement>::const_iterator begin() const { return m_Elements.begin(); }
 		std::vector<BufferElement>::const_iterator end() const { return m_Elements.end(); }
 
-		inline uint32_t size() {return m_Elements.size();}
+		inline size_t size() {return m_Elements.size();}
 
 	private:
 		std::vector<BufferElement> m_Elements;
 		uint32_t m_Stride = 0;
 
 		void CalculateOffsetStride() {
-			uint32_t offset = 0;
+			size_t offset = 0;
 			m_Stride = 0;
 			for (auto& element : m_Elements) {
 				element.offset = offset;

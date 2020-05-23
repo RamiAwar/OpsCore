@@ -415,9 +415,11 @@ void ImGuiFileDialog::SetCurrentDir(const std::string & vPath)
 				m_CurrentPath = m_CurrentPath.substr(0, m_CurrentPath.size() - 1);
 			}
 			m_CurrentPath_Decomposition = splitStringToVector(m_CurrentPath, PATH_SEP, false);
+			
 			#if defined(LINUX) or defined(APPLE)
 			m_CurrentPath_Decomposition.insert(m_CurrentPath_Decomposition.begin(), std::string(1u, PATH_SEP));
 			#endif
+
 			if (!m_CurrentPath_Decomposition.empty())
 			{
 				#ifdef WIN32
