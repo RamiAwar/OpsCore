@@ -7,7 +7,6 @@
 #include "PumpkinBox/ImGui/ImGuiLayer.h"
 
 // ------- RENDERING ------------------
-
 #include "PumpkinBox/Renderer/Buffer.h"
 #include "PumpkinBox/Renderer/VertexArray.h"
 #include "PumpkinBox/Renderer/Shader.h"

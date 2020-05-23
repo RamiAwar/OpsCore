@@ -8,7 +8,7 @@ int ExampleLayer::fps_counter = 0;
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_CameraController(pb::Renderer::aspectRatio, true)
+	m_CameraController(pb::Renderer::aspectRatio, true, true, true)
 {
 	PB_CLIENT_INFO("Constructing ExampleLayer");
 }
@@ -26,12 +26,12 @@ void ExampleLayer::OnDetach()
 
 void ExampleLayer::OnUpdate(pb::Timestep ts) 
 { 
-		
+
 	PB_PROFILE_FUNCTION();
 
 	// UPDATE
 	{
-		PB_PROFILE_SCOPE("CameraController::Update");
+		PB_PROFILE_VISUAL_SCOPE("CameraController::Update");
 		m_CameraController.OnUpdate(ts);
 	}
 
@@ -44,41 +44,44 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 
 	// RENDER
 	{
-		PB_PROFILE_SCOPE("Renderer2D::Setup");
-		pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-		pb::RenderCommand::Clear();
+		PB_PROFILE_SCOPE("Renderer2D Loop");
+
+		{
+			PB_PROFILE_VISUAL_SCOPE("Renderer2D::Setup");
+			pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
+			pb::RenderCommand::Clear();
 
 
-		pb::Renderer2D::BeginScene(m_CameraController.GetCamera());
-	}
+			pb::Renderer2D::BeginScene(m_CameraController.GetCamera());
+		}
 
 
-	{
-		PB_PROFILE_SCOPE("Renderer2D::DrawQuad");
-		pb::Renderer2D::DrawQuad({ 0.3f, 0.0f }, // position  
+		{
+			PB_PROFILE_SCOPE("Renderer2D::DrawQuad");
+			pb::Renderer2D::DrawQuad({ 0.3f, 0.0f, 0.0f }, // position  
+				{ 2.0f, 2.0f }, // size
+				checkerboard_blend_color // color
+			);
+		}
+
+		pb::Renderer2D::DrawQuad({ -1.0f, 1.0f }, // position  
 			{ 1.0f, 1.0f }, // size
-			checkerboard_blend_color // color
+			{ 0.2f, 0.3f, 0.8f, 1.0f } // color
 		);
+
+		pb::Renderer2D::DrawQuad({ 0.5f, 0.5f , 0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
+		pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.2f }, { 0.5f, 0.5f }, mushroom_texture);
+
+		pb::Renderer2D::EndScene();
+
 	}
-
-	pb::Renderer2D::DrawQuad({ -1.0f, 0.0f }, // position  
-		{ 0.8f, 1.4f }, // size
-		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
-	);
-
-	pb::Renderer2D::DrawQuad({ 0.5f, 0.5f , -0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
-	pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.1f }, { 0.5f, 0.5f }, mushroom_texture);
-
-	pb::Renderer2D::EndScene();
-
-
 
 	
 }
 
 void ExampleLayer::OnEvent(pb::Event& event) { 
 
-	PB_PROFILE_FUNCTION();
+	//PB_PROFILE_FUNCTION();
 	//PB_CLIENT_TRACE("{0}", event);
 	m_CameraController.OnEvent(event);
 }
@@ -86,7 +89,7 @@ void ExampleLayer::OnEvent(pb::Event& event) {
 
 void ExampleLayer::OnImGuiRender() {
 
-	PB_PROFILE_FUNCTION();
+	//PB_PROFILE_FUNCTION();
 
 	// ------- Color Settings Menu ---------
 	static bool p_open = true; // has to be static because this is called every frame. 
@@ -154,16 +157,7 @@ void ExampleLayer::OnImGuiRender() {
 
 		ImGui::End();
 
-	//ImGui::Begin("Profiler");
-	//
-	//for (auto& result : m_ProfileResults) {
-	//	char label[50];
-	//	strcat(label, "  %.3fms");
-	//	strcpy(label, result.name);
-	//	ImGui::Text(label, result.Time);
-	//}
-	//m_ProfileResults.clear();
-	//ImGui::End();
+	PB_PROFILE_RENDER();
 
 	ImGui::Begin("Stats");
 	ImGui::Text("FPS: %.2f", m_FPS);

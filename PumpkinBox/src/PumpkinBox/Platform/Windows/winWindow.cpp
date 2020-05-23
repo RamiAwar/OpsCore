@@ -61,13 +61,13 @@ namespace pb {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+			glfwWindowHint(GLFW_SAMPLES, 4);
 		#else
 			#error "Unsupported platform";
 		#endif
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		
+
 		// TODO: Find a more elegant solution to this
 		Renderer::screenWidth = (int)properties.Width;
 		Renderer::screenHeight = (int)properties.Height;

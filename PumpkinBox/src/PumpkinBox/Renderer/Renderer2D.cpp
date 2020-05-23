@@ -149,7 +149,7 @@ namespace pb {
 	* Transforms coordinates from (0 -> 1) by (0 -> 1) to their correct positions
 	*/
 	glm::vec3 normalized_to_scaled(const glm::vec3& position, const glm::vec2& size) {
-		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (abs(size.x) * Renderer::aspectRatio), 2 * (position.y - 0.5f) + abs(size.y), 0.0f };
+		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (abs(size.x) * Renderer::aspectRatio), 2 * (position.y - 0.5f) + abs(size.y), position.z };
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
@@ -169,26 +169,32 @@ namespace pb {
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, const glm::vec2& tileScale, const glm::vec4& color)
 	{
-		texture->Bind(); // Get image in : Pass this to uniform in texture shader
+		{
+			PB_PROFILE_SCOPE("Texture binding");
+			texture->Bind(); // Get image in : Pass this to uniform in texture shader
+		}
 
+		
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind(); // Get texture in 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat4("u_Color", color);
 		
+		
 		glm::mat4 rotation = glm::mat4(1.0f);
-
-
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), normalized_to_scaled(position, size))
 			* rotation 
-			* glm::scale(glm::mat4(1.0f), { size.x*Renderer::aspectRatio*2, size.y*2, 1.0f });
+			* glm::scale(glm::mat4(1.0f), { size.x*2, size.y*2, 1.0f });
 		
 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_Transform", transform);
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
 
 		s_Data->m_QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
-
+		
+		{
+			PB_PROFILE_SCOPE("Drawing vertex array");
+			RenderCommand::DrawIndexed(s_Data->m_QuadVertexArray);
+		}
 	}
 
 	void Renderer2D::DrawSprite(const int& index, const glm::vec2& position, const float size, const Ref<Texture2D>& texture, int rows, int cols, const glm::vec2& tileScale, const glm::vec4& color)
