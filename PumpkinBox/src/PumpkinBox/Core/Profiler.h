@@ -12,6 +12,9 @@
 #define MOVING_AVERAGE 10
 #define BUFFER_SIZE 400
 
+
+// TO FIX CROSS_COMPATIBILITY: https://github.com/TheCherno/Hazel/pull/174/files
+
 namespace pb{
 
     using FloatingPointMicroseconds = std::chrono::duration<double, std::micro>;

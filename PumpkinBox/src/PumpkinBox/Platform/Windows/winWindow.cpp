@@ -10,7 +10,7 @@
 
 namespace pb {
 
-	static bool s_GLFWInitialized = false;
+	static uint8_t s_GLFWWindowCount = 0;
 
 	static void GLFWErrorCallback(int error, const char* description) {
 		PB_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -37,13 +37,12 @@ namespace pb {
 
 		PB_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
 
-		if (!s_GLFWInitialized) {
+		if (s_GLFWWindowCount == 0) {
 
 			// TODO: glfwTerminate on system shutdown
 			int success = glfwInit();
 			PB_ASSERT(success, "Could not initialize GLFW!")
 			glfwSetErrorCallback(GLFWErrorCallback);
-			s_GLFWInitialized = true;
 		}
 
 		// Set version hints before creating window
@@ -67,6 +66,7 @@ namespace pb {
 		#endif
 
 		m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_Data.Title.c_str(), nullptr, nullptr);
+		++s_GLFWWindowCount;
 
 		// TODO: Find a more elegant solution to this
 		Renderer::screenWidth = (int)properties.Width;
@@ -168,6 +168,11 @@ namespace pb {
 
 	void winWindow::Shutdown() {
 		glfwDestroyWindow(m_Window);
+		if (--s_GLFWWindowCount == 0)
+		{
+			PB_INFO("Terminating GLFW");
+			glfwTerminate();
+		}
 	}
 
 	void winWindow::OnUpdate() {
