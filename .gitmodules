@@ -1,12 +1,12 @@
-[submodule "OpsCore/vendor/GLFW"]   
-	path = OpsCore/vendor/GLFW
+[submodule "PumpkinBox/vendor/GLFW"]   
+	path = PumpkinBox/vendor/GLFW
 	url = https://github.com/glfw/glfw
-[submodule "OpsCore/vendor/spdlog"] 
-	path = OpsCore/vendor/spdlog
+[submodule "PumpkinBox/vendor/spdlog"] 
+	path = PumpkinBox/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "OpsCore/vendor/imgui"]  
-	path = OpsCore/vendor/imgui
+[submodule "PumpkinBox/vendor/imgui"]  
+	path = PumpkinBox/vendor/imgui
 	url = https://github.com/ocornut/imgui
-[submodule "OpsCore/vendor/glm"]    
-	path = OpsCore/vendor/glm
+[submodule "PumpkinBox/vendor/glm"]    
+	path = PumpkinBox/vendor/glm
 	url = https://github.com/g-truc/glm
