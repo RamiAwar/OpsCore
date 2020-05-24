@@ -1,5 +1,4 @@
 # PumpkinBox         
-============================================================================
 
 [![CodeFactor](https://www.codefactor.io/repository/github/ramiawar/pumpkinbox/badge)](https://www.codefactor.io/repository/github/ramiawar/pumpkinbox)
 
