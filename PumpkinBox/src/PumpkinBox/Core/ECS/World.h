@@ -14,20 +14,17 @@
 
 #define MAX_ARCHETYPES 20000
 
-namespace pb::ECS {
-
-
-	class World {
-
-	public:
-		
+namespace pb::ECS 
+{
+	class World 
+	{
+	public:	
 		/**
 		*	Constructor initializes virtual memory and the freelist structure for the entities array and archetypes array (no free list here)
 		*	Then creates an empty Archetype node to act as the root node in the Archetype graph. The archetype graph allows for quick 
 		*	addition and removal of components.
 		**/
 		World();
-
 
 		/**
 		*	Creates an entity and returns it (an id and generation)
@@ -204,6 +201,13 @@ namespace pb::ECS {
 		}
 
 		void LinkSystem(System* system);
+
+		/**
+		*	Helper function to check if archetype signature belongs in group. If it does,
+		*	a pointer to the archetype is added to the group.
+		**/
+		void MatchArchetype(Archetype* archetype, Group* current_group);
+
 
 		/**
 		*	Testing functions

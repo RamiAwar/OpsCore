@@ -75,37 +75,42 @@ namespace pb::ECS {
 				Archetype* archetype = &archetypes[archetypes.size() - 1];
 				Group* current_group = &(System::instance_list[i]->group);
 
-				// Reset pointers
-				int group_pointer = 0;
-				int archetype_pointer = 0;
-				std::vector<size_t> component_array_indices;
-
-				while (group_pointer < current_group->signature.size() && archetype_pointer < archetype->n_types) {
-
-					if (current_group->signature[group_pointer] == archetype->types[archetype_pointer]->hash) {
-						
-						// Save archetype_pointer as component_array_index
-						component_array_indices.push_back(archetype_pointer);
-						
-						group_pointer++;
-						archetype_pointer++;
-					}
-					else {
-						archetype_pointer++;
-					}
-				}
-
-				// Check if this archetype belongs to this group
-				if (group_pointer == current_group->signature.size()) {
-					// Add this archetype reference to this group
-					current_group->matched_archetypes.push_back({ archetype, component_array_indices });
-				}
+				// Check if archetype signature is a subset of the current_group
+				MatchArchetype(archetype, current_group);
 				
 
 			}
 		}
 
 	
+	}
+
+	void World::MatchArchetype(Archetype* archetype, Group* current_group) {
+
+		int group_pointer = 0;
+		int archetype_pointer = 0;
+		std::vector<size_t> component_array_indices;
+
+		while (group_pointer < current_group->signature.size() && archetype_pointer < archetype->n_types) {
+
+			if (current_group->signature[group_pointer] == archetype->types[archetype_pointer]->hash) {
+
+				// Save archetype_pointer as component_array_index
+				component_array_indices.push_back(archetype_pointer);
+
+				group_pointer++;
+				archetype_pointer++;
+			}
+			else {
+				archetype_pointer++;
+			}
+		}
+
+		// Check if this archetype belongs to this group
+		if (group_pointer == current_group->signature.size()) {
+			// Add this archetype reference to this group
+			current_group->matched_archetypes.push_back({ archetype, component_array_indices });
+		}
 	}
 
 	void World::LinkSystem(System* system) {
@@ -120,30 +125,8 @@ namespace pb::ECS {
 			// Use two pointers to traverse both lists (since sorted by hash)
 			Archetype* archetype = &archetypes[j];
 
-			int group_pointer = 0;
-			int archetype_pointer = 0;
-			std::vector<size_t> component_array_indices;
-
-			while (group_pointer < current_group->signature.size() && archetype_pointer < archetype->n_types) {
-
-				if (current_group->signature[group_pointer] == archetype->types[archetype_pointer]->hash) {
-					// Save archetype_pointer as component_array_index
-					component_array_indices.push_back(archetype_pointer);
-
-					group_pointer++;
-					archetype_pointer++;
-
-				}
-				else {
-					archetype_pointer++;
-				}
-			}
-
-			// Check if this archetype belongs to this group
-			if (group_pointer == current_group->signature.size()) {
-				// Add this archetype reference to this group
-				current_group->matched_archetypes.push_back({ archetype, component_array_indices });
-			}
+			// Check if archetype signature is a subset of the current_group
+			MatchArchetype(archetype, current_group);
 
 		}
 

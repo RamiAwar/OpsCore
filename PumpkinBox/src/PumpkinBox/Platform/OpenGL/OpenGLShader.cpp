@@ -44,7 +44,6 @@ pb::OpenGLShader::OpenGLShader(const std::string name, const std::string& vertex
 	sources[GL_VERTEX_SHADER] = vertexSrc;
 	sources[GL_FRAGMENT_SHADER] = fragmentSrc;
 	Compile(sources);
-
 }
 
 pb::OpenGLShader::~OpenGLShader()
@@ -84,7 +83,6 @@ void pb::OpenGLShader::SetMat4(const std::string name, const glm::mat4& value)
 
 void pb::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources) 
 {
-	
 	GLuint program = glCreateProgram();
 
 	PB_ASSERT(shaderSources.size() <= 2, "Exactly 2 shaders needed to compile shader. Support for more than one vertex and one fragment shader is not available.");
@@ -128,7 +126,6 @@ void pb::OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& sh
 
 		GLCall(glAttachShader(program, shader));
 		shaderIDs[index++] = shader;
-
 	}
 
 	m_RendererID = program;
@@ -240,8 +237,8 @@ std::string pb::OpenGLShader::ReadFile(const std::string& filepath) {
 
 
 // TODO: REWRITE THIS CODE TO BE MORE ROBUST
-std::unordered_map<GLenum, std::string> pb::OpenGLShader::Preprocess(const std::string& source) {
-
+std::unordered_map<GLenum, std::string> pb::OpenGLShader::Preprocess(const std::string& source) 
+{
 	std::unordered_map<GLenum, std::string> shaderSource;
 	
 	// Split file into vertex and fragment shaders by preprocessor directive #type

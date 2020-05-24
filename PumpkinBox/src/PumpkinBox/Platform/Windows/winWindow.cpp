@@ -38,7 +38,6 @@ namespace pb {
 		PB_INFO("Creating window {0} ({1}, {2})", properties.Title, properties.Width, properties.Height);
 
 		if (s_GLFWWindowCount == 0) {
-
 			// TODO: glfwTerminate on system shutdown
 			int success = glfwInit();
 			PB_ASSERT(success, "Could not initialize GLFW!")
@@ -123,7 +122,6 @@ namespace pb {
 				data.EventCallback(event);
 				break;
 			}}
-
 		});
 
 		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int keycode) {
@@ -178,7 +176,6 @@ namespace pb {
 	void winWindow::OnUpdate() {
 		glfwPollEvents();
 		m_Context->SwapBuffers();
-	
 	}
 
 	void winWindow::SetVSync(bool enabled) {

@@ -46,4 +46,4 @@ bin*
 
 # Configs
 **/*.ini
-Examples/**.json
+*.json

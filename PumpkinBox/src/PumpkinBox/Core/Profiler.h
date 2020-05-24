@@ -102,8 +102,8 @@ namespace pb{
 
     class VisualProfiler
     {
-        struct DataBuffer{
-
+        struct DataBuffer
+        {
             DataBuffer(const std::string _name)
                 : name(_name), sma_sum(0), sma_average(0), sma_points(), sma_index(0), buffer(), buffer_index(0)
             {}
@@ -119,11 +119,9 @@ namespace pb{
             int buffer_index;
             int sma_index;
             std::string name;
-
         };
 
     private:
-
         std::unordered_map<std::string, DataBuffer> buffer_map;
 
     public:
@@ -133,7 +131,6 @@ namespace pb{
 
         void AddPoint(const ProfileResult& result)
         {
-
             if (buffer_map.find(result.Name) == buffer_map.end()) {
                 buffer_map[result.Name] = DataBuffer(result.Name);
             }
@@ -148,11 +145,10 @@ namespace pb{
 
             if (data->sma_index == MOVING_AVERAGE) data->sma_index = 0;
             if (data->buffer_index == BUFFER_SIZE) data->buffer_index = 0;
-
         }
 
-        void Render() {
-            
+        void Render() 
+        {
             ImGui::Begin("Profiler Instance");
 
             for (auto& it: buffer_map) {

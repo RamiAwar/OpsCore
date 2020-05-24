@@ -6,16 +6,16 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-namespace pb {
-
-	struct Renderer2DStorage {
+namespace pb 
+{
+	struct Renderer2DStorage 
+	{
 		std::shared_ptr<VertexArray> m_QuadVertexArray;
 		std::shared_ptr<VertexArray> m_SpriteVertexArray;
 
 		ShaderLibrary m_ShaderLibrary;
 
 		Ref<Texture2D> m_WhiteTexture;
-
 	};
 
 	static Renderer2DStorage* s_Data; // make pointer so we can free in shutdown
@@ -23,10 +23,7 @@ namespace pb {
 
 	void Renderer2D::Init()
 	{
-
 		s_Data = new Renderer2DStorage();
-
-
 
 		// ----------- Square inits ---------------------------
 		float square_vertices[5 * 4] = {
@@ -42,7 +39,6 @@ namespace pb {
 				-0.5f,  0.5f, 0.0f, 0.0f, 0.05f,
 				 0.5f,  0.5f, 0.0f, 0.25f, 0.05f
 		};
-
 
 		s_Data->m_QuadVertexArray = pb::VertexArray::Create();
 		s_Data->m_SpriteVertexArray = pb::VertexArray::Create();
@@ -77,7 +73,6 @@ namespace pb {
 		uint32_t white_texture_data = 0xffffffff;
 		s_Data->m_WhiteTexture->SetData(&white_texture_data, sizeof(white_texture_data));
 
-
 		// Packed all three into one shader
 		//s_Data->m_ShaderLibrary.Load("assets/shaders/FlatColor.glsl");
  
@@ -97,7 +92,6 @@ namespace pb {
 
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->Bind();
 		s_Data->m_ShaderLibrary.Get("SpriteTexture")->SetInt("u_Texture", 0);
-
 	}
 
 	void Renderer2D::Shutdown()
@@ -173,18 +167,15 @@ namespace pb {
 			PB_PROFILE_SCOPE("Texture binding");
 			texture->Bind(); // Get image in : Pass this to uniform in texture shader
 		}
-
 		
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->Bind(); // Get texture in 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat4("u_Color", color);
-		
 		
 		glm::mat4 rotation = glm::mat4(1.0f);
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), normalized_to_scaled(position, size))
 			* rotation 
 			* glm::scale(glm::mat4(1.0f), { size.x*2, size.y*2, 1.0f });
-		
 
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetMat4("u_Transform", transform);
 		s_Data->m_ShaderLibrary.Get("ColorTexture")->SetFloat2("u_TileScale", { tileScale.x, tileScale.y });
@@ -224,10 +215,5 @@ namespace pb {
 		
 		s_Data->m_SpriteVertexArray->Bind();
 		RenderCommand::DrawIndexed(s_Data->m_SpriteVertexArray);
-
 	}
-
-
-
-
 }

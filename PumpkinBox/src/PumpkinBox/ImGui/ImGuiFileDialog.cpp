@@ -607,7 +607,6 @@ void ImGuiFileDialog::OpenDialog(const std::string & vKey, const char* vName, co
 	dlg_optionsPaneWidth = 0;
 
 	dlg_defaultExt = "";
-
 }
 
 void ImGuiFileDialog::CloseDialog(const std::string & vKey)
@@ -641,7 +640,6 @@ void ImGuiFileDialog::SetPath(const std::string & vPath)
 
 bool ImGuiFileDialog::FileDialog(const std::string & vKey, ImGuiWindowFlags vFlags)
 {
-
 	if (m_ShowDialog && dlg_key == vKey)
 	{
 		bool res = false;
@@ -659,7 +657,6 @@ bool ImGuiFileDialog::FileDialog(const std::string & vKey, ImGuiWindowFlags vFla
 
 		if (ImGui::Begin(name.c_str(), (bool*)nullptr, vFlags | ImGuiWindowFlags_NoScrollbar))
 		{
-
 			m_Name = name;
 
 			m_AnyWindowsHovered |= ImGui::IsWindowHovered();
@@ -678,7 +675,6 @@ bool ImGuiFileDialog::FileDialog(const std::string & vKey, ImGuiWindowFlags vFla
 
 					if (!dlg_defaultExt.empty())
 					{
-
 						m_SelectedExt = dlg_defaultExt;
 
 						ImGuiFileDialog::FilterIndex = 0;
