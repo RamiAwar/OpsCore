@@ -28,14 +28,14 @@ SOFTWARE.
 #include "imgui.h"
 
 #ifdef WIN32
-#include <dirent.h>
+#include "PumpkinBox/Utils/dirent.h"
 #define PATH_SEP '\\'
 #ifndef PATH_MAX
 #define PATH_MAX 260
 #endif
 #else
 #include <sys/types.h>
-#include <dirent.h>
+#include "PumpkinBox/Utils/dirent.h"
 #define PATH_SEP '/'
 #endif
 
