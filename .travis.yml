@@ -1,0 +1,15 @@
+os: windows
+language: cpp
+env:
+  - MSBUILD_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
+install:
+  - choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64"
+script:
+  - export PATH=$MSBUILD_PATH:$PATH
+  - wget premake5.zip https://github.com/premake/premake-core/releases/download/v5.0.0-alpha15/premake-5.0.0-alpha15-windows.zip
+  - 7z e premake5.zip -y
+  - premake5.exe vs2019
+  - MSBuild.exe -p:Configuration=Release -p:Platform=x64 PumpkinBox/PumpkinBox.vcxproj
+  - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Test/Test.vcxproj
+  - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Sandbox/Sandbox.vcxproj
+  
