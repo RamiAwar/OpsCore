@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
-
+#include <cstddef>
+#include <algorithm>
 #include <thread>
 #include "imgui.h"
 
