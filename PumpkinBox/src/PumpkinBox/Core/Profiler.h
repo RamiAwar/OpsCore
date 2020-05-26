@@ -156,7 +156,7 @@ namespace pb{
                 DataBuffer& data = it.second;
                 ImGui::PlotLines(data.name.c_str(), data.buffer, BUFFER_SIZE, data.buffer_index, (const char*)0, 0, 1500, ImVec2(400, 100));
                 ImGui::SameLine();
-                size_t idx = std::max(0, data.buffer_index - 1);
+                size_t idx = (std::max)(0, data.buffer_index - 1);
                 ImGui::Text("%.4fus", data.buffer[idx % 50]);
             }
 
