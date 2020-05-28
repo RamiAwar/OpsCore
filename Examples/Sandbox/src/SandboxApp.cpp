@@ -169,12 +169,20 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::Text("FPS: %.2f", m_FPS);
 	ImGui::End();
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::Begin("Viewport");
 	auto viewportSize = ImGui::GetContentRegionAvail();
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
 	ImGui::End();
+	ImGui::PopStyleVar();
+
+
+
+
+
+
 
 
 	//}

@@ -7,6 +7,7 @@
 #include "PumpkinBox/Renderer/RenderCommand.h"
 
 #include "PumpkinBox/Core/SceneStateMachine.h"
+#include "PumpkinBox/Renderer/Framebuffer.h"
 
 #include <GLFW/glfw3.h>
 
@@ -79,6 +80,10 @@ namespace pb {
 		m_Minimized = false;
 
 		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+		auto& fbs = FramebufferPool::GetGlobal()->GetAll();
+		for (auto& fb : fbs) {
+			fb->Resize(e.GetWidth(), e.GetHeight());
+		}
 
 		return false;
 	}

@@ -18,6 +18,22 @@ namespace pb
 			result = new OpenGLFramebuffer(width, height, format);
 		}
 
+		FramebufferPool::GetGlobal()->Add(result);
 		return result;
 	}
+
+	FramebufferPool* FramebufferPool::s_Instance = new FramebufferPool;
+
+	FramebufferPool::FramebufferPool(uint32_t max_framebuffers) {}
+
+	FramebufferPool::~FramebufferPool() {}
+
+	std::weak_ptr<Framebuffer> FramebufferPool::AllocateBuffer() {
+		return std::weak_ptr<Framebuffer>();
+	}
+
+	void FramebufferPool::Add(Framebuffer* framebuffer) {
+		m_Pool.push_back(framebuffer);
+	}
+
 }

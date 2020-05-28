@@ -28,6 +28,22 @@ namespace pb {
 		virtual RendererID GetDepthAttachmentRendererID() const = 0;
 	};
 
+	class FramebufferPool final 
+	{
+	public:
+		FramebufferPool(uint32_t max_framebuffers = 32);
+		~FramebufferPool();
+
+		std::weak_ptr<Framebuffer> AllocateBuffer();
+		void Add(Framebuffer* framebuffer);
+		
+		const std::vector<Framebuffer*>& GetAll() const { return m_Pool; }
+		inline static FramebufferPool* GetGlobal() { return s_Instance; }
+	private:
+		std::vector<Framebuffer*> m_Pool;
+		static FramebufferPool* s_Instance;
+		
+	};
 
 
 
