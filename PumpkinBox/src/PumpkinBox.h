@@ -9,6 +9,7 @@
 // ------- RENDERING ------------------
 #include "PumpkinBox/Renderer/Buffer.h"
 #include "PumpkinBox/Renderer/VertexArray.h"
+#include "PumpkinBox/Renderer/Framebuffer.h"
 #include "PumpkinBox/Renderer/Shader.h"
 #include "PumpkinBox/Platform/OpenGL/OpenGLShader.h"
 #include "PumpkinBox/Renderer/RenderCommand.h"

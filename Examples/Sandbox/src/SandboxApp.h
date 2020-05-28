@@ -27,6 +27,8 @@ private:
 
 	glm::vec4 checkerboard_blend_color = glm::vec4(1.0f);
 
+	std::unique_ptr<pb::Framebuffer> m_Framebuffer;
+
 	// Tracked stats
 	static float m_FPS;
 	static int fps_counter;

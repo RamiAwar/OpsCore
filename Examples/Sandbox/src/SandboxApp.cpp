@@ -17,6 +17,7 @@ void ExampleLayer::OnAttach()
 {
 	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
 	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
+	m_Framebuffer.reset(pb::Framebuffer::Create(1280, 720, pb::FramebufferFormat::RGBA16F));
 }
 
 void ExampleLayer::OnDetach() 
@@ -47,7 +48,10 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 		PB_PROFILE_SCOPE("Renderer2D Loop");
 
 		{
+
 			PB_PROFILE_VISUAL_SCOPE("Renderer2D::Setup");
+			
+			m_Framebuffer->Bind();
 			pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 			pb::RenderCommand::Clear();
 
@@ -73,6 +77,8 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 		pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.2f }, { 0.5f, 0.5f }, mushroom_texture);
 
 		pb::Renderer2D::EndScene();
+		m_Framebuffer->Unbind();
+
 
 	}
 
@@ -162,6 +168,14 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::Begin("Stats");
 	ImGui::Text("FPS: %.2f", m_FPS);
 	ImGui::End();
+
+	ImGui::Begin("Viewport");
+	auto viewportSize = ImGui::GetContentRegionAvail();
+	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
+	ImGui::End();
+
 
 	//}
 

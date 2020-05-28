@@ -23,6 +23,7 @@ namespace pb {
 	private:
 		uint32_t m_RendererID;
 		BufferLayout m_Layout;
+		unsigned int m_Size;
 	};
 
 

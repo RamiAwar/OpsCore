@@ -49,6 +49,8 @@ namespace pb {
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
 
+		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15f, 0.15f, 0.15f, style.Colors[ImGuiCol_WindowBg].w);
+
 		Application& app = Application::Get();
 		GLFWwindow* window = static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 

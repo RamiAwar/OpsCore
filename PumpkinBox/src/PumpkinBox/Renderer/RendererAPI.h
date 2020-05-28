@@ -6,6 +6,8 @@
 
 namespace pb {
 
+	using RendererID = uint32_t;
+
 	class RendererAPI {
 	public:
 

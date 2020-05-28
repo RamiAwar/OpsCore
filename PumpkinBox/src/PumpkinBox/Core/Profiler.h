@@ -6,8 +6,8 @@
 #include <fstream>
 #include <iomanip>
 #include <cstddef>
-#include <algorithm>
 #include <thread>
+#include <unordered_map>
 #include "imgui.h"
 
 #define MOVING_AVERAGE 10
