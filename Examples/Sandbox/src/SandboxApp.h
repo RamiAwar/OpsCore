@@ -29,6 +29,8 @@ private:
 
 	std::unique_ptr<pb::Framebuffer> m_Framebuffer;
 
+	bool m_ViewportActive;
+
 	// Tracked stats
 	static float m_FPS;
 	static int fps_counter;

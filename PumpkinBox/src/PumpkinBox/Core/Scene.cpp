@@ -26,7 +26,6 @@ namespace pb {
 
 
 	void Scene::OnEvent(Event& e) {
-
 		for (auto it = m_LayerStack->end(); it != m_LayerStack->begin();) {
 			(*(--it))->OnEvent(e);
 			if (e.m_Handled) break;	// so if overlay handles event, layers will not receive it (ex. clicking button on UI, we don't want click to be propagated into game layer)

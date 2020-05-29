@@ -8,7 +8,8 @@ int ExampleLayer::fps_counter = 0;
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_CameraController(pb::Renderer::aspectRatio, true, true, true)
+	m_CameraController(pb::Renderer::aspectRatio, true, true, true),
+	m_ViewportActive(false)
 {
 	PB_CLIENT_INFO("Constructing ExampleLayer");
 }
@@ -22,7 +23,6 @@ void ExampleLayer::OnAttach()
 
 void ExampleLayer::OnDetach() 
 {
-
 }
 
 void ExampleLayer::OnUpdate(pb::Timestep ts) 
@@ -33,7 +33,9 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 	// UPDATE
 	{
 		PB_PROFILE_VISUAL_SCOPE("CameraController::Update");
-		m_CameraController.OnUpdate(ts);
+		if (m_ViewportActive) {
+			m_CameraController.OnUpdate(ts);
+		}
 	}
 
 	// TODO: do more efficiently
@@ -89,7 +91,11 @@ void ExampleLayer::OnEvent(pb::Event& event) {
 
 	//PB_PROFILE_FUNCTION();
 	//PB_CLIENT_TRACE("{0}", event);
-	m_CameraController.OnEvent(event);
+	if (m_ViewportActive) {
+		m_CameraController.OnEvent(event);
+	}
+
+	
 }
 
 
@@ -165,59 +171,32 @@ void ExampleLayer::OnImGuiRender() {
 		ImGui::Begin("Settings"/*, &p_open*/);
 		ImGui::Text("Checkboard blend");
 		ImGui::ColorEdit3("", glm::value_ptr(checkerboard_blend_color));
-		//ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
+	
+		if (ImGui::Button("Select Texture Shader")) {
+			ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
+			ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
+		}
 
-		//if (ImGui::Button("Select Texture Shader")) {
-		//	ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
-		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
-		//}
+		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+		{
+			// action if OK
+			if (ImGuiFileDialog::Instance()->IsOk == true)
+			{
+				m_CheckerboardPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
-		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
-		//{
-		//	// action if OK
-		//	if (ImGuiFileDialog::Instance()->IsOk == true)
-		//	{
-		//		m_TextureShaderPath = ImGuiFileDialog::Instance()->GetFilepathName();
+				// update texture
+				PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_CheckerboardPath);
 
-		//		// update texture
-		//		PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_TextureShaderPath);
+				auto texture_shader = pb::ShaderLibrary::GetInstance()->Load(m_CheckerboardPath);
+				m_CheckerboardPath = texture_shader->GetName();
 
-		//		auto texture_shader = m_ShaderLibrary.Load(m_TextureShaderPath);
-		//		m_CurrentShader = texture_shader->GetName();
+				std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->Bind();
+				std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
+			}
 
-		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->Bind();
-		//		std::dynamic_pointer_cast<oc::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
-
-		//	}
-
-			// close
-		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
-		//}
-
-		//ImGui::Text("Main Texture: (%s)", m_TexturePath.c_str());
-		// TODO: This conversion is OpenGL specific. Must abstract it away. (uint32_t to (void*)(intptr_t))
-		//ImGui::Image((void*)(intptr_t)texture->GetRendererID(), ImVec2(100, 100));
-
-		//if (ImGui::Button("Select Texture")) {
-		//	ImGuiFileDialog::Instance()->SetFilterColor(".png", ImVec4(0, 1, 0, 0.5));
-		//	ImGuiFileDialog::Instance()->OpenDialog("Select Texture", "Choose File", ".png\0", "..");
-		//}
-
-		//if (ImGuiFileDialog::Instance()->FileDialog("Select Texture"))
-		//{
-		//	// action if OK
-		//	if (ImGuiFileDialog::Instance()->IsOk == true)
-		//	{
-		//		m_TexturePathName = ImGuiFileDialog::Instance()->GetFilepathName();
-		//		
-		//		// update texture
-		//		PB_CLIENT_INFO("Texture path updated to :'{0}'", m_TexturePathName);
-		//		texture = oc::Texture2D::Create(m_TexturePathName);
-		//	}
-
-			// close
-		//	ImGuiFileDialog::Instance()->CloseDialog("Select Texture");
-		//}
+			//close
+			ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+		}
 
 		ImGui::End();
 
@@ -228,48 +207,17 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::End();
 
 	ImGui::Begin("Viewport");
+	
+	m_ViewportActive = ImGui::IsWindowFocused();
+
 	auto viewportSize = ImGui::GetContentRegionAvail();
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
 	ImGui::End();
 
-
-
-
-
-
+	
 	ImGui::End();
-
-	//}
-
-	// ------- ImGui Dockspace -------------
-	 //static ImGuiID dockspaceID = 0;
-	 //bool active = true;
-	 //if (ImGui::Begin("Master Window", &active))
-	 //{
-	 //	ImGui::TextUnformatted("DockSpace below");
-	 //}
-	 //if (active)
-	 //{
-	 //	// Declare Central dockspace
-	 //	dockspaceID = ImGui::GetID("HUB_DockSpace");
-	 //	ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode/*|ImGuiDockNodeFlags_NoResize*/);
-
-	 //}
-	 //ImGui::End();
-
-	 //ImGui::SetNextWindowDockID(dockspaceID, ImGuiCond_FirstUseEver);
-	 //if (ImGui::Begin("Dockable Window"))
-	 //{
-	 //	ImGui::TextUnformatted("Test");
-	 //	const ImU32 col = ImGui::GetColorU32(ImGuiCol_ButtonHovered);
-	 //	const ImU32 bg = ImGui::GetColorU32(ImGuiCol_Button);
-
-	 //	ImGui::Spinner("##spinner", 20.0f, col, bg, 10, 10.0f, 20.0f);
-	 //	//ImGui::BufferingBar("##buffer_bar", 0.7f, ImVec2(400, 6), bg, col);
-	 //}
-	 //ImGui::End();
 
 }
 
