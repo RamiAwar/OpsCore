@@ -21,20 +21,9 @@ static GLenum ShaderTypeFromString(const std::string& type) {
 
 
 pb::OpenGLShader::OpenGLShader(const std::string& filepath)
+	: m_Filepath(filepath)
 {
-	std::string source = ReadFile(filepath);
-	// Do not attempt to compile shader if file is not read ( empty string )
-	if (!source.empty()) {
-		auto shaderSources = Preprocess(source);
-		Compile(shaderSources);
-	}
-
-	// assets/shaders/Texture.shader.glsl
-	Path path(filepath);
-	m_Name = path.basename_strip_extension().str();
-
-	PB_INFO("Read shader into '{0}'", m_Name);
-
+	Reload();
 }
 
 pb::OpenGLShader::OpenGLShader(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc)
@@ -176,6 +165,22 @@ void pb::OpenGLShader::Bind() const
 void pb::OpenGLShader::Unbind() const
 {
 	GLCall(glUseProgram(0));
+}
+
+void pb::OpenGLShader::Reload()
+{
+	std::string source = ReadFile(m_Filepath);
+	// Do not attempt to compile shader if file is not read ( empty string )
+	if (!source.empty()) {
+		auto shaderSources = Preprocess(source);
+		Compile(shaderSources);
+	}
+
+	// assets/shaders/Texture.shader.glsl
+	Path path(m_Filepath);
+	m_Name = path.basename_strip_extension().str();
+
+	PB_INFO("Read shader into '{0}'", m_Name);
 }
 
 void pb::OpenGLShader::UploadUniformInt(const std::string& name, const int value)

@@ -36,6 +36,8 @@ namespace pb {
 		} 
 	}
 
+	ShaderLibrary* ShaderLibrary::s_Instance = new ShaderLibrary();
+
 	void ShaderLibrary::Add(const std::string name, const Ref<Shader>& shader)
 	{
 		PB_ASSERT(!Find(name), "Shader already exists in library.");

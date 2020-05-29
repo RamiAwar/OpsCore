@@ -19,6 +19,8 @@ namespace pb {
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+		virtual void Reload() override;
+
 		virtual const std::string& GetName() const override { return m_Name; }
 
 
@@ -43,6 +45,7 @@ namespace pb {
 		void Compile(const std::unordered_map<GLenum, std::string>& shaderSources);
 
 	private:
+		std::string m_Filepath;
 		uint32_t m_RendererID;
 		std::string m_Name;
 

@@ -19,6 +19,7 @@ namespace pb {
 		static std::shared_ptr<Shader> Create(const std::string& filepath);
 		static std::shared_ptr<Shader> Create(const std::string name, const std::string& vertexSrc, const std::string& fragmentSrc);
 
+		virtual void Reload() = 0;
 
 		virtual void SetInt(const std::string name, const int& value) = 0;
 		virtual void SetFloat(const std::string name, const float& value) = 0;
@@ -50,11 +51,15 @@ namespace pb {
 
 		bool Find(const std::string& name) const;
 
+		static ShaderLibrary* GetInstance() { return s_Instance; }
+
 		// TODO: REMOVE DEBUG FUNCTION 
 		void _List() const;
 
-	private:
+		
 		std::unordered_map<std::string,Ref<Shader>> m_Shaders;
+	private:
+		static ShaderLibrary* s_Instance;
 	};
 
 }

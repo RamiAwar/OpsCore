@@ -104,9 +104,67 @@ void ExampleLayer::OnImGuiRender() {
 
 	static bool display_dialog = false;
 
+	static bool opt_fullscreen_persistant = true;
+	static ImGuiDockNodeFlags opt_flags = ImGuiDockNodeFlags_None;
+	bool opt_fullscreen = opt_fullscreen_persistant;
+
+	// We are using the ImGuiWindowFlags_NoDocking flag to make the parent window not dockable into,
+	// because it would be confusing to have two docking targets within each others.
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	if (opt_fullscreen)
+	{
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->Pos);
+		ImGui::SetNextWindowSize(viewport->Size);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+	}
+
+	// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
+	if (opt_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+		window_flags |= ImGuiWindowFlags_NoBackground;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace Demo", &p_open, window_flags);
+	ImGui::PopStyleVar();
+
+	if (opt_fullscreen)
+		ImGui::PopStyleVar(2);
+
+	// Dockspace
+	ImGuiIO& io = ImGui::GetIO();
+	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	{
+		ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
+	}
+
+	ImGui::Begin("Settings");
+	if (ImGui::TreeNode("Shaders"))
+	{
+		auto& shaders = pb::ShaderLibrary::GetInstance()->m_Shaders;
+		for (auto& shader : shaders)
+		{
+			if (ImGui::TreeNode(shader.first.c_str()))
+			{
+				std::string buttonName = "Reload##" + shader.first;
+				if (ImGui::Button(buttonName.c_str()))
+					shader.second->Reload();
+				ImGui::TreePop();
+			}
+		}
+		ImGui::TreePop();
+	}
+	ImGui::End();
+
+
 	//if (p_open) { // make settings window closable
 		ImGui::Begin("Settings"/*, &p_open*/);
-		ImGui::ColorEdit3("Checkboard blend", glm::value_ptr(checkerboard_blend_color));
+		ImGui::Text("Checkboard blend");
+		ImGui::ColorEdit3("", glm::value_ptr(checkerboard_blend_color));
 		//ImGui::ColorEdit3("Color 2", glm::value_ptr(m_BlueColor));
 
 		//if (ImGui::Button("Select Texture Shader")) {
@@ -169,21 +227,19 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::Text("FPS: %.2f", m_FPS);
 	ImGui::End();
 
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 	ImGui::Begin("Viewport");
 	auto viewportSize = ImGui::GetContentRegionAvail();
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	m_Framebuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
 	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
 	ImGui::End();
-	ImGui::PopStyleVar();
 
 
 
 
 
 
-
+	ImGui::End();
 
 	//}
 
