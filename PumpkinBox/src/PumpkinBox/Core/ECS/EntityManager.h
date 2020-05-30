@@ -43,6 +43,8 @@ namespace pb::ECS {
 			return entity.generation == entities[entity.index].generation;
 		}
 
+		pb::VVector<Entity>* GetEntities() { return &entities; }
+
 		/**
 		*	Getter functions for testing
 		**/

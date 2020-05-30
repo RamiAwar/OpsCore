@@ -4,7 +4,13 @@
 float ExampleLayer::m_FPS = 0.0f;
 int ExampleLayer::fps_counter = 0;
 
+struct Position {
+	int x;
+	int y;
 
+	Position()
+		:x(0), y(0) {}
+};
 
 // TODO: Refactor this aspect ratio implementation
 ExampleLayer::ExampleLayer() : Layer("Example"),
@@ -19,6 +25,8 @@ void ExampleLayer::OnAttach()
 	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
 	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
 	m_Framebuffer.reset(pb::Framebuffer::Create(1280, 720, pb::FramebufferFormat::RGBA16F));
+
+	m_Player = m_World.CreateEntity<Position>("Player");
 }
 
 void ExampleLayer::OnDetach() 
@@ -80,8 +88,6 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 
 		pb::Renderer2D::EndScene();
 		m_Framebuffer->Unbind();
-
-
 	}
 
 	
@@ -147,6 +153,27 @@ void ExampleLayer::OnImGuiRender() {
 		ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 	}
+
+	ImGui::Begin("Scene");
+	if (ImGui::TreeNode("Entities"))
+	{
+		pb::VVector<pb::ECS::Entity>* entities = m_World.GetEntities();
+		for (int i = 0; i < entities->size(); i++)
+		{
+			if (ImGui::TreeNode(m_World.entity_names[(*entities)[i].index].c_str()))
+			{
+				std::vector<std::string> component_names = m_World.GetComponentNamesList((*entities)[i]);
+				for (std::string name : component_names)
+				{
+					ImGui::Text(name.c_str());
+				}
+
+				ImGui::TreePop();
+			}
+		}
+		ImGui::TreePop();
+	}
+	ImGui::End();
 
 	ImGui::Begin("Settings");
 	if (ImGui::TreeNode("Shaders"))
@@ -231,7 +258,6 @@ public:
 	}
 
 	~Sandbox() {}
-
 };
 
 class Main : public pb::Application {

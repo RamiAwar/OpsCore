@@ -15,7 +15,11 @@ public:
 	void OnEvent(pb::Event& event) override;
 	virtual void OnImGuiRender() override;
 
-private:	
+private:
+
+	pb::ECS::World m_World;
+	pb::ECS::Entity m_Player;
+
 
 	pb::OrthographicCameraController m_CameraController;
 

@@ -1,14 +1,19 @@
 #pragma once
 
+
+
+#include <unordered_map>
+#include <unordered_set>
+#include <numeric>
+#include <ostream>
+
 #include "PumpkinBox/Core/VVector.h"
+#include "PumpkinBox/Utils/Typename.h"
 
 #include "EntityManager.h"
 #include "Archetype.h"
 #include "System.h"
 
-#include <unordered_map>
-#include <unordered_set>
-#include <numeric>
 
 #define MB 1000000
 
@@ -31,17 +36,28 @@ namespace pb::ECS
 		*	Do not want to return by reference so that entity holder can check if it was destroyed by comparing generation
 		**/
 		template<typename ...Components>
-		Entity CreateEntity() {
+		Entity CreateEntity(const char* name="") {
 
 			// Create empty entity
 			Entity entity = entityManager->CreateEntity();
+			if(name != "") entity_names[entity.index] = std::string(name);
 
 			if constexpr (sizeof...(Components) != 0) {
 
 				// Create metatype list (hash of each component + their sizes)
 				const Metatype* types[] = { Metatype::BuildMetatype<Components>()... };
+				static_string names[] = { type_name<Components>()... };
 				constexpr size_t n_types = (sizeof(types) / sizeof(*types));
 				
+				for (int i = 0; i < n_types; i++) {
+					std::stringstream stream;
+					stream << names[i];
+					std::string str = stream.str();
+					
+					uint64_t hash = types[i]->hash;
+					component_names[hash] = str;
+				}
+
 				// Sort metatypes
 				sort_metatypes(types, n_types);
 				
@@ -120,7 +136,7 @@ namespace pb::ECS
 			const Record& record = entity_archetype_map[entity.index];
 			uint64_t hash = typeid(T).hash_code();
 
-			// Find the component index (fine to loop only 32 components)
+			// Find the component index 
 			for (int i = 0; i < record.archetype->n_types; i++) {
 				if (hash == record.archetype->types[i]->hash) {
 					// Component found, return it
@@ -129,6 +145,28 @@ namespace pb::ECS
 			}
 			
 			throw std::exception("Error: Component does not exist!");
+		}
+
+		std::vector<std::string> GetComponentNamesList(Entity entity) {
+			// Check that entity is still alive
+			if (!entityManager->IsAlive(entity)) {
+				throw std::exception("Attempting to add component to an entity that was destroyed.");
+			}
+
+			const Record& record = entity_archetype_map[entity.index];
+
+			std::vector<std::string> out;
+
+			// Find the component index 
+			for (int i = 0; i < record.archetype->n_types; i++) {
+				out.push_back(component_names[record.archetype->types[i]->hash]);
+			}
+
+			return out;
+		}
+
+		pb::VVector<Entity>* GetEntities() {
+			return entityManager->GetEntities();
 		}
 
 		/**
@@ -239,6 +277,10 @@ namespace pb::ECS
 		*	Virtual memory vector for storing all archetypes and their components.
 		**/
 		pb::VVector<Archetype> archetypes;
+
+	public:
+		std::unordered_map<uint64_t, std::string> component_names;
+		std::unordered_map<uint32_t, std::string> entity_names;
 	}; 
 
 }
