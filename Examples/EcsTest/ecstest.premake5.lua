@@ -1,6 +1,6 @@
-project "Test"
+project "EcsTest"
 		
-		location "../Test"
+		location "../EcsTest"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"

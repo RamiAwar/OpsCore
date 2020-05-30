@@ -29,7 +29,7 @@ workspace "PumpkinBox"
 	-- EXAMPLE PROJECTS INCLUDES
 	include "Examples/Pong/pong.premake5.lua"
 	include "Examples/Sandbox/sandbox.premake5.lua"  
-	include "Examples/Test/test.premake5.lua"  
+	include "Examples/EcsTest/ecstest.premake5.lua"  
 	include "Examples/Platformer/platformer.premake5.lua"
 	
 	-- DEPENDENCIES INCLUDES
