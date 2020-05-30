@@ -21,6 +21,4 @@ jobs:
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 PumpkinBox/PumpkinBox.vcxproj
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/EcsTest/EcsTest.vcxproj
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Sandbox/Sandbox.vcxproj
-    - stage: Test
-      script: 
-        - bin/Debug-windows-x86_64/EcsTest/EcsTest.exe -d yes 
+        - bin/Release-windows-x86_64/EcsTest/EcsTest.exe -d yes 
