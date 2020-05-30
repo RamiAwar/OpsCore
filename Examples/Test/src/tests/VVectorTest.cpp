@@ -19,7 +19,7 @@ SCENARIO("Virtual Memory Allocations", "[memory]") {
         };
 
         pb::VVector<Position> empty(0);
-        REQUIRE(empty.size() == 0);
+        REQUIRE(empty.size() == 1);
 
         pb::VVector<Position> entities(GB);
 

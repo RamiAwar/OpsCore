@@ -12,9 +12,10 @@ script:
   - MSBuild.exe -p:Configuration=Release -p:Platform=x64 PumpkinBox/PumpkinBox.vcxproj
   - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Test/Test.vcxproj
   - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Sandbox/Sandbox.vcxproj
+  - bin\Debug-windows-x86_64\Test\test.exe -d yes 
 notifications:
   email:
     recipients:
       - rami.awar.ra@gmail.com
-    on_success: always # default: change
+    on_success: never # default: change
     on_failure: always # default: always
