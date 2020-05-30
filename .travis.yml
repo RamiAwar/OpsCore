@@ -22,4 +22,4 @@ jobs:
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/EcsTest/EcsTest.vcxproj
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Sandbox/Sandbox.vcxproj
     - stage: Test
-      script: bin\Debug-windows-x86_64\Test\test.exe -d yes 
+      script: bin\Debug-windows-x86_64\EcsTest\ecstest.exe -d yes 
