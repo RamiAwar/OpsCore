@@ -8,7 +8,7 @@ stages:
 
 jobs:
   include:
-    - stage: compile
+    - stage: Compile
       env:
         - MSBUILD_PATH="C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin"
       install:
@@ -19,7 +19,7 @@ jobs:
         - 7z e premake5.zip -y
         - ./premake5.exe vs2019
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 PumpkinBox/PumpkinBox.vcxproj
-        - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Test/Test.vcxproj
+        - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/EcsTest/EcsTest.vcxproj
         - MSBuild.exe -p:Configuration=Release -p:Platform=x64 Examples/Sandbox/Sandbox.vcxproj
-    - stage: test
+    - stage: Test
       script: bin\Debug-windows-x86_64\Test\test.exe -d yes 

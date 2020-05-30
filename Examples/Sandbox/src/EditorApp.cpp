@@ -1,8 +1,8 @@
-#include "SandboxApp.h"
+#include "EditorApp.h"
 
 
-float ExampleLayer::m_FPS = 0.0f;
-int ExampleLayer::fps_counter = 0;
+float EditorLayer::m_FPS = 0.0f;
+int EditorLayer::fps_counter = 0;
 
 struct Position {
 	int x;
@@ -13,14 +13,14 @@ struct Position {
 };
 
 // TODO: Refactor this aspect ratio implementation
-ExampleLayer::ExampleLayer() : Layer("Example"),
-	m_CameraController(pb::Renderer::aspectRatio, true, true, true),
-	m_ViewportActive(false)
+EditorLayer::EditorLayer() : Layer("Example"),
+m_CameraController(pb::Renderer::aspectRatio, true, true, true),
+m_ViewportActive(false)
 {
-	PB_CLIENT_INFO("Constructing ExampleLayer");
+	PB_CLIENT_INFO("Constructing EditorLayer");
 }
 
-void ExampleLayer::OnAttach()  
+void EditorLayer::OnAttach()
 {
 	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
 	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
@@ -29,12 +29,12 @@ void ExampleLayer::OnAttach()
 	m_Player = m_World.CreateEntity<Position>("Player");
 }
 
-void ExampleLayer::OnDetach() 
+void EditorLayer::OnDetach()
 {
 }
 
-void ExampleLayer::OnUpdate(pb::Timestep ts) 
-{ 
+void EditorLayer::OnUpdate(pb::Timestep ts)
+{
 
 	PB_PROFILE_FUNCTION();
 
@@ -49,7 +49,7 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 	// TODO: do more efficiently
 	// FPS counting
 	fps_counter++;
-	if(fps_counter % 50 == 0) m_FPS = 1.0f / ts;
+	if (fps_counter % 50 == 0) m_FPS = 1.0f / ts;
 	if (fps_counter > 10000000) fps_counter = 0;
 
 
@@ -60,7 +60,7 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 		{
 
 			PB_PROFILE_VISUAL_SCOPE("Renderer2D::Setup");
-			
+
 			m_Framebuffer->Bind();
 			pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
 			pb::RenderCommand::Clear();
@@ -90,10 +90,10 @@ void ExampleLayer::OnUpdate(pb::Timestep ts)
 		m_Framebuffer->Unbind();
 	}
 
-	
+
 }
 
-void ExampleLayer::OnEvent(pb::Event& event) { 
+void EditorLayer::OnEvent(pb::Event& event) {
 
 	//PB_PROFILE_FUNCTION();
 	//PB_CLIENT_TRACE("{0}", event);
@@ -101,11 +101,11 @@ void ExampleLayer::OnEvent(pb::Event& event) {
 		m_CameraController.OnEvent(event);
 	}
 
-	
+
 }
 
 
-void ExampleLayer::OnImGuiRender() {
+void EditorLayer::OnImGuiRender() {
 
 	//PB_PROFILE_FUNCTION();
 
@@ -195,37 +195,37 @@ void ExampleLayer::OnImGuiRender() {
 
 
 	//if (p_open) { // make settings window closable
-		ImGui::Begin("Settings"/*, &p_open*/);
-		ImGui::Text("Checkboard blend");
-		ImGui::ColorEdit3("", glm::value_ptr(checkerboard_blend_color));
-	
-		if (ImGui::Button("Select Texture Shader")) {
-			ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
-			ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
-		}
+	ImGui::Begin("Settings"/*, &p_open*/);
+	ImGui::Text("Checkboard blend");
+	ImGui::ColorEdit3("", glm::value_ptr(checkerboard_blend_color));
 
-		if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+	if (ImGui::Button("Select Texture Shader")) {
+		ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
+		ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
+	}
+
+	if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk == true)
 		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk == true)
-			{
-				m_CheckerboardPath = ImGuiFileDialog::Instance()->GetFilepathName();
+			m_CheckerboardPath = ImGuiFileDialog::Instance()->GetFilepathName();
 
-				// update texture
-				PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_CheckerboardPath);
+			// update texture
+			PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_CheckerboardPath);
 
-				auto texture_shader = pb::ShaderLibrary::GetInstance()->Load(m_CheckerboardPath);
-				m_CheckerboardPath = texture_shader->GetName();
+			auto texture_shader = pb::ShaderLibrary::GetInstance()->Load(m_CheckerboardPath);
+			m_CheckerboardPath = texture_shader->GetName();
 
-				std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->Bind();
-				std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
-			}
-
-			//close
-			ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+			std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->Bind();
+			std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
 		}
 
-		ImGui::End();
+		//close
+		ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
+	}
+
+	ImGui::End();
 
 	PB_PROFILE_RENDER();
 
@@ -234,7 +234,7 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::End();
 
 	ImGui::Begin("Viewport");
-	
+
 	m_ViewportActive = ImGui::IsWindowFocused();
 
 	auto viewportSize = ImGui::GetContentRegionAvail();
@@ -243,21 +243,21 @@ void ExampleLayer::OnImGuiRender() {
 	ImGui::Image((void*)m_Framebuffer->GetColorAttachmentRendererID(), viewportSize, { 0, 1 }, { 1, 0 });
 	ImGui::End();
 
-	
+
 	ImGui::End();
 
 }
 
 
-class Sandbox : public pb::Scene {
+class Editor : public pb::Scene {
 public:
-	Sandbox() {}
+	Editor() {}
 
-	void OnAttach(){
-		PushLayer(new ExampleLayer());
+	void OnAttach() {
+		PushLayer(new EditorLayer());
 	}
 
-	~Sandbox() {}
+	~Editor() {}
 };
 
 class Main : public pb::Application {
@@ -267,7 +267,7 @@ public:
 		#ifdef PB_PLATFORM_WINDOWS
 		
 		#endif
-		pb::SceneStateMachine::instance()->Add("test", pb::CreateRef<Sandbox>());
+		pb::SceneStateMachine::instance()->Add("test", pb::CreateRef<Editor>());
 	
 	}
 

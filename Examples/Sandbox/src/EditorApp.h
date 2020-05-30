@@ -3,11 +3,11 @@
 
 #include "PumpkinBox/Core/Entrypoint.h"
 
-class ExampleLayer : public pb::Layer {
+class EditorLayer : public pb::Layer {
 
 public:
 
-	ExampleLayer();
+	EditorLayer();
 
 	void OnAttach() override;
 	void OnDetach() override;
