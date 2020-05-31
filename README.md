@@ -5,7 +5,7 @@
 
 ## Latest Update
 Embedded viewport in main window, adding shader customizations to editor window.
-![LatestUpdate](https://github.com/RamiAwar/PumpkinBox/blob/master/docs/viewport_update.JPG?raw=true)
+![LatestUpdate](https://github.com/RamiAwar/PumpkinBox/raw/master/docs/ecs_integration_01.JPG?raw=true)
 
 ## What is it?
 A desktop application development framework that allows for the development of C++ applications with a GUI and Renderer (Only OpenGL backend supported so far, but architecture leaves room for Vulkan, Metal, or DirectX extensions).
