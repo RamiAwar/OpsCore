@@ -100,15 +100,6 @@ namespace pb
 
 	void Renderer2D::BeginScene(const OrthographicCamera& camera)
 	{
-		//ShaderLibrary::GetInstance()->Get("FlatColor")->Bind();
-		//ShaderLibrary::GetInstance()->Get("FlatColor")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
-		//ShaderLibrary::GetInstance()->Get("Texture")->Bind();
-		//ShaderLibrary::GetInstance()->Get("Texture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
-		//ShaderLibrary::GetInstance()->Get("TilingTexture")->Bind();
-		//ShaderLibrary::GetInstance()->Get("TilingTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
-
 		ShaderLibrary::GetInstance()->Get("ColorTexture")->Bind();
 		ShaderLibrary::GetInstance()->Get("ColorTexture")->SetMat4("u_ViewProjection", camera.GetViewProjectionMatrix());
 

@@ -4,33 +4,26 @@
 float EditorLayer::m_FPS = 0.0f;
 int EditorLayer::fps_counter = 0;
 
-struct Position {
-	int x;
-	int y;
-
-	Position()
-		:x(0), y(0) {}
-};
 
 // TODO: Refactor this aspect ratio implementation
 EditorLayer::EditorLayer() : Layer("Example"),
-m_CameraController(pb::Renderer::aspectRatio, true, true, true),
+m_GameLayer(GameLayer()),
 m_ViewportActive(false)
 {
-	PB_CLIENT_INFO("Constructing EditorLayer");
+	PB_CLIENT_INFO("Constructing Editor Layer");
 }
 
 void EditorLayer::OnAttach()
 {
-	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
-	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
+	// Initialize viewport framebuffer
 	m_Framebuffer.reset(pb::Framebuffer::Create(1280, 720, pb::FramebufferFormat::RGBA16F));
 
-	m_Player = m_World.CreateEntity<Position>("Player");
+	m_GameLayer.OnAttach();
 }
 
 void EditorLayer::OnDetach()
 {
+	m_GameLayer.OnDetach();
 }
 
 void EditorLayer::OnUpdate(pb::Timestep ts)
@@ -42,7 +35,7 @@ void EditorLayer::OnUpdate(pb::Timestep ts)
 	{
 		PB_PROFILE_VISUAL_SCOPE("CameraController::Update");
 		if (m_ViewportActive) {
-			m_CameraController.OnUpdate(ts);
+			m_GameLayer.OnUpdate(ts);
 		}
 	}
 
@@ -56,41 +49,13 @@ void EditorLayer::OnUpdate(pb::Timestep ts)
 	// RENDER
 	{
 		PB_PROFILE_SCOPE("Renderer2D Loop");
-
 		{
-
-			PB_PROFILE_VISUAL_SCOPE("Renderer2D::Setup");
-
+			PB_PROFILE_VISUAL_SCOPE("Renderer2D E2E");
 			m_Framebuffer->Bind();
-			pb::RenderCommand::SetClearColor({ 0.1f, 0.1f, 0.1f, 1.0f });
-			pb::RenderCommand::Clear();
-
-
-			pb::Renderer2D::BeginScene(m_CameraController.GetCamera());
+			m_GameLayer.OnRender();
+			m_Framebuffer->Unbind();
 		}
-
-
-		{
-			PB_PROFILE_SCOPE("Renderer2D::DrawQuad");
-			pb::Renderer2D::DrawQuad({ 0.3f, 0.0f, 0.0f }, // position  
-				{ 2.0f, 2.0f }, // size
-				checkerboard_blend_color // color
-			);
-		}
-
-		pb::Renderer2D::DrawQuad({ -1.0f, 1.0f }, // position  
-			{ 1.0f, 1.0f }, // size
-			{ 0.2f, 0.3f, 0.8f, 1.0f } // color
-		);
-
-		pb::Renderer2D::DrawQuad({ 0.5f, 0.5f , 0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
-		pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.2f }, { 0.5f, 0.5f }, mushroom_texture);
-
-		pb::Renderer2D::EndScene();
-		m_Framebuffer->Unbind();
 	}
-
-
 }
 
 void EditorLayer::OnEvent(pb::Event& event) {
@@ -98,7 +63,7 @@ void EditorLayer::OnEvent(pb::Event& event) {
 	//PB_PROFILE_FUNCTION();
 	//PB_CLIENT_TRACE("{0}", event);
 	if (m_ViewportActive) {
-		m_CameraController.OnEvent(event);
+		m_GameLayer.OnEvent(event);
 	}
 
 
@@ -154,26 +119,8 @@ void EditorLayer::OnImGuiRender() {
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), opt_flags);
 	}
 
-	ImGui::Begin("Scene");
-	if (ImGui::TreeNode("Entities"))
-	{
-		pb::VVector<pb::ECS::Entity>* entities = m_World.GetEntities();
-		for (int i = 0; i < entities->size(); i++)
-		{
-			if (ImGui::TreeNode(m_World.entity_names[(*entities)[i].index].c_str()))
-			{
-				std::vector<std::string> component_names = m_World.GetComponentNamesList((*entities)[i]);
-				for (std::string name : component_names)
-				{
-					ImGui::Text(name.c_str());
-				}
 
-				ImGui::TreePop();
-			}
-		}
-		ImGui::TreePop();
-	}
-	ImGui::End();
+	m_GameLayer.OnImGuiRender();
 
 	ImGui::Begin("Settings");
 	if (ImGui::TreeNode("Shaders"))
@@ -191,40 +138,6 @@ void EditorLayer::OnImGuiRender() {
 		}
 		ImGui::TreePop();
 	}
-	ImGui::End();
-
-
-	//if (p_open) { // make settings window closable
-	ImGui::Begin("Settings"/*, &p_open*/);
-	ImGui::Text("Checkboard blend");
-	ImGui::ColorEdit3("", glm::value_ptr(checkerboard_blend_color));
-
-	if (ImGui::Button("Select Texture Shader")) {
-		ImGuiFileDialog::Instance()->SetFilterColor(".glsl", ImVec4(0, 1, 0, 0.5));
-		ImGuiFileDialog::Instance()->OpenDialog("Select Texture Shader", "Choose GLSL File", ".glsl\0", "..");
-	}
-
-	if (ImGuiFileDialog::Instance()->FileDialog("Select Texture Shader"))
-	{
-		// action if OK
-		if (ImGuiFileDialog::Instance()->IsOk == true)
-		{
-			m_CheckerboardPath = ImGuiFileDialog::Instance()->GetFilepathName();
-
-			// update texture
-			PB_CLIENT_INFO("Texture shader updated to :'{0}'", m_CheckerboardPath);
-
-			auto texture_shader = pb::ShaderLibrary::GetInstance()->Load(m_CheckerboardPath);
-			m_CheckerboardPath = texture_shader->GetName();
-
-			std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->Bind();
-			std::dynamic_pointer_cast<pb::OpenGLShader>(texture_shader)->UploadUniformInt("u_Texture", 0); // sampler slot = 0 ( default value )
-		}
-
-		//close
-		ImGuiFileDialog::Instance()->CloseDialog("Select Texture Shader");
-	}
-
 	ImGui::End();
 
 	PB_PROFILE_RENDER();
@@ -251,7 +164,7 @@ void EditorLayer::OnImGuiRender() {
 
 class Editor : public pb::Scene {
 public:
-	Editor() {}
+	Editor(){}
 
 	void OnAttach() {
 		PushLayer(new EditorLayer());
@@ -263,12 +176,9 @@ public:
 class Main : public pb::Application {
 public:
 
-	Main() {
-		#ifdef PB_PLATFORM_WINDOWS
-		
-		#endif
+	Main() 
+	{
 		pb::SceneStateMachine::instance()->Add("test", pb::CreateRef<Editor>());
-	
 	}
 
 	~Main() {};
@@ -276,9 +186,8 @@ public:
 };
 
 // Defining CreateApplication in client
-pb::Application* pb::CreateApplication() {
-	
+pb::Application* pb::CreateApplication() 
+{	
 	return new Main();
-
 }
 
