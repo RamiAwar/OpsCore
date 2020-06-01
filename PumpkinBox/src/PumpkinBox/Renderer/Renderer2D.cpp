@@ -133,7 +133,9 @@ namespace pb
 	* Transforms coordinates from (0 -> 1) by (0 -> 1) to their correct positions
 	*/
 	glm::vec3 normalized_to_scaled(const glm::vec3& position, const glm::vec2& size) {
-		return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (abs(size.x) * Renderer::aspectRatio), 2 * (position.y - 0.5f) + abs(size.y), position.z };
+		//return { 2 * (position.x - 0.5f) * Renderer::aspectRatio + (abs(size.x) * Renderer::aspectRatio), 2 * (position.y - 0.5f) + abs(size.y), position.z };
+		//return position;
+		return { 2 * (position.x - 0.5f), 2 * (position.y - 0.5f), position.z };
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)

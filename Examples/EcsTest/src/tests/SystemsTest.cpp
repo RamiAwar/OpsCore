@@ -31,7 +31,7 @@ SCENARIO("System Addition Test", "[ECS]") {
         public:
             MovementSystem() : System() {}
 
-            void Update(float delta) override {
+            void Update(pb::Timestep ts) override {
                 
                 ComponentIterator<Position> p_iter(&group, 0);
                 for (int i = 0; i < p_iter.size(); i++) {
@@ -66,7 +66,7 @@ SCENARIO("System Addition Test", "[ECS]") {
         public:
             AdvancedMovementSystem() : System() {}
 
-            void Update(float delta) override {
+            void Update(pb::Timestep ts) override {
                 ComponentIterator<Position> p_iter(&group, 0);
                 for (int i = 0; i < p_iter.size(); i++) {
                     p_iter[i]->x++;

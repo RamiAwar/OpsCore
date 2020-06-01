@@ -230,6 +230,8 @@ namespace pb::ECS
 				// Link system group with archetypes
 				LinkSystem(system);
 
+				systems.push_back(system);
+
 			}
 			else {
 
@@ -239,6 +241,13 @@ namespace pb::ECS
 		}
 
 		void LinkSystem(System* system);
+
+		void Update(pb::Timestep ts) {
+			for (System* system : systems) 
+			{
+				system->Update(ts);
+			}
+		}
 
 		/**
 		*	Helper function to check if archetype signature belongs in group. If it does,
@@ -278,9 +287,12 @@ namespace pb::ECS
 		**/
 		pb::VVector<Archetype> archetypes;
 
+		std::vector<System*> systems;
+
 	public:
 		std::unordered_map<uint64_t, std::string> component_names;
 		std::unordered_map<uint32_t, std::string> entity_names;
+
 	}; 
 
 }

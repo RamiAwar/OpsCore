@@ -2,7 +2,7 @@
 
 #include "Entity.h"
 #include "Archetype.h"
-
+#include "PumpkinBox/Core/Timestep.h"
 
 
 
@@ -93,7 +93,7 @@ namespace pb::ECS {
 
 		System();
 
-		virtual void Update(float delta)=0;
+		virtual void Update(pb::Timestep ts)=0;
 		
 		void SetWorld(World* _world);
 

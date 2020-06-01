@@ -2,16 +2,72 @@
 
 
 struct Position {
-	int x;
-	int y;
+	float x;
+	float y;
 
 	Position()
 		:x(0), y(0) {}
 };
 
+struct Velocity {
+	float x;
+	float y;
+
+	Velocity()
+		:x(0), y(0) {}
+
+	Velocity(float _x, float _y)
+		:x(_x), y(_y) {}
+};
+
+struct Player {
+	int c;
+
+	Player()
+		:c(0) 
+	{}
+};
+
+class MovementSystem : public pb::ECS::System {
+
+public:
+	MovementSystem() : System() {}
+
+	void Update(pb::Timestep ts) override {
+
+		pb::ECS::ComponentIterator<Position> p_iter(&group, 0);
+		pb::ECS::ComponentIterator<Velocity> v_iter(&group, 1);
+
+		for (int i = 0; i < p_iter.size(); i++) {
+			
+			if (pb::Input::IsKeyPressed(PB_KEY_RIGHT))
+			{
+				p_iter[i]->x += ts * v_iter[i]->x;
+			}
+			else if (pb::Input::IsKeyPressed(PB_KEY_LEFT))
+			{
+				p_iter[i]->x -= ts * v_iter[i]->x;
+			}
+
+
+			if (pb::Input::IsKeyPressed(PB_KEY_UP))
+			{
+				p_iter[i]->y = p_iter[i]->y + ts * v_iter[i]->y;
+			}
+			else if (pb::Input::IsKeyPressed(PB_KEY_DOWN))
+			{
+				p_iter[i]->y -= ts * v_iter[i]->y;
+			}
+			
+
+		}
+	}
+};
+
 // TODO: Refactor this aspect ratio implementation
-GameLayer::GameLayer() : Layer("Example"),
-m_CameraController(pb::Renderer::aspectRatio, true, true, true)
+GameLayer::GameLayer() : 
+	Layer("Example"),
+	m_CameraController(pb::Renderer::aspectRatio, true, true, true)
 {
 	PB_CLIENT_INFO("Constructing GameLayer");
 }
@@ -20,7 +76,10 @@ void GameLayer::OnAttach()
 {
 	checkerboard_texture = pb::Texture2D::Create(m_CheckerboardPath);
 	mushroom_texture = pb::Texture2D::Create(m_MushroomPath);
-	m_Player = m_World.CreateEntity<Position>("Player");
+	m_Player = m_World.CreateEntity<Position, Velocity>("Player");
+	Velocity player_velocity = Velocity(1, 1);
+	m_World.SetComponent<Velocity>(m_Player, player_velocity);
+	m_World.RegisterSystem<Position, Velocity>(new MovementSystem());
 }
 
 void GameLayer::OnDetach()
@@ -30,6 +89,7 @@ void GameLayer::OnDetach()
 void GameLayer::OnUpdate(pb::Timestep ts)
 {
 	m_CameraController.OnUpdate(ts);
+	m_World.Update(ts);
 }
 
 void GameLayer::OnRender() 
@@ -39,8 +99,9 @@ void GameLayer::OnRender()
 
 	pb::Renderer2D::BeginScene(m_CameraController.GetCamera());
 
-	pb::Renderer2D::DrawQuad({ 0.3f, 0.0f, 0.0f }, // position  
-		{ 2.0f, 2.0f }, // size
+	Position* position = m_World.GetComponent<Position>(m_Player);
+	pb::Renderer2D::DrawQuad({ position->x, position->y, 0.0f }, // position  
+		{ 1.0f, 1.0f }, // size
 		checkerboard_blend_color // color
 	);
 
@@ -49,8 +110,8 @@ void GameLayer::OnRender()
 		{ 0.2f, 0.3f, 0.8f, 1.0f } // color
 	);
 
-	pb::Renderer2D::DrawQuad({ 0.5f, 0.5f , 0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
-	pb::Renderer2D::DrawQuad({ 0.2f, 0.4f, 0.2f }, { 0.5f, 0.5f }, mushroom_texture);
+	pb::Renderer2D::DrawQuad({ 5.0f, 5.0f , 0.1f }, { 10.0f, 10.0f }, checkerboard_texture, { 10.0f, 10.0f }, checkerboard_blend_color);
+	pb::Renderer2D::DrawQuad({ 0.0f, 0.0f, 0.2f }, { 0.5f, 0.5f }, mushroom_texture);
 
 	pb::Renderer2D::EndScene();
 }
